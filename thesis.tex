@@ -1,16 +1,71 @@
-\input ctustyle
-\worktype [B/CZ]
-\faculty {F3}
-\department {Katedra radioeletroniky}
-\title {Distributed signal processing in~radio communication networks}
-\author {Jakub Kolář}
-\date {Červen 2017}
-\abstractEN {This document is for testing purpose only.}
-\abstractCZ {Tento dokument je pouze pro potřeby testování.}
-\declaration {Prohlašuji, že jsem se neflákal.}
-\makefront
-\chap Úvod
-Text úvodu.
-\sec Myšlenka
-Další text.
+% The documentation of the usage of CTUstyle -- the template for
+% typessetting thesis by plain\TeX at CTU in Prague
+% ---------------------------------------------------------------------
+% Petr Olsak  Jan. 2013
+
+% You can copy this file to your own file and do some changes.
+% Then you can run:  pdfcsplain your-file
+
+\input ctustyle   % The template is included here.
+%\input pdfuni    % Uncomment this if you need accented PDFoutlines
+%\input opmac-bib % Uncomment this for direct reading of .bib database files 
+
+\worktype [B/EN] % Type: B = bachelor, M = master, D = Ph.D., O = other
+                 % / the language: CZ = Czech, SK = Slovak, EN = English
+
+\faculty    {F3}  % Type your faculty F1, F2, F3, etc.
+            % use main language of your document here:
+\department {Department of Radioelectronics}
+\title      {Distributed signal processing in radio communication networks}
+%\subtitle   {}
+            % \subtitle is optional
+\author     {Jakub Kolář}
+\date       {November 2016}
+\supervisor {}  % One or more supervisors
+\studyinfo  {Open Electronic Systems}  % Study programme etc.
+\workname   {Bachelot thesis} % Used only if \worktype [O/*] (Other)
+            % optional more information about the document:
+\workinfo   {kolarj39@fel.cvut.cz}
+            % Title / Subtitle in minor language:
+\titleEN    {CTUstyle -- the user manual}
+\subtitleEN {the plain\TeX{} template for theses at CTU}
+            % If minor language is other than English
+            % use \titleCZ, \subtitleCZ or \titleSK, \subtitleSK instead it.
+\pagetwo    {}  % The text printed on the page 2 at the bottom.
+
+\abstractEN {
+   Fireflyes are really amazing.
+}
+\abstractCZ {
+   Pokus napsat bakalarku a take ji obhajit.
+}          
+
+\keywordsEN {   averaging consensus algorithm
+}
+\keywordsCZ {%
+   konsensus algoritmus
+}
+\thanks {           % Use main language here
+  Thank you all.
+}
+\declaration {      % Use main language here
+ I announce I made this thing alone.
+  In Prague, 3. 12. 2016 % !!! Attention, you have to change this item.
+   \signature % makes dots
+}
+
+%%%%% <--   % The place for your own macros is here.
+
+%\draft     % Uncomment this if the version of your document is working only.
+%\linespacing=1.7  % uncomment this if you need more spaces between lines
+                   % Warning: this works only when \draft is activated!
+%\savetoner        % Turns off the lightBlue backround of tables and
+                   % verbatims, only for \draft version.
+%\blackwhite       % Use this if you need really Black+White thesis.
+%\onesideprinting  % Use this if you really don't use duplex printing. 
+
+\makefront  % Mandatory command. Makes title page, acknowledgment, contents etc.
+
+\input introduction    % Files where the source of the document is prepared.
+
 \bye
