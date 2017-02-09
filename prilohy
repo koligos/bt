@@ -1,0 +1,8 @@
+
+\bibchap
+\ifx\usebib\undefined
+   \usebbl/c mybase
+\else
+   \usebib/c (simple) mybase
+\fi
+

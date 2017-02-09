@@ -54,7 +54,7 @@ end
 
 prubeznaHodnota=pocatecniHodnotaUzlu; %inicializace pocatecnich hodnot uzlu 
 
-pocetIteraci = 120;
+pocetIteraci = 50;
 
 for i=1:pocetIteraci+1
 casovaSouradnice(i)= i-1
@@ -72,11 +72,13 @@ for i = 1:pocetIteraci
     %prubeznaHodnota(5)=3;
 end
 
-figure(1);
+subplot(2, 1, 1);
 plot(casovaSouradnice, mezivysledky(:,:));
+title('Convergence to mean of initial values');
+subplot(2, 1, 2);
 
-figure(2);
 plot(casovaSouradnice, chybaPrubezneHodnoty(:,:));
+title('shrinking of error');
 
 
 

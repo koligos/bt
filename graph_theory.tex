@@ -8,26 +8,105 @@
 
 
 
-\sec Brief historical review
+\sec Motivation
 
-Euler
+It is commonly well known, that the elements of Graph theory were set by a mathematician Leonhard Euler in 1736. He solved a problem called Seven Bridges of Königsberg. 
+
+\midinsert
+\picw=5cm \cinspic pictures/Konigsberg_bridges.png
+\clabel[Konigsberg]{View on city Konigsberg.}
+\caption/f View on city Konigsberg with marked bridges \cite[Giusca2005] . 
+
+\endinsert
 
 
+
+
+The problem was formulated like this: River Pregole flows through the city and creates two islands in there. These two islands are connected with the rest of the city by seven bridges (see figure above). The question was, whether it is possible to take a walk through the city in such a way, to pass each bridge exactly once. Euler described this problem as a graph, where the edges represented the seven bridges, and the vertices were the separated parts of the city.
+
+Euler proved, that in this case, it is impossible to pass each bridge only once and showed, that the Eulerian trial (i.e. a trial, that contents every edge exactly once) exists if and only if every vertex of the graph is of an even degree.
+
+Nowadays, a very modern and interesting example of usage of the Graph theory is visualisation and simulation of the communication networks, such as the Internet, mobile network etc. A typical task is to find the best route from a source to a destination location with respect to a given specific metric. This metric can depend on many paramaters, such as a number of intermediate devices (RIP), round-trip delay or a bandwidth of the connectivity (OSPF). These Graph algorithms are often based on a very efficient improvement of basic Depth-first search. (This is a case of the famous Dijkstra's algorithm used by OSPF routing protocol, to find the best way from each node to all the others with eges with a given cost.) 
+
+We also briefly mention the term of Spanning trees. In Ethernet-based communication is very important to avoid loops in a network, because they might cause a congestion of the network and failure of the service. A Spanning tree of a graph is a factor of this graph, which originates by removing some of its edges, in a way to preserve all vertices reachable, and removes all cycles in the graph. Later, in a chapter about Laplacian we shall see how to simply find a count of these Spanning trees.
+
+To finish this motivation part, a very nice example of the usage of distributed algorithm is a Network time protocol (NTP). It is important to have globally synchronised time between server computers. Few of the servers are connected to the reference clocks and next, to them hiearchically connected servers, are averaging neighbour's time to obtain final value of time they use.
 
 
 \sec Definitions
 
-Graph
+A graph $G=(V, E)$ is described by a pair of its vertices $V$ and edges $E$. ${V=\{ v_1, v_2, ..., v_N \}}$ is a set of $N$ vertices. By the vertices we understand the points connected by the edges. 
+An edge $e_{i,j}= \{ \left( v_i, v_j \right)\} $ means a connection between vertices $v_i$ and $v_j$.
 
-Adjacency matrix
+\secc Undirected graph
 
-Degree
+\midinsert
+\picw=5cm \cinspic pictures/basic_graph.pdf
+\clabel[Graph]{Example of a undirected graph.}
+\caption/f Example of a simple undirected graph to demonstrate basic definitions. 
+\endinsert
 
-Incidence matrix
+The graph $G=(V, E)$ above could be described by set of vertices ${V=\{ 1; 2; 3; 4; 5\}}$ and set of edges  $E=\{ (1, 4); (1, 3); (2, 4); (2,5); (3, 2); (3, 3); (3, 5); (4, 5) \}$.
+
+Set of neigbours $ {\cal{N}}_i $ of a vertex $v_i$ is $ {\cal{N}}_i = \{ v_j \in V | (v_i , v_j)\in E \} $. For example $ {\cal{N}}_4 = \{1; 2; 5 \} .$ Degree of a node is  $d_i= |{\cal{N}}_i |$.
+
+\secc Directed graph
+
+\midinsert
+\picw=5cm \cinspic pictures/basic_digraph.pdf
+\clabel[Digraph]{Example of a directed graph.}
+\caption/f Example of a directed graph. 
+\endinsert
+For directed graph holds the same as for undirected with only difference, we distinguish the edges 
+$ ( v_i, v_j ) $ and $ ( v_j, v_i ) . $ Then, for a degree of a node in directed graph, we have to consider only neighbours available via oriented edges,  $d_i^{IN}= |{\cal{N}}_i |$.
 
 
+
+
+\secc Adjacency matrix 
+
+Adjacency matrix is a very natural way of a full graph description. This matrix is ${\bi{A}} \in \Re^{N\times{N}}$ and for graph $G$ with $N$ vertices describes inner connectivity of the graph with information, to what all vertices goes an edge from a given vertex.  Its values $a_{i,j}$ are defined as: 
+
+
+
+$$ a_{i,j} = \cases{1 & if there is the edge $(v_i,v_j)$,  \cr 0 & if $i=j,$ \cr 0 & otherwise.} $$
+
+
+
+Adjacency matrix of a graph from figure \ref[Graph] reads
+$$ {\bi A}_{2.2} = \pmatrix{0&0&1&1&0\cr 0&0&1&1&1\cr 1&1&1&0&1\cr 1&1&0&0&1\cr 0&1&1&1&0\cr} .$$ 
+We can see, that adjacency matrix of an undirected graph is symmetric.
+
+And adjacency matrix of a graph from figure \ref[Digraph] is
+$$ {\bi A}_{2.3} =\pmatrix{0&0&1&1&0\cr0&0&0&0&1\cr1&1&0&1&1\cr1&0&0&0&1\cr0&0&0&0&0\cr} .$$
+
+
+\secc Degree matrix
+
+A Degree matrix  ${\bi{D}} \in \Re^{N\times{N}}$ is a diagonal matrix bearing an information about degree of each vertex. Its diagonal elements are $d_i =  \sum_{i \not{=} j } a_{i,j}$ and all nondiagonal elements are equal to 0. For example Degree matrix of undirected graph from figure \ref[Graph] reads ${\bi{D}}_{2.2} = diag \{ 2, 3, 4, 3, 3 \}.$  Next, for the case of directed graph we have to consider only incoming edges. Which for graph from figure \ref[Digraph] means ${\bi{D}}_{2.3} = diag \{ 2, 1, 1, 2, 3 \}.$ And also let's define $\Delta = \max_{i} (d_i)$. 
+
+
+\secc Incidence matrix 
+
+An Incidence matrix of a directed graph provides for each edge an information about a source and destination vertex. For a graph with $N$ vertices and $L$ edges the Incidence matrix ${\bi{E}} \in \Re^{N\times{L}}$  elements $e_{i,j}$ are defined as:
+
+$$ e_{i,j} = \cases{
+1 & if edge $j$ begins in vertex $i$, 
+\cr -1 & if edge $j$ ends in vertex $i$ ,
+\cr 0 & otherwise.} $$
+
+So Incidence matrix for graph on figure \ref[Digraph] reads 
+
+ $${\bi{E}}_{2.3} = \pmatrix{  -1&-1&0&1&0&0&0&1&0\cr
+0&0   & -1&0&1&0&0&0&0\cr
+1&0&0   & -1  &  -1 &   -1 &   -1&0&0\cr
+0&1&0&0&0&1&0  &  -1 &   -1\cr
+0&0&1&0&0&0&1&0&1\cr}$$
 
 \sec Laplacian matrix 
+
+
+\cite[Mohar91thelaplacian]
 
 Definition
 
