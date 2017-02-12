@@ -72,17 +72,24 @@ for i = 1:pocetIteraci
     %prubeznaHodnota(5)=3;
 end
 
-subplot(2, 1, 1);
-plot(casovaSouradnice, mezivysledky(:,:));
-title('Convergence to mean of initial values');
-subplot(2, 1, 2);
+% subplot(2, 1, 1);
+% plot(casovaSouradnice, mezivysledky(:,:));
+% title('Convergence to mean of initial values');
+% subplot(2, 1, 2);
+% grid on
+% plot(casovaSouradnice, chybaPrubezneHodnoty(:,:));
+% title('shrinking of error');
+% grid on
+% 
 
-plot(casovaSouradnice, chybaPrubezneHodnoty(:,:));
-title('shrinking of error');
+CHA= charpoly(L2);
+CHAR= eig(L2);
+C1 = L2(1:9,1:9);
+qw= det(C1);
 
+ C2 = L2(2:10,2:10);
+qww= det(C2);
 
-
- 
 
 
 

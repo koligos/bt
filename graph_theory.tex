@@ -36,12 +36,12 @@ To finish this motivation part, a very nice example of the usage of distributed 
 \sec Definitions
 
 A graph $G=(V, E)$ is described by a pair of its vertices $V$ and edges $E$. ${V=\{ v_1, v_2, ..., v_N \}}$ is a set of $N$ vertices. By the vertices we understand the points connected by the edges. 
-An edge $e_{i,j}= \{ \left( v_i, v_j \right)\} $ means a connection between vertices $v_i$ and $v_j$.
+An edge $\left( v_i, v_j \right)$ means a connection between vertices $v_i$ and $v_j$.
 
 \secc Undirected graph
 
 \midinsert
-\picw=5cm \cinspic pictures/basic_graph.pdf
+\picw=8cm \cinspic pictures/basic_graph.pdf
 \clabel[Graph]{Example of a undirected graph.}
 \caption/f Example of a simple undirected graph to demonstrate basic definitions. 
 \endinsert
@@ -53,19 +53,19 @@ Set of neigbours $ {\cal{N}}_i $ of a vertex $v_i$ is $ {\cal{N}}_i = \{ v_j \in
 \secc Directed graph
 
 \midinsert
-\picw=5cm \cinspic pictures/basic_digraph.pdf
+\picw=10cm \cinspic pictures/basic_digraph.pdf
 \clabel[Digraph]{Example of a directed graph.}
 \caption/f Example of a directed graph. 
 \endinsert
 For directed graph holds the same as for undirected with only difference, we distinguish the edges 
-$ ( v_i, v_j ) $ and $ ( v_j, v_i ) . $ Then, for a degree of a node in directed graph, we have to consider only neighbours available via oriented edges,  $d_i^{IN}= |{\cal{N}}_i |$.
+$ ( v_i, v_j ) $ and $ ( v_j, v_i ) . $ Then, for a degree of a node in directed graph, we have to consider only neighbours available via oriented edges,  $d_i^{IN}= |{\cal{N}}_i |$. Drawing the figure, we distinguish the orientation of edges with arrows.
 
 
 
 
 \secc Adjacency matrix 
 
-Adjacency matrix is a very natural way of a full graph description. This matrix is ${\bi{A}} \in \Re^{N\times{N}}$ and for graph $G$ with $N$ vertices describes inner connectivity of the graph with information, to what all vertices goes an edge from a given vertex.  Its values $a_{i,j}$ are defined as: 
+Adjacency matrix is a very natural way of a full graph description. This matrix is ${\bi{A}} \in {\bbchar R}^{N\times{N}}$ and for graph $G$ with $N$ vertices describes inner connectivity of the graph with information, to what all vertices goes an edge from a given vertex.  Its values $a_{i,j}$ are defined as: 
 
 
 
@@ -75,24 +75,26 @@ $$ a_{i,j} = \cases{1 & if there is the edge $(v_i,v_j)$,  \cr 0 & if $i=j,$ \cr
 
 Adjacency matrix of a graph from figure \ref[Graph] reads
 $$ {\bi A}_{2.2} = \pmatrix{0&0&1&1&0\cr 0&0&1&1&1\cr 1&1&1&0&1\cr 1&1&0&0&1\cr 0&1&1&1&0\cr} .$$ 
-We can see, that adjacency matrix of an undirected graph is symmetric.
+We can see, that Adjacency matrix of an undirected graph is symmetric.
 
 And adjacency matrix of a graph from figure \ref[Digraph] is
 $$ {\bi A}_{2.3} =\pmatrix{0&0&1&1&0\cr0&0&0&0&1\cr1&1&0&1&1\cr1&0&0&0&1\cr0&0&0&0&0\cr} .$$
+For directed graph the Adjacency matrix generally is not symmetric.
 
+For undirected graphs allowing {\em Weighted graphs} means, that for each pair of vertices $i, j$ we assign a certain weight $a_{i, j}$, that satisfies conditions: 1) $a_{i, j} = a_{j, i}$, 2) $a_{i, j} \ge 0$ and 3) $a_{ij} \not = 0 $ if and only if vertices $i$ and $j$ are not connected by an edge. This is only a generalization of the Adjacency matrix definition above.
 
 \secc Degree matrix
 
-A Degree matrix  ${\bi{D}} \in \Re^{N\times{N}}$ is a diagonal matrix bearing an information about degree of each vertex. Its diagonal elements are $d_i =  \sum_{i \not{=} j } a_{i,j}$ and all nondiagonal elements are equal to 0. For example Degree matrix of undirected graph from figure \ref[Graph] reads ${\bi{D}}_{2.2} = diag \{ 2, 3, 4, 3, 3 \}.$  Next, for the case of directed graph we have to consider only incoming edges. Which for graph from figure \ref[Digraph] means ${\bi{D}}_{2.3} = diag \{ 2, 1, 1, 2, 3 \}.$ And also let's define $\Delta = \max_{i} (d_i)$. 
+A Degree matrix  ${\bi{D}} \in {\bbchar R}^{N\times{N}}$ is a diagonal matrix bearing an information about degree of each vertex. Its diagonal elements are $d_i =  \sum_{i \not{=} j } a_{i,j}$ and all nondiagonal elements are equal to 0. For example Degree matrix of undirected graph from figure \ref[Graph] reads ${\bi{D}}_{2.2} = diag \{ 2, 3, 4, 3, 3 \}.$  Next, for the case of directed graph we have to consider only incoming edges. Which for graph from figure \ref[Digraph] means ${\bi{D}}_{2.3} = diag \{ 2, 1, 1, 2, 3 \}.$ And also let's define $\Delta = \max_{i} (d_i)$. 
 
 
 \secc Incidence matrix 
 
-An Incidence matrix of a directed graph provides for each edge an information about a source and destination vertex. For a graph with $N$ vertices and $L$ edges the Incidence matrix ${\bi{E}} \in \Re^{N\times{L}}$  elements $e_{i,j}$ are defined as:
+An Incidence matrix of a directed graph provides for each edge an information about an initial and terminal vertex. For a graph with $N$ vertices and $L$ edges the Incidence matrix ${\bi{E}} \in {\bbchar R}^{N\times{L}}$  elements $e_{i,j}$ are defined as:
 
 $$ e_{i,j} = \cases{
-1 & if edge $j$ begins in vertex $i$, 
-\cr -1 & if edge $j$ ends in vertex $i$ ,
+1 & if edge $j$ begins in the vertex $i$, 
+\cr -1 & if edge $j$ ends in the vertex $i$ ,
 \cr 0 & otherwise.} $$
 
 So Incidence matrix for graph on figure \ref[Digraph] reads 
@@ -103,16 +105,216 @@ So Incidence matrix for graph on figure \ref[Digraph] reads
 0&1&0&0&0&1&0  &  -1 &   -1\cr
 0&0&1&0&0&0&1&0&1\cr}$$
 
-\sec Laplacian matrix 
+We can see, this matrix is very rare. In each column contains only one pair of 1 and~-1.  The adjacency matrix provides same information but with typicaly smaller matrix.
+
+\sec Laplacian matrix
+
+The folowing part about Laplacian is based mainly on \cite[Mohar91thelaplacian].
+
+\secc Definitions 
+
+Now, in previous text we defined Adjacency and Degree matrix of a graph $G$. Next, we define the {\em{Laplacian matrix} } ${\bi L} (G)$ of a  graph, $${\bi L} (G)={\bi{D}} (G)- {\bi{A}} (G).$$ Matrix $ {\bi{L}} (G)$ for a graph with $N$ vertices is   ${\bi L} (G) \in {\bbchar R}^{N\times{N}}.$ From definitions of ${\bi{D}} (G)$ and ${\bi A} (G)$ implies, that loops in graph have no influence on ${\bi L} (G)$.
+
+ To make hold some important results from Linear algebra and Matrix analysis, we will next consider only undirected and loopless graphs. Which means, that the coresponding Adjacency matrix will be symmetric. Having symmetric $ {\bi{A}} (G)$, the coresponding Laplacian matrix will be also a symmetric matrix. 
 
 
-\cite[Mohar91thelaplacian]
+Taking the Incidence matrix of graph ${\bi E} (G)$, we can find the Laplacian matrix of graph $G$ as $${\bi L} (G)={\bi{E}} (G) {\bi{E}}^T (G).$$
 
-Definition
 
-Properties
+Next, we mark $\mu(G, x)$ the characteristical polynom of $ {\bi L} (G)$ defined as $$\mu(G, x) = \det ( {\bi L} - x {\bi I}).$$  Roots of this characteristical polynom are called {\em Laplacian eigenvalues} of $G$.  As it is common in literature, we will denote them $\lambda_1 \le \lambda_2 \le ... \le \lambda_N $, enumerated with lower indices in an increasing order with counting multiplicities. $N$ denotes the number of vertices. The set $\{ \lambda_1 , \lambda_2 , ... , \lambda_N \} $ is called the {\em{spectrum}} of ${\bi L} (G).$
 
-Gerschgorin discs
+
+
+
+\secc Basic properties
+
+
+
+\def\Theorem {\numberedpar A{Theorem}}
+
+\def\Example {\numberedpar A{Example}}
+
+\Theorem {If $ {\bi{A}} \in {\bbchar R}^{N\times{N}}$  is symmetric then $ {\bi{A}}$ has real eigenvalues. }
+
+
+{\em Proof:} For example \cite[Dont] , page number 92.
+
+
+\Theorem Let $G$  be an undirected graph without loops. Then 0 is an eigenvalue for the Laplacian matrix of $G $ with an eigenvector $(1, 1, ..., 1)^T.$
+
+
+{\em Proof:}
+Found in \cite[Marsden2013EigenvaluesOT]. If $G$ is an undirected graph then the sum of the entries in row $i$ of Adjacency matrix  $ {\bi{A}}$ gives exactly the degree  $d_i$ of vertex $i$. So we can write:
+
+
+ $$ {\bi{A}} \pmatrix{  1 \cr 1 \cr \vdots \cr 1} =  \pmatrix{  d_1 \cr d_2 \cr \vdots \cr d_N \cr}.$$
+
+And from that:
+
+
+$$ {\bi{L}} (G)  \pmatrix{  1 \cr 1 \cr \vdots \cr 1} = ({\bi{D}} (G) - {\bi{A}} (G) )  \pmatrix{  1 \cr 1 \cr \vdots \cr 1} =  \pmatrix{  d_1 - d_1 \cr d_2 - d_2 \cr \vdots \cr d_N - d_N} = \pmatrix{ 0 \cr 0 \cr \vdots \cr 0 \cr} = 0  \pmatrix{  1 \cr 1 \cr \vdots \cr 1}. $$
+
+In which we easily recognize the relation holding for eigenvalues. 
+
+
+
+
+
+\Theorem{The Laplacian matrix ${\bi{L}} (G) $ is positive semi-definite and singular.}
+
+{\em Proof:} Let $\lambda$ be an eigenvalue and $v$ its coresponding eigenvector. Then
+$${\bi{L}}  v = \lambda v, $$
+$$ \lambda = v^T {\bi{L}} v  = v^T {\bi{E}} {\bi{E}}^T v =  ( v^T {\bi{E}}) ( {\bi{E}}^T v ) = ( {\bi{E}}^T v )^T ( {\bi{E}}^T v ) = \| {\bi{E}^T} v\| \ge 0. $$
+
+${\bi{L}}$ is singular, because sum of all elements in each column is zero.
+
+
+We can come to the positive semidefiniteness also using the following quadratic form:
+
+$$ \left< { \bi{L}} x, x \right> = \sum_{(u,v)\in E(G)} (x_u - x_v)^2 , $$ which results will be always non-negative.
+
+
+
+\secc Bounds for eigenvalues
+
+
+
+\Theorem {\em Gershgorin circle theorem.} Consider matrix $ {\bi{A}} \in {\bbchar C}^{N\times{N}} $ and $i~=~{1, 2, ..., N.}$ Let's denote $$r_i = \sum_{j=1 ; \  i \not= j}^N =|a_{ij}|, \ \ K_i = \{z \in {\bbchar C} \mid |z - a _{ii}|\le r_i \} .$$
+The $K_i$ sets are called {\em Gershgorin circles}. It holds for all eigenvalues $\{ \lambda_1 , \lambda_2, ..., \lambda_N \}$ of the matrix  $ {\bi{A}}$, that they are all localized in the union of {\em Gershgorin circles}  $\{ K_1 \cup K_2 \cup ... \cup K_N \} $ in the Complex plane.
+
+{\em Proof:} Let {$\lambda $} be an eigenvalue of $ {\bi{A}}$  and its corresponding eigenvector ${\bi{x}}   = (x_1 , x_2, ..., x_N)$ . So holds $ {\bi{A}} {\bi{x}}  = \lambda {\bi{x}}$ . Let $x_k$ be the biggest absolute value number in vector ${\bi{x}}$. Then $\lambda x_k = \sum_{j=1}^N a_{kj}x_{j}.$ Next move the $a_{kk}x_k$ summand from RHS to LHS. We obtain $x_k (\lambda  - a_{kk} ) = \sum_{j=1; j\not=k}^N a_{kj}x_{j}.$ Now we take an absolute value of this equation, divide by $x_k$ and using Triangle inequality we go to: $$ |\lambda  - a_{kk}| = {\left|{   \sum_{j=1; j\not=k}^N a_{kj}x_{j}  \over x_k }\right|} \le   \sum_{j=1; j\not=k}^N {\left| { a_{kj}x_{j}  \over x_k }\right|} \le \sum_{j=1; j\not=k}^N {\left|  a_{kj} \right|} = r_k. $$ 
+
+\Example To present Gershgorin theorem practicaly, consider the graph bellow:
+\midinsert
+\picw=8cm \cinspic pictures/test_graph.pdf
+\clabel[Test_graph]{A bigger graph to present Gershgorin theorem.}
+\caption/f Graph to present Gershgorin theorem.
+\endinsert
+
+With its Laplacian matrix:
+
+
+$$ { \bi{L}} = \pmatrix{3&-1&-1&0&0&0&0&-1&0&0\cr
+-1&4&0&-1&-1&0&0&-1&0&0\cr
+-1&0&4&0&-1&0&-1&0&0&-1\cr
+0&-1&0&4&-1&-1&-1&0&0&0\cr
+0&-1&-1&-1&5&-1&-1&0&0&0\cr
+0&0&0&-1&-1&3&-1&0&0&0\cr
+0&0&-1&-1&-1&-1&5&0&-1&0\cr
+-1&-1&0&0&0&0&0&3&0&-1\cr
+0&0&0&0&0&0&-1&0&2&-1\cr
+0&0&-1&0&0&0&0&-1&-1&3\cr}.$$
+
+And  a characteristical polynomial:
+$\mu(G, x) = x^{10}	-36 x^9+561 x^8	-4 \ 954 x^7 +27 \ 236 x^6-96 \ 318 x^5 +218 \  121 x^4-303 \ 398 x^3+	233 \ 888x^2-75 \  870 x$. Note, that $ { \bi{L}}$ is a symmetric matrix and 0 is clearly a root of $\mu(G, x). $
+
+Nummerically solving $\mu(G, x) = 0$ in Matlab we obtain the folowing eigenvalues (rounding for 3 decimal points):
+$$\{ 0; \ 1,274; \  1,416; \  3,100; \  3,233; \  3,936; \  4,826; \  5,280; \  6,458; \  6,476 \}.$$ All values are real and non-negative. Finally, plotting the graph with marked eigenvalues and Gershgorin circles. As expected, all eigenvalues are included in the circles.
+
+\midinsert
+\picw=12cm \cinspic pictures/gershgorin.pdf
+\clabel[Gershgorin_circles]{Plot of Gershgorin circles.}
+\caption/f Plot of Eigenvalues and according Gershgorin circles.
+\endinsert
+
+
+
+
+
+
+\Theorem {Let $G$ be a graph with $N$ vertices. Then holds:}
+\begitems \style 0
+
+  * $\lambda_2 \le {N \over N-1} \min_i \{ d(v_i)| v_i \in V(G) \},$
+
+
+ * $\lambda_N \le \max_i \{ d(v_i) + d(v_j) |  \left( v_i, v_j \right) \in E(G) \},$
+
+
+  * If G is a simple graph, then $\lambda_N \le N,$
+
+
+ * $ \sum_{m=1}^N \lambda_m = 2 |E(G)| = \sum_{v_i} d(v_i),$
+
+
+* $\lambda_N \ge {N \over N-1} \max_i \{ d(v_i)| v_i \in V(G) \}.$
+
+\enditems
+
+These may be found very usefull for example when using numerical methods for solving the roots of $\mu(G,x)$. It is well known, that we don't have exact analytical formulas to obtain roots of polynoms with higher degree than 5. Using these bounds, we know where the roots must be, respective where they can not be.
+
+%to do: disjunktni graf_blokova; kombinace laplacianu; lambda mluvi o connectivity; nasobeni char polynomu
+
+\secc Matrix tree theorem
+
+	
+
+
+${\bi L} (G)$ may be also refferred to as Kirchhoff matrix due to the following theorem. A {\em tree} is a connected, acyclic graph. A {\em spanning tree} of graph $G$ is a tree which origins as a subgraph, preserving the set of vertices $V(G)$ and removing some of its edges to avoid cycles. It is clear, that a spanning tree may be found only for connected graphs.
+
+An $(i,j)$-cofactor of a matrix is a determinant of a submatrix formed by deleting the $i$-th row and the $j$-th column.
+
+    \vskip 0.3cm
+
+\Theorem {\em Kirchhoff's Matrix-Tree Theorem.}  Let $G$ be a connected graph with its Laplacian matrix ${\bi L} (G)$. Then all ${\bi L} (G)$ cofactors are equal and this common value is the number of spanning trees of $G.$
+
+{\em Proof:} Ommited. Is based on decomposing the Laplacian matrix into product of Incidednce matrix and its transpose and then usage of Cauchy-Binet formula.
+
+\Example For graph from Figure \ref[Test_graph] we could so find 7587 spanning-trees.
+
+\vskip 0.3cm
+
+\secc Eigen value $\lambda_2$
+
+We call graph $G$ with $N$ vertices connected if there is a path from any vertex $v_i$ to any other vertex $v_j$ , $ \forall i,j \in \{ 1, 2, ..., N \}$.
+
+Eigen value $\lambda_2$ is also called {\em graph connectivity}. This eigenvalue is probably the most important from the whole spectrum. Holds, that   $\lambda_2 > 0 $ if and only if the graph is connected. Moreover, the multiplicity of 0 as an eigenvalue of ${\bi L} (G)$ is the number of connected components.
+
+Diameter of a graph $G$, $diam(G)$, is the biggest number of edges we have to pass, to get from one vertex to another.
+
+In \cite[Mohar91thelaplacian] are in detail described some interesting properties and bounds for $\lambda_2$.  Very interesting and easily interpratable, in context of the connectivity term, is the following one. Let's consider graph $G$ with $N$ vertices and diameter $diam(G)$. Then holds:
+
+$$ diam(G) \ge {4\over N \lambda_2}.$$
+ 	
+
+\secc Operations with disjoint graphs 
+
+Very detailed reading about this part of Laplacian topic may be found beside in \cite[Mohar91thelaplacian]  also in \cite[Newman00thelaplacian]. Let's now briefly mention what happens with Laplacian of a graph, that is not connected.
+
+Considering the definition of the Laplacian ${\bi L} (G) ={\bi D} (G) - {\bi A} (G) $, we are not surprised, that Laplacian matrix of a graph consisting of $k$ mutually disjoint sets of vertices will have block diagonal form obtained from matrices ${\bi L} (G_1), {\bi L} (G_2), ..., {\bi L} (G_k) $. 
+
+
+\Theorem Let $G$ be a graph created as a union of disjoint graphs $G_1, G_2, ..., G_k.$ Then holds:
+ $$ \mu (G,x) = \prod_{i=1}^k \mu_i(G_i, x).$$
+
+\Example
+
+Let's take a graph from the following figure, consisting of two disjoint components with vertices $\{1, 2, 3  \}$ and $\{4, 5, 6, 7 \}$.
+
+
+
+\midinsert
+\picw=7cm \cinspic pictures/two_components.pdf
+\clabel[two_components]{Graph with two componennts.}
+\caption/f Example of a graph with two disconnected components.
+\endinsert
+
+Laplacian matrix of the whole graph reads:
+
+$${\bi L} (G) = \pmatrix{2&-1&-1&0&0&0&0 \cr
+-1&2&-1&0&0&0&0\cr
+-1&-1&2&0&0&0&0\cr
+0&0&0&2&-1&-1&0\cr
+0&0&0&-1&3&-1&-1\cr
+0&0&0&-1&-1&2&0\cr
+0&0&0&0&-1&0&1\cr}.$$
+
+ ${\bi L} (G)$ is a block diagonal matrix consisting of submatrices ${\bi L} (G_{\{1,2,3\}})$ and ${\bi L} (G_{\{4,5,6,7\}})$ . 
+For characteristic polynomoial holds:
+
+
+$\mu(G,x) = \mu(G_{\{1, 2, 3\}},x)  \mu(G_{\{4, 5, 6,7\}},x) = (x^3-6x^2+9x) (x^4-8^3+19x^2-12x) = x^7-14x^6+76x^5-198x^4+243x^3-108 x^2.$ Note, that 0 is clearly double root corresponding to the 2 components.
+
 
 
 
