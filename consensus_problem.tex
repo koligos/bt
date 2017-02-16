@@ -2,8 +2,55 @@
 \def\ctustyle{{\tenss CTUstyle}}
 \def\ttb{\tt\char`\\} % pro tisk kontrolních sekvencí v tabulkách
 
+\chap Distributed algorithms
 
-\chap Linear  consensus algorithms
+
+A very good and step-by-step introduction to the theory of Distributed algorithms may be found in \cite[Raynal2013].
+
+% main topic linear consensus algorithm - from springer - algorithms in communication meesage systems 
+%what's distributed, synchronous; reliable channel
+
+
+\chap Linear  average consensus algorithm
+
+In this chapter, let us consider an undirected and connected graph $G=(V,E)$ with $N$ vertices and edges $(v_i,v_j)$ between vertices  $i, j$, where  $i,j \in \{1,2, ..., N\}$. We denote an initial value $x_i(0)$ the value assigned to the $i$-th vertex (node, agent) in time $0.$ Then  $x_i(t)$ refers to the value in the $i$-th vertex in time $t$. Our goal is to, for $t \rightarrow \infty$, using local communication and computation, in all  $N$ vertices of the graph,  obtain an average value of all these initial values. Based on a matrix-like description of graph $G$, our goal will be to construct matrix ${\bi Q}$, whose components $q_{ij}$ will in fact bear this averaging algorithm, in a formalism of iterative matrix multiplication. 
+
+In this chapter, subject of our interest will be a linear, discrete-time consensus algorithm. A detailed description of the folowing is in \cite[Garin2010], and it contains also rich references to other publications.
+
+\sec Introduction
+
+
+
+Assume this {\em linear} update equation 
+$$ x(t+1) = {\bi Q}(t) x(t), $$
+where $x(t)= ( x_1(t), x_2(t), ..., x_N(t))^T \in  {\bbchar R}^{N} $ 
+and for all values of $t$, $  {\bi Q} (t) \in  {\bbchar R}^{N{\times{N}}}  $ is a {\em stochastic matrix}, i.e. $q_{ij} (t) \ge 0$ and $\sum _{j=1}^N q_{ij} = 1, \forall i ,j \in {1, 2, ..., N}.$ Meaning, that all values in each row sum up to 1. The $q_{ij}$ components are also often reffered to as {\em weights.}
+
+Now, let's  rewrite the equation above expanding a matrix multiplication:
+
+$$ x(t+1) = \sum_{j=1}^N q_{ij}(t) x_i (t) = x_i(t) + \sum_{j=1; j\not= i}^N q_{ij}(x_j(t)-x_i(t)).$$
+This equation is for given ${\bi Q} (t)$ a general form of a {\em linear consensus algorithm}, that may be usually found in the literature. Frankly spoken, all the theory behind linear consensus algorithm aims to find the best matrix $  {\bi Q}(t)$, such as the consensus is reached. 
+
+Formally defined, we say that $  {\bi Q}(t)$ solves {\em consensus problem}, if for all $i$ holds  $$\lim_{t\rightarrow\infty} x_i (t)= \alpha, \forall i.$$ Then, for a solution of the {\em average consensus problem} must be in an addition to the previous condition fulfilled also $$\alpha = {1\over N} \sum_{i=1}^Nx_i(0).$$
+
+
+Moreover, we call   $  {\bi Q}(t)$ {\em doubly stochastic}, if holds also $\sum _{j=1^N} q_{ij} = 1, \forall j \in {1, 2, ..., N}.$ So both, rows and columns sum up to 1. Note, that  if $  {\bi Q} (t) $ is stochastic and symetric, $  {\bi Q}(t) = {\bi Q}(t) ^T$, then $  {\bi Q}(t)$ is doubly stochastic.
+
+The ${\bi Q} (t)$ matrix may be considered as: 1) constant ${\bi Q} (t) = {\bi Q}$, 2) a deterministic time variable matrix, 3) randomly variable matrix. For simplicity, we will firsly concern only case 1). %The are behind scope of this text.  
+
+
+Now, let's have a look at a very useful theorem, that originaly comes from closely related topic of Markov Chains.
+
+\Theorem (From \cite[Garin2010].)
+Let us consider the sequence of constant matrices ${\bi Q} (t) = Q$. If the
+graph G Q ∈ G sl and is rooted, then Q solves the consensus problem, and
+lim Q t = 1 η T
+t→∞
+where η ∈ R N is the left eigenvector of Q for the eigenvalue one and has the prop-
+erties η i ≥ 0 and 1 T η = 1. If G Q is strongly connected, then η i > 0, ∀i. If in addition
+Q is doubly-stochastic, then G Q is strongly connected and Q solves the average con-
+sensus problem, i.e. η = N 1 1. Moreover, in all cases the convergence is exponential
+and its rate is given by the essential spectral radius esr(Q).
 
 \sec Motivation
 

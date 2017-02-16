@@ -184,7 +184,7 @@ The $K_i$ sets are called {\em Gershgorin circles}. It holds for all eigenvalues
 
 {\em Proof:} Let {$\lambda $} be an eigenvalue of $ {\bi{A}}$  and its corresponding eigenvector ${\bi{x}}   = (x_1 , x_2, ..., x_N)$ . So holds $ {\bi{A}} {\bi{x}}  = \lambda {\bi{x}}$ . Let $x_k$ be the biggest absolute value number in vector ${\bi{x}}$. Then $\lambda x_k = \sum_{j=1}^N a_{kj}x_{j}.$ Next move the $a_{kk}x_k$ summand from RHS to LHS. We obtain $x_k (\lambda  - a_{kk} ) = \sum_{j=1; j\not=k}^N a_{kj}x_{j}.$ Now we take an absolute value of this equation, divide by $x_k$ and using Triangle inequality we go to: $$ |\lambda  - a_{kk}| = {\left|{   \sum_{j=1; j\not=k}^N a_{kj}x_{j}  \over x_k }\right|} \le   \sum_{j=1; j\not=k}^N {\left| { a_{kj}x_{j}  \over x_k }\right|} \le \sum_{j=1; j\not=k}^N {\left|  a_{kj} \right|} = r_k. $$ 
 
-\Example To present Gershgorin theorem practicaly, consider the graph bellow:
+\Example To present Gershgorin theorem practicaly, consider the graph above:
 \midinsert
 \picw=8cm \cinspic pictures/test_graph.pdf
 \clabel[Test_graph]{A bigger graph to present Gershgorin theorem.}
@@ -314,6 +314,32 @@ For characteristic polynomoial holds:
 
 
 $\mu(G,x) = \mu(G_{\{1, 2, 3\}},x)  \mu(G_{\{4, 5, 6,7\}},x) = (x^3-6x^2+9x) (x^4-8^3+19x^2-12x) = x^7-14x^6+76x^5-198x^4+243x^3-108 x^2.$ Note, that 0 is clearly double root corresponding to the 2 components.
+
+\secc Laplacian matrix - notes 
+
+\midinsert
+\picw=6cm \cinspic pictures/admitance.pdf
+\clabel[admitance]{Example of admitance electrical circuit. }
+\caption/f Example of admitance electrical circuit to be described with Laplacian matrix.
+\endinsert
+
+Laplacian matrix appears also in other fields, sometimes with other name. For example in Electrical circuits theory, Laplacian is called {\em Admitance matric.} In the Figure \ref[admitance] is an example of such an electrical circuit described using admitance (i.e. reciprocal value of impedance) parameters. The aim in this case is to find all values of current $I$ phasors in all edges and voltage $U$ phasors in all nodes. These values may be placed in column vectors ${\bi I} $, ${\bi U}$ respectively. All the important information about the electrical circuit is encoded into the Admitance matrix ${\bi Y}$  and using Ohm's Law we are about to solve equation {\bi Y I = U.}
+
+$${\bi Y} (G) =
+\pmatrix
+{y_1+y_{12}+y_{13}&-y_{12}&-y_{13}&0 \cr
+-y_{12}&y_2+y_{12}+y_{14}&0&-y_{14}\cr
+-y_{13}&0&y_3+y_{13}+y_{34}  &-y_{34}\cr
+0&-y_{24}&-y_{34}&y_4+y_{24}+y_{34}\cr}.$$
+
+To demonstrate relation between Laplacian matrix and continuous Laplacian operator $\Delta$, let's consider a differential equation $$ \Delta z (x,y) + \lambda \Delta z (x,y) = 0, $$ with initial condition $z(x,y)=0$ on a simple closed curve $\Gamma$ in $xy$-plane. Solution of this task is determined by an infinite sequence of eigenvalues $\lambda_1 \le \lambda_2 \le... .$ An aproximation of this solution may be found by placing a grid over the area in plane curved by $\Gamma.$ The matrix is of this finite, discretized problem, comes to be the Laplacian matrix.
+
+
+
+
+%to do_ laplacian matrix is exactly admitance matrix of an Electrical circuit.
+
+%laplacian appears as a direct discretization 
 
 
 
