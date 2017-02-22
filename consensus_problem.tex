@@ -10,12 +10,21 @@ A very good and step-by-step introduction to the theory of Distributed algorithm
 % main topic linear consensus algorithm - from springer - algorithms in communication meesage systems 
 %what's distributed, synchronous; reliable channel
 
+In the following chapter about  Linear  average consensus algorithm we will assume that:
+
+Topology of the graph is fixed.
+
+The communication is reliable.
+
+All nodes have globally synchronized clock, so that the computations are synchronized (eg. typically using GPS time).
 
 \chap Linear  average consensus algorithm
 
+%\Ethmology briefing
+
 In this chapter, let us consider an undirected and connected graph $G=(V,E)$ with $N$ vertices and edges $(v_i,v_j)$ between vertices  $i, j$, where  $i,j \in \{1,2, ..., N\}$. We denote an initial value $x_i(0)$ the value assigned to the $i$-th vertex (node, agent) in time $0.$ Then  $x_i(t)$ refers to the value in the $i$-th vertex in time $t$. Our goal is to, for $t \rightarrow \infty$, using local communication and computation, in all  $N$ vertices of the graph,  obtain an average value of all these initial values. Based on a matrix-like description of graph $G$, our goal will be to construct matrix ${\bi Q}$, whose components $q_{ij}$ will in fact bear this averaging algorithm, in a formalism of iterative matrix multiplication. 
 
-In this chapter, subject of our interest will be a linear, discrete-time consensus algorithm. A detailed description of the folowing is in \cite[Garin2010], and it contains also rich references to other publications.
+In this chapter, subject of our interest will be a linear, discrete-time consensus algorithm. A detailed description of the folowing is in \cite[Garin2010], \cite[Xiao] and both contain also rich references to other publications.
 
 \sec Introduction
 
@@ -34,34 +43,123 @@ This equation is for given ${\bi Q} (t)$ a general form of a {\em linear consens
 Formally defined, we say that $  {\bi Q}(t)$ solves {\em consensus problem}, if for all $i$ holds  $$\lim_{t\rightarrow\infty} x_i (t)= \alpha, \forall i.$$ Then, for a solution of the {\em average consensus problem} must be in an addition to the previous condition fulfilled also $$\alpha = {1\over N} \sum_{i=1}^Nx_i(0).$$
 
 
-Moreover, we call   $  {\bi Q}(t)$ {\em doubly stochastic}, if holds also $\sum _{j=1^N} q_{ij} = 1, \forall j \in {1, 2, ..., N}.$ So both, rows and columns sum up to 1. Note, that  if $  {\bi Q} (t) $ is stochastic and symetric, $  {\bi Q}(t) = {\bi Q}(t) ^T$, then $  {\bi Q}(t)$ is doubly stochastic.
+Next, we call   $  {\bi Q}(t)$ {\em doubly stochastic}, if holds also $\sum _{j=1}^N q_{ij} = 1, \forall j \in {1, 2, ..., N}.$ So both, rows and columns sum up to 1. Note, that  if $  {\bi Q} (t) $ is stochastic and symetric, $  {\bi Q}(t) = {\bi Q}(t) ^T$, then $  {\bi Q}(t)$ is doubly stochastic.
 
-The ${\bi Q} (t)$ matrix may be considered as: 1) constant ${\bi Q} (t) = {\bi Q}$, 2) a deterministic time variable matrix, 3) randomly variable matrix. For simplicity, we will firsly concern only case 1). %The are behind scope of this text.  
+The ${\bi Q} (t)$ matrix may be considered as: 1) constant ${\bi Q} (t) = {\bi Q}$, i.e. we set up only one matrix at the beginning of the computation, to be used for the whole run of an algorithm, 2) a deterministic time variable matrix, 3) randomly variable matrix; it is the most general case bearing also most complexities. For simplicity, we will firsly concern only case 1). %The are behind scope of this text.  
 
 
-Now, let's have a look at a very useful theorem, that originaly comes from closely related topic of Markov Chains.
 
-\Theorem (From \cite[Garin2010].)
-Let us consider the sequence of constant matrices ${\bi Q} (t) = Q$. If the
-graph G Q ∈ G sl and is rooted, then Q solves the consensus problem, and
-lim Q t = 1 η T
-t→∞
-where η ∈ R N is the left eigenvector of Q for the eigenvalue one and has the prop-
-erties η i ≥ 0 and 1 T η = 1. If G Q is strongly connected, then η i > 0, ∀i. If in addition
-Q is doubly-stochastic, then G Q is strongly connected and Q solves the average con-
-sensus problem, i.e. η = N 1 1. Moreover, in all cases the convergence is exponential
-and its rate is given by the essential spectral radius esr(Q).
 
-\sec Motivation
+%To indicate, why we adore the ${\bi Q}$ matrix to be stochastic or even doubly stochastic, we refer to the theory related to the topic of Markov chains, where are developed tools for finding so called {\em stationary state}. %Now, let's have a look at a very useful theorem, that originaly comes from closely related topic of the Markov Chains.
 
-Let's think about an experiment, where few nodes aim to provide only one result of measurement based on many local measurments. For example we measure an average temperature in a room. Very acurate measure devices are expensive. We can generally try to replace small number of very good devices by some probably bigger number of less reliable devices whose benefit will be an interchange of information between near nodes.
+%\Theorem (From \cite[marek].)
+%Let us consider the sequence of constant matrices ${\bi Q}$. If the
+%graph G Q ∈ G sl and is rooted, then Q solves the consensus problem, and
+%%lim Q t = 1 η T where η ∈ R N is the left eigenvector of Q for the eigenvalue one and has the prop-erties η i ≥ 0 and 1 T η = 1. If G Q is strongly connected, then η i > 0, ∀i. If in additionQ is doubly-stochastic, then G Q is strongly connected and Q solves the average con-sensus problem, i.e. η = N 1 1. Moreover, in all cases the convergence is exponential and its rate is given by the essential spectral radius esr(Q).
+\sec Convergence conditions
 
- They  We want to replace a number of nodes, that exchange informatMany less accurate a reliable nodes as an alternative to very accurate and very reliable but also very expensive nodes.
+Next, let's formulate some conditions for our constant ${\bi Q} $ matrix.  We call a matrix ${\bi Q} $ {\em compatible} with a graph $G$, if $q_{ij}=0$ for $j\not\in {\cal{N}}_i$ (i.e. $i$-th node is not in a set of neighbours of the $j$-th node.) Still considering an undirected graph, we can write:
+$${\bi Q} = {\bi Q}^T, $$ $$ {\bi Q} {\bi 1} ={\bi 1}, $$
+where  ${\bi 1}$ denotes a column vector of $N$ ones.
+
+As same as in \cite[Xiao], let's define an averaging matrix ${1\over N}{\bi 1 1}^T$. (Note: ${\bi 1 1}^T$ is $N \times N$ matrix of all ones.) When multiplying this rank-one matrix with a vector $z\in{\bbchar R}^N$, $\overline z = {1\over N}{\bi 1 1}^T z$, we obtain a column vector $\overline z $ with all components equal to the average of all $N$ components of the $z$ vector.
+
+What we ask about the algorithm is
+$$\lim_{t\rightarrow\infty} x(t)= lim_{t\rightarrow\infty} {\bi Q}^t \  x(0) = {1\over N} {\bi 11}^T  x(0), $$
+which is for arbitrary vector $x(0)$ equivalent to the
+ $$ lim_{t\rightarrow\infty} {\bi Q}^t = {1\over N}{\bi 1 1}^T. $$
+%na tento odstavecek jsem pysny, ten pisu od srdce
+Explicitly summarizing: to reach the convergence of the {\em averaging} consensus algorithm, the increasing powers of (not unique)  stochastic matrix {\bi Q} must converge and moreover converge to a doubly stochastic matrix  ${1\over N}{\bi 1 1}^T$. Next, we ask for some specific conditions, to ensure this. The following theorem provides them. 
+
+We remind a definition of a Spectral Norm of a matrix \cite[spectNorm]. Let ${\bi A}^H$ be the conjugate transpose of the square matrix ${\bi A}$, so that $a_{ij}^H =a_{ij}^*$, then the spectral norm is defined as the square root of the maximum eigenvalue of  ${\bi A}^H {\bi A}.$
+
+
+Assumming the convergence conditions are fulfilled, \cite[Xiao03fastlinear] defines {\em asymptotic convergence factor}
+$$ r_{asym}({\bi Q}) = sup_{x(0)\not=\overline x}  \lim_{t\rightarrow \infty} \left(  {{\|x(t)-\overline x\|} \over {{\|x(0)-\overline x\|}}} \right) ^{1 \over t},$$ and {\em per-step convergence factor}
+$$ r_{step}({\bi Q}) = sup_{x(t)\not=\overline x}{   {\| x(t+1) - \overline x\|}\over{\|x(t) - \overline x\|}} .$$
+
+
+\Theorem From \cite[Xiao03fastlinear] . Equation  
+$$ lim_{t\rightarrow\infty} {\bi Q}^t = {1\over N}{\bi 1 1}^T $$ holds if and only if $$ {\bi 1 }^T {\bi Q} = {\bi 1}^T  ,$$ i.e. $\bi 1$ is left eigenvector of $\bi Q$ with eigenvalue 1,
+$$ \bi Q \bi 1 = \bi 1 ,$$ i.e. $\bi 1$ is also right eigenvalue of $\bi Q$ and
+$$ \rho\left(\bi Q - J \right)<1, $$
+where ${\rho(.)}$ denotes the spectral radius of a matrix, i.e. the greatest absolute value of	an eigenvalue. 
+
+
+Moreover, $$r_{asym}({\bi Q}) = \rho\left( {\bi Q} -{1\over N}{\bi 1 1}^T  \right),$$ 
+
+
+$$r_{step}({\bi Q}) = \left\| {\bi Q} -{1\over N}  \right\|_2,$$ 
+where $\| . \|_2$ denotes spectral norm.
+
+Combining the previous equations also holds that ${\bi Q}$ must be definitely a doubly stochastic matrix.  And while the $\bi Q$ matrix is stochastic, we can see, e.g. from Gershgorin theorem, that all of its eigenvalues must be located in a unit circle.
+
+
+
+
+{\em Proof:} May be found in \cite[Xiao03fastlinear].
+ Firstly, to prove sufficiency, if $\bi Q$ satisfies $ \bi Q \bi 1 = \bi 1 $ and $ {\bi 1 } ^T{\bi Q} = {\bi 1}^T,$ then $$ {\bi Q}^t - {1\over N}{\bi 1 1}^T =  {\bi Q}^t \left( I - {1\over N}{\bi 1 1}^T\right) \buildrel \rm projection \over =  $$ Next, we observe, that ${\bi P} = \left( I - {1\over N}{\bi 1 1}^T\right)$ is a projection matrix, so holds   ${\bi P} ={\bi P}^2 = {\bi P}^t.$ We can convince ourselves about this when realizing that $\bi P$  is symmetric and has zero sum of rows and columns, respectively.              $$  \buildrel \rm projection \over = {\bi Q}^t \left( I - {1\over N}{\bi 1 1}^T\right)^t=   \left( {\bi Q} \left( I - {1\over N}{\bi 1 1}^T\right)\right)^t =    \left( {\bi Q} - {1\over N}{\bi 1 1}^T\right)^t      .   $$ Using the condition $\rho\left(\bi Q - {1 \over N} {\bi 1 1}^T \right)<1$ leads to the convergence $ lim_{t\rightarrow\infty} {\bi Q}^t = {1\over N}{\bi 1 1}^T $.
+ 
+
+
+
+
+
+%Fortunately, this situation is in detail described in theory of Markov Chains, where the specified problem coresponds with stationary state of ergodic processes.
+%Markov chains is aperiodic and ireducible.
+
+
+%na tento odstavecek jsem pysny, ten pisu od srdce
+
+
+\sec Heuristics based on the Laplacian
+
+Following section is based mainly on \cite[Xiao03fastlinear].
+
+There have been developed some simple heuristics for choosing matrix $\bi Q$, that fulfills the established conditions from the previous section. They are based on the construction of the Laplacian matrix from the first chapter. 
+So let us take $$ {\bi Q} = {\bi I} - \alpha {\bi L}, \alpha \in \bbchar R.$$
+Such a matrix in fact evaluates each edge with a value $\alpha.$ The first great advantage of this choice,  is that such a matrix $ {\bi Q}$ will be automatically compatible with the graph, while it bears information about connected, respectively disconnected vertices. And also, in this way, as we build the ${\bi Q}$ matrix like a substract of an Identity matrix and some specified multiple of a Laplacian matrix. This substract-origined matrix is of course a stochastic matrix, regarding to the property of Laplacian, that its rows sum up to zero. 
+ 
+Next, the elements of ${\bi Q}$ are 
+$$ q_{i,j} = \cases{\alpha & if there is the edge $(v_i,v_j)$,  \cr 1-d_i \alpha & if $i=j, $ \cr 0 & otherwise,} $$
+ where we remind $d_i$ is the degree of vertex $i.$ The distributed averaging algorithm may be then rewritten as
+$$ x_i(t+1)= x_i(t)+\alpha \sum_{j \in {\cal{N}}_i} (x_j(t)-x_i(t)), i = 1, 2, ... N.$$
+
+We already prooved in Chapter 1, that Laplacian matrix is always positive semidefinite. Because of that, we have to necessarily 
+choose $$ \alpha > 0,$$ to successfully accomplish the convergence condition 
+$$ rho\left({\bi Q}-{1\over N}{\bi 1 1}^T \right)<1.$$
+
+Now, we can from equation $ {\bi Q} = {\bi I} - \alpha {\bi L}$ determine an expression linking eigenvalues of matrix $ {\bi Q}$
+with eigenvalues of matrix $ {\bi L} :$
+$$ \lambda_i({\bi Q} ) = 1 - \alpha \lambda_{N-i+1}( {\bi L} ) , i = 1, 2, ..., N,$$
+where $\lambda_i (.)$ stands for the $i-$th smallest eigenvalue of the symmetric matrix. We already showed, that for Laplacian matrix of connected graph holds $$\lambda_1({\bi L} ) = 0. $$  Then we can immediatly write  $$ \lambda_N({\bi Q} ) =1  .$$
+
+The spectral radius of $ {\bi Q}-{1\over N}{\bi 1 1}^T $ may be then expressed as 
+$$ \rho \left( {\bi Q} - {1\over N} {\bi 1 1}^T \right) = \max \{  \lambda_{N-1}( {\bi Q} ), - \lambda_1({\bi Q}  )  \} =  
+  \max \{  1 - \alpha \lambda_{2}( {\bi L} ), \alpha \lambda_N({\bi L}  )-1  \}.                $$ 
+Using the condition $ \rho \left( {\bi Q} - {1\over N} {\bi 1 1}^T \right) < 1$  we can write
+$$ 0 < \alpha < {2}\over{\lambda_N(\bi L)}.$$
+
+Finally, the choice of $\alpha$ to minimize $   \rho \left( {\bi Q} - {1\over N} {\bi 1 1}^T \right)  $ is
+$$ \alpha^* = {{2}\over{\lambda_N({\bi L}) + \lambda_2({L})}}.$$
+
+%Moreover, for undirected graphs this ${\bi Q}$  is actually double stochastic, because of such a Laplacian is a symetric matrix.
+
+%To reach the 
+
+%\sec Motivation
+
+
+%Let's think about an experiment, where few nodes aim to provide only one result of measurement based on many local measurments. For example we measure an average temperature in a room. Very acurate measure devices are expensive. We can generally try to replace small number of very good devices by some probably bigger number of less reliable devices whose benefit will be an interchange of information between near nodes.
+
+ %They  We want to replace a number of nodes, that exchange informatMany less accurate a reliable nodes as an alternative to very accurate and very reliable but also very expensive nodes.
 
 
 \sec Discrete and continuous time
 
-\sec Convergenece analysis
+\chap Recommendation of related literature
 
 
-asdsafsaf
+
+
+
