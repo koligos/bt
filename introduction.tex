@@ -7,9 +7,9 @@
 
 To begin with an idea of an average consensus algorithm, let's make a thought experiment. We are looking for an average quantity, for example an average temperature in a room, with a group of wireless communication devices, that can exchange informations, provided they are in range to reach each other. We deploy these thermometers in the room randomly, with no special requirements on a topology. Next, let's consider, that for each pair of the thermometers we can decide, whether they can exchange information or not - meaning we know all neighbours of all devices, that are mutually in range to communicate. 
 
-Now, we can encode our experiment settings to a graph. A very natural way to represent this graph is drawing it. To do so, we simply take all thermometers as different vertices. Of course, every vertex always knows a result of its own measurement. By an edge between two vertices we mark the situation, that these two nodes can exchange informations. Which means, every node knows also the value that measures its neighbour. This ought to be only a very simple illustration how to transfer a physicaly realisable experiment  to the terms of graphs.
+Now, we can encode our experiment settings to a graph. A very natural way to represent this graph is drawing it. To do so, we simply take all thermometers as different vertices. Of course, every vertex always knows a result of its own measurement. By an edge between two vertices we mark the situation, that these two nodes can exchange informations. Which means, every node can get know also the value that measures its neighbour. This ought to be only a very simple illustration how to transfer a physicaly realisable experiment  to the terms of graphs.
 
- Finally, as we shall see, if we fulfill some basic convergence conditions on the properties of this graph, the average consensus algorithm acts like this: We synchronously update the value in each node by some increment, which depends only on the old value in this node and the values of its direct neighbours in the graph. By doing this long enough, you obtain in each node a value, which goes in limit to the average of  all initially measured values.
+ Finally, as we shall see, if we fulfill some basic convergence conditions on the properties of this graph, the average consensus algorithm acts like this: We synchronously update the value in each node by some increment, which depends only on the old value in this node and the values of its direct neighbours in the graph. By doing this long enough, we obtain in each node a value, which goes in limit to the average of  all initially measured values.
 
 \sec Outline
 
@@ -17,9 +17,9 @@ Now, we can encode our experiment settings to a graph. A very natural way to rep
 
  A Graph theory provides a very elegant way to represent informations encoded by graphs as matrices. In the first chapter we will provide some basic definitions to the Graph theory and properties of these important matrices. Using matrices, we will also briefly mention some very useful results from Matrix analysis, because also a serious object of our interest will be topic of eigenvalues of matrices. We will define a Laplacian of a graph and show some of its basic properties.
 
-In next chapter, we will in detail provide the average consensus algorithm description and show some examples with graphically illustrated solution. 
+In next chapter, we will provide a decription of the average consensus algorithm and show some examples with graphically illustrated solution. 
 
-In last part of this thesis, we will try to implement this algorithm to easily solve some typical problems in area of wireless digital communication - time synchronisation or carrier frequency synchronisation. In a very simple case, we can also show how do the nonidealities change the result of algorithm (additive zero-mean noise).
+In last part of this thesis, we will try to implement this algorithm, to easily solve some typical problems in area of wireless digital communication - such as time synchronisation or carrier frequency synchronisation. In a very simple case, we can also show how do the nonidealities change the result of algorithm (additive zero-mean noise).
 
 
 

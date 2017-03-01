@@ -5,101 +5,189 @@
 \chap Distributed algorithms
 
 
-A very good and step-by-step introduction to the theory of Distributed algorithms may be found in \cite[Raynal2013].
+A step-by-step introduction to the theory of Distributed algorithms may be found in  a school book  \cite[Raynal2013]. 
 
 % main topic linear consensus algorithm - from springer - algorithms in communication meesage systems 
 %what's distributed, synchronous; reliable channel
 
-In the following chapter about  Linear  average consensus algorithm we will assume that:
+In the following chapter about  Linear  average consensus algorithm we will assume, that:
 
-Topology of the graph is fixed.
+\begitems \style 0
 
-The communication is reliable.
+  * The Topology of the graph is fixed. Our first goal will be to find only a static algorithm, that works for all time of computing with constant Adjacency and Incidence matrices.
+ * The communication between vertices is reliable. So all updates for a given agent always reach a destination. In a real case, a very good level of reliability might have been reached using e.g. some ARQs algorithms used for an Ethernet network. However this would have slowed the algorithm down. 
+  * All nodes have globally synchronized clocks with one central time, so that the computations are synchronized (practically, we could use for example clock ticks from GPS sattelites).
+* We always know an initial state of each vertex, i.e. an input value to the algorithm.
 
-All nodes have globally synchronized clock, so that the computations are synchronized (eg. typically using GPS time).
+\enditems
 
 \chap Linear  average consensus algorithm
 
 %\Ethmology briefing
 
-In this chapter, let us consider an undirected and connected graph $G=(V,E)$ with $N$ vertices and edges $(v_i,v_j)$ between vertices  $i, j$, where  $i,j \in \{1,2, ..., N\}$. We denote an initial value $x_i(0)$ the value assigned to the $i$-th vertex (node, agent) in time $0.$ Then  $x_i(t)$ refers to the value in the $i$-th vertex in time $t$. Our goal is to, for $t \rightarrow \infty$, using local communication and computation, in all  $N$ vertices of the graph,  obtain an average value of all these initial values. Based on a matrix-like description of graph $G$, our goal will be to construct matrix ${\bi Q}$, whose components $q_{ij}$ will in fact bear this averaging algorithm, in a formalism of iterative matrix multiplication. 
+In this chapter, let us consider an undirected and connected graph $G=(V,E)$ with $N$ vertices and edges $(v_i,v_j)$ between vertices  $i, j$, where  $i,j \in \{1,2, ..., N\}$. We denote an initial value $x_i(0)$ the value assigned to the $i$-th vertex (node, agent) in time $ t=0, \  t \in {\bbchar Z}.$ Then  $x_i(t)$ refers to the value in the $i$-th vertex in time $t$. Our goal is to, for $t \rightarrow \infty$, using local communication and computation, in all  $N$ vertices of the graph,  obtain an average value of all these initial values. Based on a matrix-like description of graph $G$, our goal will be to construct matrix ${\bi P}$, whose components $p_{i,j}$ will in fact bear this averaging algorithm, in a formalism of iterative matrix multiplication. 
 
-In this chapter, subject of our interest will be a linear, discrete-time consensus algorithm. A detailed description of the folowing is in \cite[Garin2010], \cite[Xiao] and both contain also rich references to other publications.
+In this chapter, subject of our interest will be a linear, discrete-time consensus algorithm. A detailed description of the folowing is in \cite[Garin2010], \cite[Xiao]  both containing also rich references to other publications. 
 
 \sec Introduction
 
 
 
 Assume this {\em linear} update equation 
-$$ x(t+1) = {\bi Q}(t) x(t), $$
+
+$$ x(t+1) = {\bi P}(t) x(t), \eqmark $$
 where $x(t)= ( x_1(t), x_2(t), ..., x_N(t))^T \in  {\bbchar R}^{N} $ 
-and for all values of $t$, $  {\bi Q} (t) \in  {\bbchar R}^{N{\times{N}}}  $ is a {\em stochastic matrix}, i.e. $q_{ij} (t) \ge 0$ and $\sum _{j=1}^N q_{ij} = 1, \forall i ,j \in {1, 2, ..., N}.$ Meaning, that all values in each row sum up to 1. The $q_{ij}$ components are also often reffered to as {\em weights.}
+and for all values of $t$, $  {\bi P} (t) \in  {\bbchar R}^{N{\times{N}}}  $ is a {\em stochastic matrix}, i.e. $p_{i,j} (t) \ge 0$ and $\sum _{j=1}^N p_{i,j} = 1, \forall i ,j \in {1, 2, ..., N}.$ Meaning, that all values in each row sum up to 1. The $p_{i,j}$ components are also often reffered to as {\em weights}  \cite[Xiao].
 
 Now, let's  rewrite the equation above expanding a matrix multiplication:
 
-$$ x(t+1) = \sum_{j=1}^N q_{ij}(t) x_i (t) = x_i(t) + \sum_{j=1; j\not= i}^N q_{ij}(x_j(t)-x_i(t)).$$
-This equation is for given ${\bi Q} (t)$ a general form of a {\em linear consensus algorithm}, that may be usually found in the literature. Frankly spoken, all the theory behind linear consensus algorithm aims to find the best matrix $  {\bi Q}(t)$, such as the consensus is reached. 
+\label[iteration_eq]$$ x(t+1) = \sum_{j=1}^N p_{i,j}(t) x_i (t) = x_i(t) + \sum_{j=1; j\not= i}^N p_{i,j}(x_j(t)-x_i(t)). \eqmark $$
+This equation is for given ${\bi P} (t)$ a general form of a {\em linear consensus algorithm}, that may be usually found in the literature. Frankly spoken, all the theory behind linear consensus algorithm aims to find the best matrix $  {\bi P}(t)$, such as the consensus is reached. 
 
-Formally defined, we say that $  {\bi Q}(t)$ solves {\em consensus problem}, if for all $i$ holds  $$\lim_{t\rightarrow\infty} x_i (t)= \alpha, \forall i.$$ Then, for a solution of the {\em average consensus problem} must be in an addition to the previous condition fulfilled also $$\alpha = {1\over N} \sum_{i=1}^Nx_i(0).$$
-
-
-Next, we call   $  {\bi Q}(t)$ {\em doubly stochastic}, if holds also $\sum _{j=1}^N q_{ij} = 1, \forall j \in {1, 2, ..., N}.$ So both, rows and columns sum up to 1. Note, that  if $  {\bi Q} (t) $ is stochastic and symetric, $  {\bi Q}(t) = {\bi Q}(t) ^T$, then $  {\bi Q}(t)$ is doubly stochastic.
-
-The ${\bi Q} (t)$ matrix may be considered as: 1) constant ${\bi Q} (t) = {\bi Q}$, i.e. we set up only one matrix at the beginning of the computation, to be used for the whole run of an algorithm, 2) a deterministic time variable matrix, 3) randomly variable matrix; it is the most general case bearing also most complexities. For simplicity, we will firsly concern only case 1). %The are behind scope of this text.  
+Formally defined, we say that $  {\bi P}(t)$ solves {\em consensus problem}, if for all $i$ holds  $$\lim_{t\rightarrow\infty} x_i (t)= \alpha, \forall i. \eqmark $$ Then, for a solution of the {\em average consensus problem} must be in an addition to the previous condition fulfilled also $$\alpha = {1\over N} \sum_{i=1}^Nx_i(0). \eqmark$$
 
 
+Next, we call   $  {\bi P}(t)$ {\em doubly stochastic}, if holds also $\sum _{j=1}^N p_{i,j} = 1, \forall j \in {1, 2, ..., N}.$ So both, rows and columns sum up to 1. Note, that  if $  {\bi P} (t) $ is stochastic and symmetric, $  {\bi P}(t) = {\bi P}(t) ^T$, then $  {\bi P}(t)$ is doubly stochastic.
+
+The ${\bi P} (t)$ matrix may be considered as: 1) constant ${\bi P} (t) = {\bi P}$, i.e. we set up only one matrix at the beginning of the computation, to be used for the whole run of an algorithm, 2) a deterministic time variable matrix, 3) randomly variable matrix; it is the most general case bearing also most complexities \cite[Garin2010]. For simplicity, we will firtsly concern only case 1). %The are behind scope of this text.  
 
 
-%To indicate, why we adore the ${\bi Q}$ matrix to be stochastic or even doubly stochastic, we refer to the theory related to the topic of Markov chains, where are developed tools for finding so called {\em stationary state}. %Now, let's have a look at a very useful theorem, that originaly comes from closely related topic of the Markov Chains.
+
+
+%To indicate, why we adore the ${\bi P}$ matrix to be stochastic or even doubly stochastic, we refer to the theory related to the topic of Markov chains, where are developed tools for finding so called {\em stationary state}. %Now, let's have a look at a very useful theorem, that originaly comes from closely related topic of the Markov Chains.
 
 %\Theorem (From \cite[marek].)
-%Let us consider the sequence of constant matrices ${\bi Q}$. If the
+%Let us consider the sequence of constant matrices ${\bi P}$. If the
 %graph G Q ∈ G sl and is rooted, then Q solves the consensus problem, and
 %%lim Q t = 1 η T where η ∈ R N is the left eigenvector of Q for the eigenvalue one and has the prop-erties η i ≥ 0 and 1 T η = 1. If G Q is strongly connected, then η i > 0, ∀i. If in additionQ is doubly-stochastic, then G Q is strongly connected and Q solves the average con-sensus problem, i.e. η = N 1 1. Moreover, in all cases the convergence is exponential and its rate is given by the essential spectral radius esr(Q).
-\sec Convergence conditions
 
-Next, let's formulate some conditions for our constant ${\bi Q} $ matrix.  We call a matrix ${\bi Q} $ {\em compatible} with a graph $G$, if $q_{ij}=0$ for $j\not\in {\cal{N}}_i$ (i.e. $i$-th node is not in a set of neighbours of the $j$-th node.) Still considering an undirected graph, we can write:
-$${\bi Q} = {\bi Q}^T, $$ $$ {\bi Q} {\bi 1} ={\bi 1}, $$
-where  ${\bi 1}$ denotes a column vector of $N$ ones.
 
-As same as in \cite[Xiao], let's define an averaging matrix ${1\over N}{\bi 1 1}^T$. (Note: ${\bi 1 1}^T$ is $N \times N$ matrix of all ones.) When multiplying this rank-one matrix with a vector $z\in{\bbchar R}^N$, $\overline z = {1\over N}{\bi 1 1}^T z$, we obtain a column vector $\overline z $ with all components equal to the average of all $N$ components of the $z$ vector.
+
+\sec Basic convergence conditions
+
+Next, let's formulate some conditions for our constant ${\bi P} $ matrix.  We call a matrix ${\bi P} $ {\em compatible} with a graph $G$, if $p_{i,j}=0$ for $j\not\in {\cal{N}}_i$ (i.e. $i$-th node is not in a set of neighbours of the $j$-th node.) Still considering an undirected graph, we can write:
+$${\bi P} = {\bi P}^T. \eqmark$$
+
+We define terms {\em irreducible} and {\em primitive} matrices: we call matrix $\bi A$ irreducible if its associated graph $G$ is strongly connected; and we call $\bi A$ primitive, if it is an irreducible stochastic matrix, that has exactly one strictly greatest modulus of eigenvalue \cite[SaberMurray].
+
+\Theorem Perron-Frobenius theorem  \cite[SaberMurray].   Let $\bi P$ be a primitive non-negative matrix with left and right eigenvectors $w$ and $v$, respectively, satisfying ${\bi P} v = v, \  w^T {\bi P} = w^T$  and $v^T w = 1$ . Then $$\lim_{t\rightarrow\infty}{\bi P}^t = v w^T. \eqmark $$ 
+Perron-Frobenius theorem may be found in many stronger forms, but for us, this minimalistic form will be sufficient.
+
+Now, let's add the desired property to make the algorithm {\em averaging.} We define an averaging matrix ${1\over N}{\bi 1 1}^T$, where  ${\bi 1}$ denotes a column vector of $N$ ones. Note, ${\bi 1 1}^T$ is $N\times{N}$ matrix of all ones, however, ${\bi 1}^T {\bi 1} = N,$ is a scalar. When multiplying this rank-one matrix with a vector $z\in{\bbchar R}^N$, $\overline z = {1\over N}{\bi 1 1}^T z$, we obtain a column vector $\overline z $ with all components equal to the average of all $N$ components of the $z$ vector  \cite[Xiao].
 
 What we ask about the algorithm is
-$$\lim_{t\rightarrow\infty} x(t)= lim_{t\rightarrow\infty} {\bi Q}^t \  x(0) = {1\over N} {\bi 11}^T  x(0), $$
+\label[dessire]$$\lim_{t\rightarrow\infty} x(t)= lim_{t\rightarrow\infty} {\bi P}^t \  x(0) = {1\over N} {\bi 11}^T  x(0),  \eqmark$$
 which is for arbitrary vector $x(0)$ equivalent to the
- $$ lim_{t\rightarrow\infty} {\bi Q}^t = {1\over N}{\bi 1 1}^T. $$
+ $$ lim_{t\rightarrow\infty} {\bi P}^t = {1\over N}{\bi 1 1}^T. \eqmark $$
 %na tento odstavecek jsem pysny, ten pisu od srdce
-Explicitly summarizing: to reach the convergence of the {\em averaging} consensus algorithm, the increasing powers of (not unique)  stochastic matrix {\bi Q} must converge and moreover converge to a doubly stochastic matrix  ${1\over N}{\bi 1 1}^T$. Next, we ask for some specific conditions, to ensure this. The following theorem provides them. 
+ %Next, we ask for some specific conditions, to ensure this. The following theorem provides them. 
 
-We remind a definition of a Spectral Norm of a matrix \cite[spectNorm]. Let ${\bi A}^H$ be the conjugate transpose of the square matrix ${\bi A}$, so that $a_{ij}^H =a_{ij}^*$, then the spectral norm is defined as the square root of the maximum eigenvalue of  ${\bi A}^H {\bi A}.$
+Next, according to the above Perron-Frobenius theorem and equation \ref[dessire], our next naturally appearing condition for  ${\bi P} $ is to have it doubly stochastic \label[stocha], i.e. : $$ {\bi P} {\bi 1} ={\bi 1} ,\eqmark$$ and $$ {\bi 1}^T{\bi P} = {\bi 1}^T .\eqmark$$ Explicitly summarizing: to reach the convergence of the {\em averaging} consensus algorithm, the increasing powers of (not unique)  stochastic matrix {\bi P} must converge and moreover converge to a doubly stochastic matrix  ${1\over N}{\bi 1 1}^T$.
+
+So far, we wrote down some conditions for {\bi P} matrix, however it should be clear, that they definitely do not determine any unique matrix and  still leave a lot of freedom how to choose it. But as there are more ways to construct  ${\bi P} $ matrix, to reach convergence, for all of them will be necessary to always hold it compatible with a given graph. We must not forget, that  ${\bi P} $ corresponds to a physically realisable iformation exchange in the graph $G$, so this condition allows communication only  over existing edges.
+
+%To the stochastic matrix  condition \ref[stocha]  we will come back soon later, but for now, we it comes to be extremely useful, because it allows us to use powerfull tools from the Theory of Markov Chains. 
+
+\sec Heuristics based on the Laplacian matrix
+
+Basis material for following section comes mainly from \cite[Xiao03fastlinear].
+
+There have been developed some simple heuristics for choosing matrix $\bi P$, that fulfills the established conditions from the previous section. They are based on the construction of the Laplacian matrix, shown in Graph Theory chapter. 
+So then  \label[laplacHer], let us heuristically take $$ {\bi P} = {\bi I} - \alpha {\bi L}, \ \alpha \in \bbchar R. \eqmark $$
+ $\bi P$ is often refered to as Perron matrix, due to his pioneering work in last century \cite[ding2009nonnegative].
 
 
-Assumming the convergence conditions are fulfilled, \cite[Xiao03fastlinear] defines {\em asymptotic convergence factor}
-$$ r_{asym}({\bi Q}) = sup_{x(0)\not=\overline x}  \lim_{t\rightarrow \infty} \left(  {{\|x(t)-\overline x\|} \over {{\|x(0)-\overline x\|}}} \right) ^{1 \over t},$$ and {\em per-step convergence factor}
-$$ r_{step}({\bi Q}) = sup_{x(t)\not=\overline x}{   {\| x(t+1) - \overline x\|}\over{\|x(t) - \overline x\|}} .$$
+Such a matrix in fact evaluates each edge with a value $\alpha.$ The first great advantage of this choice,  is that such a matrix $ {\bi P}$ will be automatically compatible with the graph, while it bears information about connected, respectively disconnected vertices. And also, in this way, as we build the ${\bi P}$ matrix like a substraction of an Identity matrix and some specified multiple of a Laplacian matrix, this substract-origined matrix is of course a stochastic matrix, regarding to the property of the Laplacian matrix, that  all its rows sum up exactly to zero. 
 
 
-\Theorem From \cite[Xiao03fastlinear] . Equation  
-$$ lim_{t\rightarrow\infty} {\bi Q}^t = {1\over N}{\bi 1 1}^T $$ holds if and only if $$ {\bi 1 }^T {\bi Q} = {\bi 1}^T  ,$$ i.e. $\bi 1$ is left eigenvector of $\bi Q$ with eigenvalue 1,
-$$ \bi Q \bi 1 = \bi 1 ,$$ i.e. $\bi 1$ is also right eigenvalue of $\bi Q$ and
-$$ \rho\left(\bi Q - J \right)<1, $$
+\Theorem According to \cite[SaberMurray]. Let $G$ be an undirected graph with $N$ nodes and maximum degree $\Delta$.
+ Then, the Perron matrix $\bi P$ with parameter $\alpha \in \left(0;{{ 1}\over{\Delta}}   \right]$ satisfies the following properties:
+
+i) P is a row stochastic non-negative matrix with a trivial eigenvalue of 1;
+
+ii) All eigenvalues of P are in a unit circle;
+
+iii) If G is a balanced graph, then P is a doubly stochastic matrix;
+
+iv) If G is strongly connected and  then P is a primitive matrix.
+
+
+
+ 
+Next, the elements of ${\bi P}$ are 
+$$ p_{i,j} = \cases{\alpha & if there is the edge $(v_i,v_j)$,  \cr 1-d_i \alpha & if $i=j, $ \cr 0 & otherwise,} \eqmark $$
+ where we remind $d_i$ is the degree of vertex $i.$ The distributed averaging algorithm may be then rewritten as \cite[Xiao03fastlinear]
+$$ x_i(t+1)= x_i(t)+\alpha \sum_{j \in {\cal{N}}_i} (x_j(t)-x_i(t)), \ i = 1, 2, ... N. \eqmark $$
+
+We already showed in Chapter 2, that Laplacian matrix is always positive semidefinite. Because of this property, we have to necessarily choose $$ \alpha > 0, \eqmark$$ to successfully accomplish the convergence condition  \cite[Xiao03fastlinear]
+$$ \rho\left({\bi P}-{1\over N}{\bi 1 1}^T \right)<1. \eqmark $$
+
+Next, we can from equation $ {\bi P} = {\bi I} - \alpha {\bi L}$ determine an expression linking eigenvalues of matrix $ {\bi P}$
+with eigenvalues of matrix $ {\bi L}.$
+\Theorem:
+$$ \lambda_i({\bi P} ) = 1 - \alpha \lambda_{N-i+1}( {\bi L} ) , i = 1, 2, ..., N, \eqmark $$
+where $\lambda_i (.)$ stands for the $i-$th smallest eigenvalue of the symmetric matrix. 
+
+{\em Proof: } Quite simple, this can be verified writing the equation for characteristic polynomial of matrix $\alpha {\bi L }$:  
+$$\det\left(\alpha {\bi L } - \lambda {\bi I }    \right) ,  \eqmark$$ 
+ which is using $ \alpha {\bi L} = {\bi I} - {\bi P}$  
+  equal to \label[qerwef] $$ \det \left(  \left( {\bi I} - {\bi P}\right)- \lambda {\bi I} \right) =   
+\det \left(  \left( 1-\lambda\right) {\bi I} - {\bi P}  \right).  \eqmark  $$ 
+Next we want to solve characteristical equation $\det \left(  \left( 1-\lambda\right) {\bi I} - {\bi P}  \right)=0.$ In this, we can see from RHS of \ref[qerwef], that the spectrum of $\alpha {\bi L}$  will be exactly the spectrum of $(1-\lambda({\bi P}))$. And since  holds
+ $$\det(a {\bi X}) =  a \det ({\bi X}),$$ the proof is complete.
+
+
+ We have seen, that for Laplacian matrix of connected graph holds $$\lambda_1({\bi L} ) = 0. \eqmark $$  Then we can using previous theorem immediatly write  $$ \lambda_N({\bi P} ) =1  . \eqmark $$
+
+The spectral radius of a matrix $ \left( {\bi P}-{1\over N}{\bi 1 1}^T  \right) $ may be then expressed as 
+$$ \rho \left( {\bi P} - {1\over N} {\bi 1 1}^T \right) = \max \{  \lambda_{N-1}( {\bi P} ), - \lambda_1({\bi P}  )  \} =  
+  \max \{  1 - \alpha \lambda_{2}( {\bi L} ), \alpha \lambda_N({\bi L}  )-1  \}.                \eqmark $$ 
+Using the condition $ \rho \left( {\bi P} - {1\over N} {\bi 1 1}^T \right) < 1$  we can write
+$$ 0 < \alpha < {{2}\over{\lambda_N(\bi L)}}. \eqmark$$
+
+Finally, the choice of $\alpha$ to minimize $   \rho \left( {\bi P} - {1\over N} {\bi 1 1}^T \right)  $ is
+$$ \alpha^* = {{2}\over{\lambda_N({\bi L}) + \lambda_2({L})}}. \eqmark $$
+
+\sec Next possible constructions of $ {\bi P} $ matrix 
+
+As mentioned before, the choice to construct ${\bi P}$ is not unique. However the Laplacian based approach is in the related basic literature probably the most common, we will briefly give some other  satisfactory examples. The summary below comes from \cite[nexxxxt].
+
+
+................................
+To be edited
+................................
+We remind a definition of a Spectral Norm of a matrix . Let ${\bi A}^H$ be the conjugate transpose of the square matrix ${\bi A}$, so that $a_{ij}^H =a_{ij}^*$, then the spectral norm is defined as the square root of the maximum eigenvalue of  ${\bi A}^H {\bi A}$ \cite[spectNorm].
+
+
+Assumming the convergence conditions are fulfilled, we can define {\em asymptotic convergence factor}   \cite[Xiao03fastlinear] $$ r_{asym}({\bi P}) = sup_{x(0)\not=\overline x}  \lim_{t\rightarrow \infty} \left(  {{\|x(t)-\overline x\|} \over {{\|x(0)-\overline x\|}}} \right) ^{1 \over t}, \eqmark $$ and {\em per-step convergence factor}   \cite[Xiao03fastlinear]$$ r_{step}({\bi P}) = sup_{x(t)\not=\overline x}{   {\| x(t+1) - \overline x\|}\over{\|x(t) - \overline x\|}} . \eqmark $$
+
+
+\Theorem Equation  
+$$ lim_{t\rightarrow\infty} {\bi P}^t = {1\over N}{\bi 1 1}^T \eqmark $$ holds if and only if $$ {\bi 1 }^T {\bi P} = {\bi 1}^T  , \eqmark$$ i.e. $\bi 1$ is left eigenvector of $\bi P$ with eigenvalue 1,
+$$ \bi P \bi 1 = \bi 1 , \eqmark $$ i.e. $\bi 1$ is also right eigenvalue of $\bi P$ and
+$$ \rho\left(\bi P - J \right)<1, \eqmark $$
 where ${\rho(.)}$ denotes the spectral radius of a matrix, i.e. the greatest absolute value of	an eigenvalue. 
 
 
-Moreover, $$r_{asym}({\bi Q}) = \rho\left( {\bi Q} -{1\over N}{\bi 1 1}^T  \right),$$ 
+Moreover, $$r_{asym}({\bi P}) = \rho\left( {\bi P} -{1\over N}{\bi 1 1}^T  \right), \eqmark$$ 
 
 
-$$r_{step}({\bi Q}) = \left\| {\bi Q} -{1\over N}  \right\|_2,$$ 
-where $\| . \|_2$ denotes spectral norm.
+$$r_{step}({\bi P}) = \left\| {\bi P} -{1\over N}  \right\|_2, \eqmark $$ 
+where $\| . \|_2$ denotes spectral norm \cite[Xiao03fastlinear].
 
-Combining the previous equations also holds that ${\bi Q}$ must be definitely a doubly stochastic matrix.  And while the $\bi Q$ matrix is stochastic, we can see, e.g. from Gershgorin theorem, that all of its eigenvalues must be located in a unit circle.
-
-
+Combining the previous equations also holds that ${\bi P}$ must be definitely a doubly stochastic matrix.  And while the $\bi P$ matrix is stochastic, we can see, e.g. from Gershgorin theorem, that all of its eigenvalues must be located in a unit circle.
 
 
-{\em Proof:} May be found in \cite[Xiao03fastlinear].
- Firstly, to prove sufficiency, if $\bi Q$ satisfies $ \bi Q \bi 1 = \bi 1 $ and $ {\bi 1 } ^T{\bi Q} = {\bi 1}^T,$ then $$ {\bi Q}^t - {1\over N}{\bi 1 1}^T =  {\bi Q}^t \left( I - {1\over N}{\bi 1 1}^T\right) \buildrel \rm projection \over =  $$ Next, we observe, that ${\bi P} = \left( I - {1\over N}{\bi 1 1}^T\right)$ is a projection matrix, so holds   ${\bi P} ={\bi P}^2 = {\bi P}^t.$ We can convince ourselves about this when realizing that $\bi P$  is symmetric and has zero sum of rows and columns, respectively.              $$  \buildrel \rm projection \over = {\bi Q}^t \left( I - {1\over N}{\bi 1 1}^T\right)^t=   \left( {\bi Q} \left( I - {1\over N}{\bi 1 1}^T\right)\right)^t =    \left( {\bi Q} - {1\over N}{\bi 1 1}^T\right)^t      .   $$ Using the condition $\rho\left(\bi Q - {1 \over N} {\bi 1 1}^T \right)<1$ leads to the convergence $ lim_{t\rightarrow\infty} {\bi Q}^t = {1\over N}{\bi 1 1}^T $.
+
+
+{\em Proof:} Complete proof may be found in \cite[Xiao03fastlinear]. We will show only a part of it, while there appears an interesting construction, that in a limit, $t \rightarrow \infty$, the convergence matrix multiplication is a projection.
  
+So, to prove sufficiency, if $\bi P$ satisfies $ \bi P \bi 1 = \bi 1 $ and $ {\bi 1 } ^T{\bi P} = {\bi 1}^T,$ then $$ {\bi P}^t - {1\over N}{\bi 1 1}^T =  {\bi P}^t \left( I - {1\over N}{\bi 1 1}^T\right) \buildrel \rm projection \over =  \eqmark $$ Next, we observe, that ${\bi P} = \left( I - {1\over N}{\bi 1 1}^T\right)$ is a projection matrix, so holds   ${\bi P} ={\bi P}^2 = {\bi P}^t.$ We can convince ourselves about this, when realizing that our matrix $\bi P$  is symmetric and has zero sum of rows and columns, respectively.              $$  \buildrel \rm projection \over = {\bi P}^t \left( I - {1\over N}{\bi 1 1}^T\right)^t=   \left( {\bi P} \left( I - {1\over N}{\bi 1 1}^T\right)\right)^t =    \left( {\bi P} - {1\over N}{\bi 1 1}^T\right)^t      .  \eqmark $$ Without further details, we must also strictly  fulfill $$\rho\left(\bi P - {1 \over N} {\bi 1 1}^T \right)<1, \eqmark$$  to reach the convergence  condition $ lim_{t\rightarrow\infty} {\bi P}^t = {1\over N}{\bi 1 1}^T $.
+ 
+
+\sec Iterative Consensus Algorithms and Markov Chains
+
+%Concerning the iterative algorithm \ref[iteration_eq], we can look at it as  a Markov Chain 
 
 
 
@@ -112,38 +200,22 @@ Combining the previous equations also holds that ${\bi Q}$ must be definitely a 
 %na tento odstavecek jsem pysny, ten pisu od srdce
 
 
-\sec Heuristics based on the Laplacian
 
-Following section is based mainly on \cite[Xiao03fastlinear].
 
-There have been developed some simple heuristics for choosing matrix $\bi Q$, that fulfills the established conditions from the previous section. They are based on the construction of the Laplacian matrix from the first chapter. 
-So let us take $$ {\bi Q} = {\bi I} - \alpha {\bi L}, \alpha \in \bbchar R.$$
-Such a matrix in fact evaluates each edge with a value $\alpha.$ The first great advantage of this choice,  is that such a matrix $ {\bi Q}$ will be automatically compatible with the graph, while it bears information about connected, respectively disconnected vertices. And also, in this way, as we build the ${\bi Q}$ matrix like a substract of an Identity matrix and some specified multiple of a Laplacian matrix. This substract-origined matrix is of course a stochastic matrix, regarding to the property of Laplacian, that its rows sum up to zero. 
- 
-Next, the elements of ${\bi Q}$ are 
-$$ q_{i,j} = \cases{\alpha & if there is the edge $(v_i,v_j)$,  \cr 1-d_i \alpha & if $i=j, $ \cr 0 & otherwise,} $$
- where we remind $d_i$ is the degree of vertex $i.$ The distributed averaging algorithm may be then rewritten as
-$$ x_i(t+1)= x_i(t)+\alpha \sum_{j \in {\cal{N}}_i} (x_j(t)-x_i(t)), i = 1, 2, ... N.$$
 
-We already prooved in Chapter 1, that Laplacian matrix is always positive semidefinite. Because of that, we have to necessarily 
-choose $$ \alpha > 0,$$ to successfully accomplish the convergence condition 
-$$ rho\left({\bi Q}-{1\over N}{\bi 1 1}^T \right)<1.$$
+\secc The Metropolis-Hastings weighting method
 
-Now, we can from equation $ {\bi Q} = {\bi I} - \alpha {\bi L}$ determine an expression linking eigenvalues of matrix $ {\bi Q}$
-with eigenvalues of matrix $ {\bi L} :$
-$$ \lambda_i({\bi Q} ) = 1 - \alpha \lambda_{N-i+1}( {\bi L} ) , i = 1, 2, ..., N,$$
-where $\lambda_i (.)$ stands for the $i-$th smallest eigenvalue of the symmetric matrix. We already showed, that for Laplacian matrix of connected graph holds $$\lambda_1({\bi L} ) = 0. $$  Then we can immediatly write  $$ \lambda_N({\bi Q} ) =1  .$$
+The Metropolis-Hastings weighting method coefficients of ${\bi P}^{MH}$ matrix are 
 
-The spectral radius of $ {\bi Q}-{1\over N}{\bi 1 1}^T $ may be then expressed as 
-$$ \rho \left( {\bi Q} - {1\over N} {\bi 1 1}^T \right) = \max \{  \lambda_{N-1}( {\bi Q} ), - \lambda_1({\bi Q}  )  \} =  
-  \max \{  1 - \alpha \lambda_{2}( {\bi L} ), \alpha \lambda_N({\bi L}  )-1  \}.                $$ 
-Using the condition $ \rho \left( {\bi Q} - {1\over N} {\bi 1 1}^T \right) < 1$  we can write
-$$ 0 < \alpha < {2}\over{\lambda_N(\bi L)}.$$
+$$ p_{i,j}^{MH} = \cases{  {1\over{1+\max(d_i, \ d_j)}}    & for $ j \in {\script N}_i, \ i \not= j$,  \cr 1-\sum_{j \in {\script N}_i}       {p_{i,j}} & if $i=j, $ \cr 0 & otherwise \cite[nexxxxt].} \eqmark $$
+\secc The Maximum degree weighting method 
 
-Finally, the choice of $\alpha$ to minimize $   \rho \left( {\bi Q} - {1\over N} {\bi 1 1}^T \right)  $ is
-$$ \alpha^* = {{2}\over{\lambda_N({\bi L}) + \lambda_2({L})}}.$$
+The Maximum degree weighting method chooses components of ${\bi P}^{MD}$ as
 
-%Moreover, for undirected graphs this ${\bi Q}$  is actually double stochastic, because of such a Laplacian is a symetric matrix.
+%$$ p_{i,j}^{MH} = \cases{  {1\over{1+\max(d_i, \ d_j)}}    & for $ j \in {\script N}_i, \ i \not= j$,  \cr 1-\sum_{j \in {\script N}_i}       {p_{i,j}} & if $i=j, $ \cr 0 & otherwise  \cite[nexxxxt].} \eqmark $$
+
+
+%Moreover, for undirected graphs this ${\bi P}$  is actually double stochastic, because of such a Laplacian is a symmetric matrix.
 
 %To reach the 
 
@@ -155,7 +227,7 @@ $$ \alpha^* = {{2}\over{\lambda_N({\bi L}) + \lambda_2({L})}}.$$
  %They  We want to replace a number of nodes, that exchange informatMany less accurate a reliable nodes as an alternative to very accurate and very reliable but also very expensive nodes.
 
 
-\sec Discrete and continuous time
+
 
 \chap Recommendation of related literature
 
