@@ -2,7 +2,17 @@
 \def\ctustyle{{\tenss CTUstyle}}
 \def\ttb{\tt\char`\\} % pro tisk kontrolních sekvencí v tabulkách
 
-\chap Distributed algorithms
+
+\chap Linear  average consensus algorithm
+
+%\Ethmology briefing
+
+In this chapter, let us consider an undirected and connected graph $G=(V,E)$ with $N$ vertices and edges $(v_i,v_j)$ between vertices  $i, j$, where  $i,j \in \{1,2, ..., N\}$. We denote an initial value $x_i(0)$ the value assigned to the $i$-th vertex (node, agent) in time $ t=0, \  t \in {\bbchar Z}.$ Then  $x_i(t)$ refers to the value in the $i$-th vertex in time $t$. Our goal is to, for $t \rightarrow \infty$, using local communication and computation, in all  $N$ vertices of the graph,  obtain an average value of all these initial values. Based on a matrix-like description of graph $G$, our goal will be to construct matrix ${\bi P}$, whose components $p_{i,j}$ will in fact bear this averaging algorithm, in a formalism of iterative matrix multiplication. 
+
+In this chapter, subject of our interest will be a linear, discrete-time consensus algorithm. A detailed description of the folowing is in \cite[Garin2010], \cite[Xiao]  both containing also rich references to other publications. 
+
+
+\sec Distributed algorithms
 
 
 A step-by-step introduction to the theory of Distributed algorithms may be found in  a school book  \cite[Raynal2013]. 
@@ -10,7 +20,7 @@ A step-by-step introduction to the theory of Distributed algorithms may be found
 % main topic linear consensus algorithm - from springer - algorithms in communication meesage systems 
 %what's distributed, synchronous; reliable channel
 
-In the following chapter about  Linear  average consensus algorithm we will assume, that:
+In this chapter about  Linear  average consensus algorithm we will assume, that:
 
 \begitems \style 0
 
@@ -21,13 +31,6 @@ In the following chapter about  Linear  average consensus algorithm we will assu
 
 \enditems
 
-\chap Linear  average consensus algorithm
-
-%\Ethmology briefing
-
-In this chapter, let us consider an undirected and connected graph $G=(V,E)$ with $N$ vertices and edges $(v_i,v_j)$ between vertices  $i, j$, where  $i,j \in \{1,2, ..., N\}$. We denote an initial value $x_i(0)$ the value assigned to the $i$-th vertex (node, agent) in time $ t=0, \  t \in {\bbchar Z}.$ Then  $x_i(t)$ refers to the value in the $i$-th vertex in time $t$. Our goal is to, for $t \rightarrow \infty$, using local communication and computation, in all  $N$ vertices of the graph,  obtain an average value of all these initial values. Based on a matrix-like description of graph $G$, our goal will be to construct matrix ${\bi P}$, whose components $p_{i,j}$ will in fact bear this averaging algorithm, in a formalism of iterative matrix multiplication. 
-
-In this chapter, subject of our interest will be a linear, discrete-time consensus algorithm. A detailed description of the folowing is in \cite[Garin2010], \cite[Xiao]  both containing also rich references to other publications. 
 
 \sec Introduction
 
@@ -70,7 +73,7 @@ $${\bi P} = {\bi P}^T. \eqmark$$
 
 We define terms {\em irreducible} and {\em primitive} matrices: we call matrix $\bi A$ irreducible if its associated graph $G$ is strongly connected; and we call $\bi A$ primitive, if it is an irreducible stochastic matrix, that has exactly one strictly greatest modulus of eigenvalue \cite[SaberMurray].
 
-\Theorem Perron-Frobenius theorem  \cite[SaberMurray].   Let $\bi P$ be a primitive non-negative matrix with left and right eigenvectors $w$ and $v$, respectively, satisfying ${\bi P} v = v, \  w^T {\bi P} = w^T$  and $v^T w = 1$ . Then $$\lim_{t\rightarrow\infty}{\bi P}^t = v w^T. \eqmark $$ 
+\Theorem Perron-Frobenius theorem  \cite[SaberMurray].   Let $\bi P$ be a primitive non-negative matrix with left and right eigenvectors $w$ and $v$, respectively, satisfying ${\bi P} v = v, \  w^T {\bi P} = w^T$  and $v^T w = 1$ . Then \label[perfrob] $$\lim_{t\rightarrow\infty}{\bi P}^t = v w^T. \eqmark $$ 
 Perron-Frobenius theorem may be found in many stronger forms, but for us, this minimalistic form will be sufficient.
 
 Now, let's add the desired property to make the algorithm {\em averaging.} We define an averaging matrix ${1\over N}{\bi 1 1}^T$, where  ${\bi 1}$ denotes a column vector of $N$ ones. Note, ${\bi 1 1}^T$ is $N\times{N}$ matrix of all ones, however, ${\bi 1}^T {\bi 1} = N,$ is a scalar. When multiplying this rank-one matrix with a vector $z\in{\bbchar R}^N$, $\overline z = {1\over N}{\bi 1 1}^T z$, we obtain a column vector $\overline z $ with all components equal to the average of all $N$ components of the $z$ vector  \cite[Xiao].
@@ -82,80 +85,12 @@ which is for arbitrary vector $x(0)$ equivalent to the
 %na tento odstavecek jsem pysny, ten pisu od srdce
  %Next, we ask for some specific conditions, to ensure this. The following theorem provides them. 
 
-Next, according to the above Perron-Frobenius theorem and equation \ref[dessire], our next naturally appearing condition for  ${\bi P} $ is to have it doubly stochastic \label[stocha], i.e. : $$ {\bi P} {\bi 1} ={\bi 1} ,\eqmark$$ and $$ {\bi 1}^T{\bi P} = {\bi 1}^T .\eqmark$$ Explicitly summarizing: to reach the convergence of the {\em averaging} consensus algorithm, the increasing powers of (not unique)  stochastic matrix {\bi P} must converge and moreover converge to a doubly stochastic matrix  ${1\over N}{\bi 1 1}^T$.
+Next, according to the above Perron-Frobenius theorem \ref[perfrob] and equation \ref[dessire], our next naturally appearing condition for  ${\bi P} $ is to have it doubly stochastic \label[stocha], i.e. : $$ {\bi P} {\bi 1} ={\bi 1} ,\eqmark$$ and $$ {\bi 1}^T{\bi P} = {\bi 1}^T .\eqmark$$ Explicitly summarizing: to reach the convergence of the {\em averaging} consensus algorithm, the increasing powers of (not unique)  stochastic matrix {\bi P} must converge and moreover converge to a doubly stochastic matrix  ${1\over N}{\bi 1 1}^T$.
 
-So far, we wrote down some conditions for {\bi P} matrix, however it should be clear, that they definitely do not determine any unique matrix and  still leave a lot of freedom how to choose it. But as there are more ways to construct  ${\bi P} $ matrix, to reach convergence, for all of them will be necessary to always hold it compatible with a given graph. We must not forget, that  ${\bi P} $ corresponds to a physically realisable iformation exchange in the graph $G$, so this condition allows communication only  over existing edges.
+So far, we wrote down some conditions for {\bi P} matrix, however it should be clear, that they definitely do not determine any unique matrix and  still leave a lot of freedom how to choose it. But as there are more ways to construct  ${\bi P} $ matrix, to reach convergence, for all of them will be necessary to always hold it compatible with a given graph. We must not forget, that  ${\bi P} $ corresponds to a physically realisable information exchange in the graph $G$, so this condition allows communication only  over existing edges.
 
 %To the stochastic matrix  condition \ref[stocha]  we will come back soon later, but for now, we it comes to be extremely useful, because it allows us to use powerfull tools from the Theory of Markov Chains. 
 
-\sec Heuristics based on the Laplacian matrix
-
-Basis material for following section comes mainly from \cite[Xiao03fastlinear].
-
-There have been developed some simple heuristics for choosing matrix $\bi P$, that fulfills the established conditions from the previous section. They are based on the construction of the Laplacian matrix, shown in Graph Theory chapter. 
-So then  \label[laplacHer], let us heuristically take $$ {\bi P} = {\bi I} - \alpha {\bi L}, \ \alpha \in \bbchar R. \eqmark $$
- $\bi P$ is often refered to as Perron matrix, due to his pioneering work in last century \cite[ding2009nonnegative].
-
-
-Such a matrix in fact evaluates each edge with a value $\alpha.$ The first great advantage of this choice,  is that such a matrix $ {\bi P}$ will be automatically compatible with the graph, while it bears information about connected, respectively disconnected vertices. And also, in this way, as we build the ${\bi P}$ matrix like a substraction of an Identity matrix and some specified multiple of a Laplacian matrix, this substract-origined matrix is of course a stochastic matrix, regarding to the property of the Laplacian matrix, that  all its rows sum up exactly to zero. 
-
-
-\Theorem According to \cite[SaberMurray]. Let $G$ be an undirected graph with $N$ nodes and maximum degree $\Delta$.
- Then, the Perron matrix $\bi P$ with parameter $\alpha \in \left(0;{{ 1}\over{\Delta}}   \right]$ satisfies the following properties:
-
-i) P is a row stochastic non-negative matrix with a trivial eigenvalue of 1;
-
-ii) All eigenvalues of P are in a unit circle;
-
-iii) If G is a balanced graph, then P is a doubly stochastic matrix;
-
-iv) If G is strongly connected and  then P is a primitive matrix.
-
-
-
- 
-Next, the elements of ${\bi P}$ are 
-$$ p_{i,j} = \cases{\alpha & if there is the edge $(v_i,v_j)$,  \cr 1-d_i \alpha & if $i=j, $ \cr 0 & otherwise,} \eqmark $$
- where we remind $d_i$ is the degree of vertex $i.$ The distributed averaging algorithm may be then rewritten as \cite[Xiao03fastlinear]
-$$ x_i(t+1)= x_i(t)+\alpha \sum_{j \in {\cal{N}}_i} (x_j(t)-x_i(t)), \ i = 1, 2, ... N. \eqmark $$
-
-We already showed in Chapter 2, that Laplacian matrix is always positive semidefinite. Because of this property, we have to necessarily choose $$ \alpha > 0, \eqmark$$ to successfully accomplish the convergence condition  \cite[Xiao03fastlinear]
-$$ \rho\left({\bi P}-{1\over N}{\bi 1 1}^T \right)<1. \eqmark $$
-
-Next, we can from equation $ {\bi P} = {\bi I} - \alpha {\bi L}$ determine an expression linking eigenvalues of matrix $ {\bi P}$
-with eigenvalues of matrix $ {\bi L}.$
-\Theorem:
-$$ \lambda_i({\bi P} ) = 1 - \alpha \lambda_{N-i+1}( {\bi L} ) , i = 1, 2, ..., N, \eqmark $$
-where $\lambda_i (.)$ stands for the $i-$th smallest eigenvalue of the symmetric matrix. 
-
-{\em Proof: } Quite simple, this can be verified writing the equation for characteristic polynomial of matrix $\alpha {\bi L }$:  
-$$\det\left(\alpha {\bi L } - \lambda {\bi I }    \right) ,  \eqmark$$ 
- which is using $ \alpha {\bi L} = {\bi I} - {\bi P}$  
-  equal to \label[qerwef] $$ \det \left(  \left( {\bi I} - {\bi P}\right)- \lambda {\bi I} \right) =   
-\det \left(  \left( 1-\lambda\right) {\bi I} - {\bi P}  \right).  \eqmark  $$ 
-Next we want to solve characteristical equation $\det \left(  \left( 1-\lambda\right) {\bi I} - {\bi P}  \right)=0.$ In this, we can see from RHS of \ref[qerwef], that the spectrum of $\alpha {\bi L}$  will be exactly the spectrum of $(1-\lambda({\bi P}))$. And since  holds
- $$\det(a {\bi X}) =  a \det ({\bi X}),$$ the proof is complete.
-
-
- We have seen, that for Laplacian matrix of connected graph holds $$\lambda_1({\bi L} ) = 0. \eqmark $$  Then we can using previous theorem immediatly write  $$ \lambda_N({\bi P} ) =1  . \eqmark $$
-
-The spectral radius of a matrix $ \left( {\bi P}-{1\over N}{\bi 1 1}^T  \right) $ may be then expressed as 
-$$ \rho \left( {\bi P} - {1\over N} {\bi 1 1}^T \right) = \max \{  \lambda_{N-1}( {\bi P} ), - \lambda_1({\bi P}  )  \} =  
-  \max \{  1 - \alpha \lambda_{2}( {\bi L} ), \alpha \lambda_N({\bi L}  )-1  \}.                \eqmark $$ 
-Using the condition $ \rho \left( {\bi P} - {1\over N} {\bi 1 1}^T \right) < 1$  we can write
-$$ 0 < \alpha < {{2}\over{\lambda_N(\bi L)}}. \eqmark$$
-
-Finally, the choice of $\alpha$ to minimize $   \rho \left( {\bi P} - {1\over N} {\bi 1 1}^T \right)  $ is
-$$ \alpha^* = {{2}\over{\lambda_N({\bi L}) + \lambda_2({L})}}. \eqmark $$
-
-\sec Next possible constructions of $ {\bi P} $ matrix 
-
-As mentioned before, the choice to construct ${\bi P}$ is not unique. However the Laplacian based approach is in the related basic literature probably the most common, we will briefly give some other  satisfactory examples. The summary below comes from \cite[nexxxxt].
-
-
-................................
-To be edited
-................................
 We remind a definition of a Spectral Norm of a matrix . Let ${\bi A}^H$ be the conjugate transpose of the square matrix ${\bi A}$, so that $a_{ij}^H =a_{ij}^*$, then the spectral norm is defined as the square root of the maximum eigenvalue of  ${\bi A}^H {\bi A}$ \cite[spectNorm].
 
 
@@ -185,7 +120,76 @@ Combining the previous equations also holds that ${\bi P}$ must be definitely a 
 So, to prove sufficiency, if $\bi P$ satisfies $ \bi P \bi 1 = \bi 1 $ and $ {\bi 1 } ^T{\bi P} = {\bi 1}^T,$ then $$ {\bi P}^t - {1\over N}{\bi 1 1}^T =  {\bi P}^t \left( I - {1\over N}{\bi 1 1}^T\right) \buildrel \rm projection \over =  \eqmark $$ Next, we observe, that ${\bi P} = \left( I - {1\over N}{\bi 1 1}^T\right)$ is a projection matrix, so holds   ${\bi P} ={\bi P}^2 = {\bi P}^t.$ We can convince ourselves about this, when realizing that our matrix $\bi P$  is symmetric and has zero sum of rows and columns, respectively.              $$  \buildrel \rm projection \over = {\bi P}^t \left( I - {1\over N}{\bi 1 1}^T\right)^t=   \left( {\bi P} \left( I - {1\over N}{\bi 1 1}^T\right)\right)^t =    \left( {\bi P} - {1\over N}{\bi 1 1}^T\right)^t      .  \eqmark $$ Without further details, we must also strictly  fulfill $$\rho\left(\bi P - {1 \over N} {\bi 1 1}^T \right)<1, \eqmark$$  to reach the convergence  condition $ lim_{t\rightarrow\infty} {\bi P}^t = {1\over N}{\bi 1 1}^T $.
  
 
-\sec Iterative Consensus Algorithms and Markov Chains
+
+
+\sec Heuristics based on the Laplacian matrix
+
+Basis material for following section comes mainly from \cite[Xiao03fastlinear].
+
+There have been developed some simple heuristics for choosing matrix $\bi P$, that fulfills the established conditions from the previous section. They are based on the construction of the Laplacian matrix, shown in Graph Theory chapter. 
+So then, let us heuristically take $$ {\bi P} = {\bi I} - \alpha {\bi L}, \ \alpha \in \bbchar R. \eqmark $$
+ $\bi P$ is often refered to as Perron matrix, due to his pioneering work in last century \cite[ding2009nonnegative].
+
+
+Such a matrix in fact evaluates each edge with a value $\alpha.$ The first great advantage of this choice,  is that such a matrix $ {\bi P}$ will be automatically compatible with the graph, while it bears information about connected, respectively disconnected vertices. And also, in this way, as we build the ${\bi P}$ matrix like a substraction of an Identity matrix and some specified multiple of a Laplacian matrix, this substract-origined matrix is of course a stochastic matrix, regarding to the property of the Laplacian matrix, that  all its rows sum up exactly to zero. 
+
+
+\Theorem According to \cite[SaberMurray]. Let $G$ be an undirected graph with $N$ nodes and maximum degree $\Delta$.
+ Then, the Perron matrix $\bi P$ with parameter $\alpha \in \left(0;{{ 1}\over{\Delta}}   \right]$ satisfies the following properties:
+
+i) P is a row stochastic non-negative matrix with a trivial eigenvalue of 1;
+
+ii) All eigenvalues of P are in a unit circle;
+
+iii) If $G$ is a balanced graph, then $\bi P$ is a doubly stochastic matrix;
+
+iv) If $G$ is strongly connected and $0<\alpha<{1\over\Delta}$ then $\bi P$ is a primitive matrix.
+
+
+
+     \vskip 0.3cm
+Next, the elements of ${\bi P}$ are 
+$$ p_{i,j} = \cases{\alpha & if there is the edge $(v_i,v_j)$,  \cr 1-d_i \alpha & if $i=j, $ \cr 0 & otherwise,} \eqmark $$
+ where we remind $d_i$ is the degree of vertex $i.$ The distributed averaging algorithm may be then rewritten as \cite[Xiao03fastlinear]
+$$ x_i(t+1)= x_i(t)+\alpha \sum_{j \in {\cal{N}}_i} (x_j(t)-x_i(t)), \ i = 1, 2, ... N. \eqmark $$
+
+We already showed in Chapter 2, that Laplacian matrix is always positive semidefinite. Because of this property, we have to necessarily choose $$ \alpha > 0, \eqmark$$ to successfully accomplish the convergence condition  \cite[Xiao03fastlinear]
+$$ \rho\left({\bi P}-{1\over N}{\bi 1 1}^T \right)<1. \eqmark $$
+
+Now on, we can from equation $ {\bi P} = {\bi I} - \alpha {\bi L}$ determine an expression linking eigenvalues of matrix $ {\bi P}$
+with eigenvalues of matrix $ {\bi L}.$
+\Theorem:
+$$ \lambda_i({\bi P} ) = 1 - \alpha \lambda_{N-i+1}( {\bi L} ) , i = 1, 2, ..., N, \eqmark $$
+where $\lambda_i (.)$ stands for the $i-$th smallest eigenvalue of the symmetric matrix. 
+
+{\em Proof: } Quite simple, this can be verified writing the equation for characteristic polynomial of matrix $\alpha {\bi L }$:  
+$$\det\left(\alpha {\bi L } - \lambda {\bi I }    \right) ,  \eqmark$$ 
+ which is using $ \alpha {\bi L} = {\bi I} - {\bi P}$  
+  equal to \label[qerwef] $$ \det \left(  \left( {\bi I} - {\bi P}\right)- \lambda {\bi I} \right) =   
+\det \left(  \left( 1-\lambda\right) {\bi I} - {\bi P}  \right).  \eqmark  $$ 
+Next we want to solve characteristical equation $\det \left(  \left( 1-\lambda\right) {\bi I} - {\bi P}  \right)=0.$ In this, we can see from RHS of \ref[qerwef], that the spectrum of $\alpha {\bi L}$  will be exactly the spectrum of $(1-\lambda({\bi P}))$. And since  holds
+ $$\det(a {\bi X}) =  a \det ({\bi X}),$$ the proof is complete.
+
+\vskip 0.3cm
+
+
+
+ We have seen, that for Laplacian matrix of connected graph holds $$\lambda_1({\bi L} ) = 0. \eqmark $$  Then we can using previous theorem immediatly write  $$ \lambda_N({\bi P} ) =1  . \eqmark $$
+
+The spectral radius of a matrix $ \left( {\bi P}-{1\over N}{\bi 1 1}^T  \right) $ may be then expressed as 
+$$ \rho \left( {\bi P} - {1\over N} {\bi 1 1}^T \right) = \max \{  \lambda_{N-1}( {\bi P} ), - \lambda_1({\bi P}  )  \} =  
+  \max \{  1 - \alpha \lambda_{2}( {\bi L} ), \alpha \lambda_N({\bi L}  )-1  \}.                \eqmark $$ 
+Using the condition $ \rho \left( {\bi P} - {1\over N} {\bi 1 1}^T \right) < 1$  we can write
+$$ 0 < \alpha < {{2}\over{\lambda_N(\bi L)}}. \eqmark$$
+
+Finally, the choice of $\alpha$ to minimize $   \rho \left( {\bi P} - {1\over N} {\bi 1 1}^T \right)  $ is
+$$ \alpha^* = {{2}\over{\lambda_N({\bi L}) + \lambda_2({L})}}. \eqmark $$
+
+
+
+%................................To be edited................................
+
+% \sec Iterative Consensus Algorithms and Markov Chains
 
 %Concerning the iterative algorithm \ref[iteration_eq], we can look at it as  a Markov Chain 
 
@@ -200,6 +204,34 @@ So, to prove sufficiency, if $\bi P$ satisfies $ \bi P \bi 1 = \bi 1 $ and $ {\b
 %na tento odstavecek jsem pysny, ten pisu od srdce
 
 
+
+\Example Let us take an undirected graph from Figure  \ref[Graph], initializing simply the $i-$th vertex with value $i$ , $i =1, 2, ..., 10. $ In the figure  \ref[conv_simple] are shown the time varying values in each vertex. It might be clearly seen, that the all vertex values converge to the expected value $5.5.$
+
+
+\midinsert
+\picw=11cm \cinspic pictures/conv_simple.pdf
+\clabel[conv_simple]{Example of averaging consensus algorithm.}
+\caption/f Averaging consensus algorithm in graph from Figure  \ref[Graph].
+\endinsert
+
+\Example In next example in Figure \ref[conv_fix_v3], let's again take exactly the same graph \ref[Graph], but now we will during the run of algorithm fix the value in vertex $v_3 = 3.$ It is quite interesting, however not surprising, that this modification causes all values to converge to the value $3.$
+
+\midinsert
+\picw=12cm \cinspic pictures/conv_fix_v3.pdf
+\clabel[conv_fix_v3]{Example of averaging consensus algorithm with one fixed vertex value.}
+\caption/f Averaging consensus algorithm in graph from Figure \ref[Graph] with fixed value in $v_3, x_{v_3}(t)=3 $.
+\endinsert
+
+\Example Last experiment \ref[conv_noise], that we want to present over topology from Figure \ref[Graph] is adding reasonably small Additive White Gaussian Noise (AWGN) to the updates. Noisy updates will be main subject of the next chapter.
+\midinsert
+\picw=16cm \cinspic pictures/conv_noise.pdf
+\clabel[conv_noise]{Example of averaging consensus algorithm with noisy updates.}
+\caption/f Averaging consensus algorithm in graph from Figure \ref[Graph] with noisy updates.
+\endinsert
+
+\sec Next possible constructions of $ {\bi P} $ matrix 
+
+As mentioned before, the choice to construct ${\bi P}$ is not unique. However the Laplacian based approach is in the related basic literature probably the most common, we will briefly give some other  satisfactory examples. The summary below comes from \cite[nexxxxt].
 
 
 

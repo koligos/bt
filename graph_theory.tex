@@ -41,7 +41,7 @@ An edge $\left( v_i, v_j \right)$ means a connection between vertices $v_i$ and 
 \secc Undirected graph
 
 \midinsert
-\picw=8cm \cinspic pictures/basic_graph.pdf
+\picw=6cm \cinspic pictures/basic_graph.pdf
 \clabel[Graph]{Example of a undirected graph.}
 \caption/f Example of a simple undirected graph to demonstrate basic definitions. 
 \endinsert
@@ -53,7 +53,7 @@ Set of neigbours $ {\cal{N}}_i $ of a vertex $v_i$ is $ {\cal{N}}_i = \{ v_j \in
 \secc Directed graph
 
 \midinsert
-\picw=10cm \cinspic pictures/basic_digraph.pdf
+\picw=7cm \cinspic pictures/basic_digraph.pdf
 \clabel[Digraph]{Example of a directed graph.}
 \caption/f Example of a directed graph. 
 \endinsert
@@ -74,11 +74,11 @@ $$ a_{i,j} = \cases{1 & if there is the edge $(v_i,v_j)$,  \cr 0 & if $i=j,$ \cr
 
 
 Adjacency matrix of a graph from figure \ref[Graph] reads
-$$ {\bi A}_{2.2} = \pmatrix{0&0&1&1&0\cr 0&0&1&1&1\cr 1&1&1&0&1\cr 1&1&0&0&1\cr 0&1&1&1&0\cr} . \eqmark $$ 
+$$ {\bi A}_{2.2} = \pmatrix{0&0&1&1&0\cr 0&0&1&1&1\cr 1&1&0&0&1\cr 1&1&0&0&1\cr 0&1&1&1&0\cr} . \eqmark $$ 
 We can see, that Adjacency matrix of an undirected graph is symmetric.
 
 And adjacency matrix of a graph from figure \ref[Digraph] is
-$$ {\bi A}_{2.3} =\pmatrix{0&0&1&1&0\cr0&0&0&0&1\cr1&1&0&1&1\cr1&0&0&0&1\cr0&0&0&0&0\cr} . \eqmark$$
+$$ {\bi A}_{2.3} =\pmatrix{0&0&1&1&0\cr 0&0&0&0&1\cr1&1&0&1&1\cr 1&0&0&0&1\cr0&0&0&0&0\cr} . \eqmark$$
 For directed graph the Adjacency matrix generally is not symmetric.
 
 For undirected graphs allowing {\em Weighted graphs} means, that for each pair of vertices $i, j$ we assign a certain weight $a_{i, j}$, that satisfies conditions: 1) $a_{i, j} = a_{j, i}$, 2) $a_{i, j} \ge 0$ and 3) $a_{ij} \not = 0 $ if and only if vertices $i$ and $j$ are not connected by an edge. This is only a generalization of the Adjacency matrix definition above.
@@ -285,6 +285,8 @@ Considering the definition of the Laplacian ${\bi L} (G) ={\bi D} (G) - {\bi A} 
 \Theorem Let $G$ be a graph created as a union of disjoint graphs $G_1, G_2, ..., G_k.$ Then holds \cite[Mohar91thelaplacian]:
  $$ \mu (G,x) = \prod_{i=1}^k \mu_i(G_i, x) . \eqmark $$
 
+
+
 \Example
 
 Let's take a graph from the following figure, consisting of two disjoint components with vertices $\{1, 2, 3  \}$ and $\{4, 5, 6, 7 \}$.
@@ -312,6 +314,23 @@ For characteristic polynomoial holds:
 
 
 $\mu(G,x) = \mu(G_{\{1, 2, 3\}},x)  \mu(G_{\{4, 5, 6,7\}},x) = (x^3-6x^2+9x) (x^4-8^3+19x^2-12x) = x^7-14x^6+76x^5-198x^4+243x^3-108 x^2.$ Note, that 0 is clearly double root corresponding to the 2 components.
+
+\Example To get more intuition about {\em Connectivity eigenvalue} $ \lambda_2$, consider two graphs in Figure \ref[spare_dense] below.
+
+\midinsert
+\picw=14cm \cinspic pictures/spare_dense.pdf
+\clabel[spare_dense]{Another demonstration of Connectivity eigenvalue meaning.}
+\caption/f Another demonstration of Connectivity eigenvalue meaning.
+\endinsert
+
+The eigenvalues of the spare and low connected graph on the left are
+$$\lambda_1^S = 0, \ \lambda_2^S \approx 0.21 , ..., \ \lambda_{10}^S \approx  5.46.$$
+
+The eigenvalues of the dense graph on the right are
+$$\lambda_1^D = 0, \ \lambda_2^D \approx  1.65 , ..., \ \lambda_{10}^D \approx  7.56.$$
+
+We notice, that $\lambda_2^S $ of the spare graph is almost eight times smaller than $\lambda_2^D $ of relatively sense graph. In next chapter we shall see, that the {\em Connectivity eigenvalue} directly limits the speed of convergence.
+
 
 \secc Laplacian matrix - notes 
 
