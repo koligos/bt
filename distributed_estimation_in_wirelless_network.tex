@@ -1,0 +1,128 @@
+\def\ctustyle{{\tenss CTUstyle}}
+\def\ttb{\tt\char`\\} % pro tisk kontrolních sekvencí v tabulkách
+
+\chap Distributed Estimation in Wireless Sensor Networks
+
+The following chapter should serve as an introduction to the problematics of distributed estimations in wirelless networks. Hopefully, we will summarize firstly the problematics overview, with focus on the aspects that complicate the estimation process,  and   then provide some basic approaches of implementation of a consensus algorithm, that respects the true noniedeal properties of real networks. 
+
+This is chapter is based on source \cite[spring_book].
+
+\sec{Introduction}
+
+Wireless networks are present in a great number of applications of an everyday life. The most commonly given examples are eg. communication systems (mobile networks, LTE, Wi-Fi), all sorts of measuring devices (technical, medical, industry and other usage). Currently very popular are autonomous cars. In the context of our main topic, the averaging consensus algorithm might be commonly seen in solving a problem of moving in coordinated formations (eg. flights of drons and others unmaned vehicles).
+
+Subject of our interest will be now Wirelless Sensor Networks (WSN) with smart nodes, i.e. nodes, that own some computing power and are programmable (i.e. not just an ordinatry sensor). By localizing such nodes in some area to create a network, we aim to  avoid using any kind of centralized topology. One benefit is, that WSN becomes to be much more robust with respect to a single failure point of a central device. (We do not have any). Naturally, now we are not limited to a fixed topology and the nodes can move. Even more important is, that in a situation, when nodes of WSN aim to  estimate some value $ \theta$ in a distributed manner, it is naturally much more faster when the nodes communicate directly. Having nodes, that are battery-supplied, we are also glad to avoid using the limited amount of power without necessity. It seems naturally, that more effective way is to use only direct communication between nodes, that want to obtain the desired estimation. 
+
+WSN networks may consist of hundreds of nodes. Its goal is to estimate   the value cooperatively and locally, instead of moving the calculation somewhere else, beacuase sometimes it might not be even possible. Typically, in wireless communication the nodes should obtain an overview of the network parameters (network topology, carrier frequency, common time base). Concerning the topology, one node initially knows only its direct neighbors. In digital communication applications, is typically necessary, that each node knows the topology of whole network (an Adjacency matrix). This is exactly the case, when we can not avoid a cooperation between nodes. With respect to the previous chapters, we note that the WSN can be for a purpose of distributed consensus algorithm simply coded into a graph with, expressing the possibility of an information exchange between nodes \cite[spring_book]. 
+
+
+
+\sec Overview of Distributed Consensus Estimation
+
+Our general observation model will be
+$$ z= {\bi H}x+w, \eqmark$$
+where $z$ is our observation, $x$ is the target value,  ${\bi H}$ is an observation matrix and $w$ is the additive noise. With respect to dynamic information of the target and a strategy used to obtain the estimation, we can sort the Distributed Consensus Estimation Algorithms into three groups with following main characteristics:\vskip 0.3cm
+\begitems \style 0
+
+  * Observation-only consensus
+  \itemitem{*} Observation and estimation are two independent actions. At the beginning, all nodes measure the available values and then algorithm continues by exchanging these values between nodes to reach the consensus. This case was described in previous text.
+  \itemitem{*} Works correctly only if the target parameter $x$ is stationary.
+\itemitem{*} Is not convinient to estimate dynamicly changing values. 
+  \itemitem{*} Advantageous, when holds a special case $\bi H= I.$
+\vskip 0.2cm
+
+*Observation+innovation consensus
+  \itemitem{*} Repeats the observation (measurement) during the run of algorithm and estimation actions have available new values to improve the estimation.
+ \itemitem{*} We repeat the observation, because the parameter $x$ is time dependent and fluctuates, e.g. beacause of an additive noise..
+\vskip 0.2cm
+*Consensus-based filters for dynamic targets
+ \itemitem{*} Works as Observation+innovation consensus but takes in account, that $x=x(t)$ is changing in time dynamically.
+\enditems
+
+\vskip 0.2cm
+
+Typical problems in WSN estimation process are:
+\begitems \style 0
+\item{*}Noise in the network. We generally never receive the same value as we send. The observation process is also affected by noise.
+\vskip 0.2cm
+\item{*}Topology of WSN may generally change. 
+\vskip 0.2cm
+\item{*}Wireless devices are battery-powered and because of that, the estimation process should be effective and not to waste the power.
+\vskip 0.2cm
+\item{*}Topology of WSN may generally change.
+\vskip 0.2cm
+\item{*}The algorithm requires a common clock synchronization between nodes.
+\vskip 0.2cm
+\item{*}The communication between two nodes generally must not have symmetric characteristics, so that e.g. $A$ node can send information to $B,$ however $B$ can send to $A.$  Hence, a graph describing the WSN inter-nodes communication is then the directed graph. 
+\enditems
+
+\sec Consensus-Based Distributed Parameter Estimation with Asymmetric Communications
+
+For now, to hold the situation as general, as possible, we will define two different kinds of nodes in our WSN. The first kind will be Sensor Node (SN), that locally measures the value we want to globally estimate. The second will be called Relay Node (RN) and they do not measure anything but distribute the measure results of SN to other nodes. This concept would have been practically used to save money for many expensive sensors. Such a network we call heterogeneous and hence, all the nodes do not have same impact on the result. By adding RN into the WSN, we  also naturally increase the connectivity of the graph. Typically, we can add cheap RN into the network to enable and/or improve the connectivity of all SN. In this section we will provide a decription of Distributed Consensus-based Unbiased Estimation (DCUE) as stated in \cite[spring_book].
+
+\secc Problem model
+
+In this subsection, we introduce the notation.
+
+We are about to solve a problem of estimation of a vector $ \theta \in {\bbchar R}^J,$ whose components are separately measured by SN. We have two kinds of nodes. First set of nodes $I_S = (1, 2, ..., M)$ are sensor nodes SN and  then $I_R = (M+1, M+2, ..., N)$ are the relay nodes RN. The measurement of the desired vector $ \theta$ is described as
+
+$$ y_i(t)={\bi H_i}  \theta + w_i(t), \forall i \in I_S  \eqmark$$
+
+where ${\bi H} \in {\bbchar R}^{J_i \times J}$ is an observation matrix and $w_i(t)$ is white Additive Gaussian noise. The statement  $J_i\le J$ for $i-$th SN means, that it genrally provides only limited information about the vector $ \theta,$ because it can't measure the rest of components. The RN nodes can't measure $ \theta$ at all, because they are not equiped with the sensors.
+
+Neighbors of node $i$ will be denoted $ {\cal{N}}_i$. Subset of neigbors that are only SN will be noted as $ {\cal{N}}_i^S$ and subset of RN nodes will be $ {\cal{N}}_i^R$.
+
+Next, assuming, that $i-$th node transmits to the $j-$th at a constant power level $P_{T_i}$ in distance $d_{ij}$, the communication will be successful if holds the standard inequality for Signal to Noise Ratio (SNR)
+\label[snr]$$  {{P_{T_i}}\over{{\bbchar N}d_{ij}^\eta}} \ge \beta  , \eqmark$$
+where $  {\bbchar N} $ stands for a power level of noise in the channel, $\eta$ is an exponent expressing the lossy behavior of the channel and $\beta$ is the minimum SNR value fulfilling the condition for communication \cite[spring_book]. 
+From Equation \ref[snr] we can determine a maximum distance $d_{ij_{\max}}$ between nodes $i, j,$ thaw will be threshold for evaluating the communication as possible
+$$ d_{ij_{\max}}= \root {\eta}\of{{P_{T_i}}\over{{\bbchar N}\beta}}.\eqmark$$ 
+
+\secc Graph representation
+
+Since we decided to model situation with asymmetric communication channels, we have to use a directed graph representation. In our case, a weigted  graph $G$ is a triplet $G= ( V, E, {\bi A})$, where $V=I_S \cup I_R,$  $ E \subset V\times V,$ and ${\bi A}$ is a matrix of weigts associated to edges $E.$ For elements of $\bi A$ holds $$a_{ij} > 0 \Leftrightarrow (i,j)\in E. \eqmark$$ (Note, this $\bi A$ matrix is a direct generalization of already before used Adjacency matrix.) Considering directed graphps, it is in a litereature common to call a source vertex of an edge {\em parent} and the destination vertex {\em child }\cite[spring_book].
+
+
+\secc Description of Algorithm DCUE
+
+Before proceeding, let's note that in a description of DCUE Algorithm we will assume perfectly synchronized updates. 
+
+In each node $i$ is initially known a (e.g. measured) value $x_i(0).$ The update equation of DCUE algorithms states:
+$$ \eqalign{
+ x_i(t+1) = x_i(t) +  \rho(t) \left( \alpha_i {\bi H}_i^T (y_i(t) - {\bi H}_i  x_i(t)  \right) 
++ \cr {\rho(t) \over{c_i}}\left[ \sum_{j\in {\cal{N}}_i^R  } a_{ij} (x_j(t)-x_i(t)) + \sum_{j\in {\cal{N}}_{i}^S  } a_{ij} (x_j(t)-x_i(t))   \right],
+} \eqmark$$
+where $\alpha_i>0$ controls  the update rate of information during the run of algorithm; $\rho(t)>0$ is a weight controlling an impact of received updates; $c_i>0$ controls impact of $i-$th own measurement and $ a_{ij}=\sqrt{{P_{T_j}|h_{ij}|^2}\over{   d_{ij}^\eta }}$ represents an amplitude of a signal received by node $i$ from node $j$ , in which $h_{ij}$ is a fading coefficient describing a channel between $i$ and $j,$ and it is a reason why $a_{ij} \not=a_{ji}$ \cite[spring_book].
+
+Next, an update equation for RN nodes reads
+ $$z_i(t) =\sum_{j\in {\cal{N}}_i^S  } \gamma_{ij}x_j(t)+ \sum_{j\in {\cal{N}}_i^R  } \gamma_{ij}z_j(t)   , \forall i \in I_R, \eqmark$$ where $\gamma_{ij}$ are some nonnegative weighting coefficents \cite[spring_book].
+
+\Definition(Consistency) The sequence of estimates$\{x_i(t)\}, t\ge 0$  of $\theta$ at SN $i$ is
+called consistent, if we have almost surely \cite[spring_book] $$ \lim_{t\rightarrow\infty}x_i(t)=\theta.$$
+
+\Definition (Asymptotic Unbiasedness) We call a sequence of estimates   $\{x_i(t)\}, t\ge 0$ of a value $\theta$ assymptotically unbiased, if holds \cite[spring_book]  $$ \lim_{t\rightarrow\infty}{\bbchar E}\left[(x_i(t))\right]=\theta.$$
+ 
+
+
+
+$$ , \eqmark$$
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

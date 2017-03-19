@@ -1,4 +1,3 @@
-
 \def\ctustyle{{\tenss CTUstyle}}
 \def\ttb{\tt\char`\\} % pro tisk kontrolních sekvencí v tabulkách
 
@@ -229,20 +228,40 @@ $$ \alpha^* = {{2}\over{\lambda_N({\bi L}) + \lambda_2({L})}}. \eqmark $$
 \caption/f Averaging consensus algorithm in graph from Figure \ref[Graph] with noisy updates.
 \endinsert
 
-\sec Next possible constructions of $ {\bi P} $ matrix 
+\sec The Metropolis-Hastings weighting method
 
-As mentioned before, the choice to construct ${\bi P}$ is not unique. However the Laplacian based approach is in the related basic literature probably the most common, we will briefly give some other  satisfactory examples. The summary below comes from \cite[nexxxxt].
-
-
-
-\secc The Metropolis-Hastings weighting method
+As mentioned before, the choice to construct ${\bi P}$ is not unique. Altough the Laplacian based approach is in the related basic literature probably the most common, we will briefly give some other  satisfactory examples. For illustration we provide only one example from \cite[nexxxxt].
 
 The Metropolis-Hastings weighting method coefficients of ${\bi P}^{MH}$ matrix are 
 
 $$ p_{i,j}^{MH} = \cases{  {1\over{1+\max(d_i, \ d_j)}}    & for $ j \in {\script N}_i, \ i \not= j$,  \cr 1-\sum_{j \in {\script N}_i}       {p_{i,j}} & if $i=j, $ \cr 0 & otherwise \cite[nexxxxt].} \eqmark $$
-\secc The Maximum degree weighting method 
 
-The Maximum degree weighting method chooses components of ${\bi P}^{MD}$ as
+
+\sec Average consensus algorithm with additive noise
+
+Source for this section is  mainly \cite[Xiao]. 
+
+In previous text, we expected during the run of algorithm a perfectly reliable communication. Now, let's have a look, what happens, when this holds no more. The simplest case to begin with is an Additive noise $v(t) \in {\bbchar R}^N = (v_1(t), v_2(t), ..., v_N(t))$. In detail, the $v_i(t)$ is a random variable with zero mean and unit variance. Mathematically formulated, the averaging consensus algorithm affected by additive noise will be described  as
+\label[noisy] $$ x(t+1) = {\bi P} x(t) + v(t)  \eqmark,$$
+where we expect that ${\bi P}$ fulfills the convergence conditions stated before. Note, that now the sequence of the vectors $x(t)$ becomes to be a ${\em stochastic \  process},$ i.e. a set of random variables parametrized by the time $t.$
+
+By ${\bbchar E}[.],$ we denote an Expectation operator, (i.e. the Mean). Then since in \ref[noisy] we expected a zero mean, it implies that holds $${\bbchar E}[x(t+1)] = {\bi P} {\bbchar E}[x(t)]. $$ So using the opearator ${\bbchar E}[.],$ the algorithm doesn't even know about the noise, while its mean is zero. 
+However, the values in each vertex do not converge at all. To present this, let's define a function $$a(t) = {1\over N}{\bi 1}^T x(t), \eqmark$$ that provides an average value of a vector $x(t)$  (i.e. a scalar). Then
+$$\displaylines{ a(t+1) =  {1\over N}{\bi 1}^T x(t+1) = {1\over N}{\bi 1}^T   \left( {\bi P} x(t) + v(t) \right)= {1\over N}{\bi 1}^T   {\bi P} x(t)+ {1\over N}{\bi 1}^T v(t) = \cr = \left| {\bi 1}^T {\bi P} = {\bi 1}^T    \right| =   a(t) + {1\over N}{\bi 1}^T v(t) . } $$ 
+Note, the expression ${1\over N}{\bi 1}^T v(t)$ is nothing but a sequence of random variables, which implies that $a(t)$ has the following properties:  \label[meaee]$$ {\bbchar E}[ a(t) ]= a(0) \eqmark$$ and \label[rozupdsf]$${\bbchar E}\left[ a(t)  - {\bbchar E}(a(t))  \right]^2=t.   \eqmark$$ We emphasize that \ref[rozupdsf] means, the variance of a random variable $a(t)$ increases linearly with time. It's also interesting, that nor  \ref[meaee] nor \ref[rozupdsf]  do not depend on the structure of matrix $\bi P.$
+
+
+
+
+
+
+
+
+
+
+%\secc The Maximum degree weighting method 
+
+%The Maximum degree weighting method chooses components of ${\bi P}^{MD}$ as
 
 %$$ p_{i,j}^{MH} = \cases{  {1\over{1+\max(d_i, \ d_j)}}    & for $ j \in {\script N}_i, \ i \not= j$,  \cr 1-\sum_{j \in {\script N}_i}       {p_{i,j}} & if $i=j, $ \cr 0 & otherwise  \cite[nexxxxt].} \eqmark $$
 
