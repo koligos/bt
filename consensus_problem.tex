@@ -6,7 +6,7 @@
 
 %\Ethmology briefing
 
-In this chapter, let us consider an undirected and connected graph $G=(V,E)$ with $N$ vertices and edges $(v_i,v_j)$ between vertices  $i, j$, where  $i,j \in \{1,2, ..., N\}$. We denote an initial value $x_i(0)$ the value assigned to the $i$-th vertex (node, agent) in time $ t=0, \  t \in {\bbchar Z}.$ Then  $x_i(t)$ refers to the value in the $i$-th vertex in time $t$. Our goal is to, for $t \rightarrow \infty$, using local communication and computation, in all  $N$ vertices of the graph,  obtain an average value of all these initial values. Based on a matrix-like description of graph $G$, our goal will be to construct matrix ${\bi P}$, whose components $p_{i,j}$ will in fact bear this averaging algorithm, in a formalism of iterative matrix multiplication. 
+In this chapter, let us consider an undirected and connected graph $G=(V,E)$ with $N$ vertices and edges $(v_i,v_j)$ between vertices  $i, j$, where  $i,j \in \{1,2, ..., N\}$. We denote an initial value $x_i(0)$ the value assigned to the $i$-th vertex (node, agent) in time $ t=0, \  t \in {\bbchar Z}.$ Then  $x_i(t)$ refers to the value in the $i$-th vertex in time $t$. Our goal is to, for $t \rightarrow \infty$, using local communication and computation, in all  $N$ vertices of the graph,  obtain an average value of all these initial values. Based on a matrix-like description of graph $G$, our goal will be to construct matrix ${\bi P}$, whose components $p_{i,j}$ will in fact bear this averaging algorithm, in a formalism of iterative matrix multiplication \cite[Umberto]. 
 
 In this chapter, subject of our interest will be a linear, discrete-time consensus algorithm. A detailed description of the folowing is in \cite[Garin2010], \cite[Xiao]  both containing also rich references to other publications. 
 
@@ -36,14 +36,14 @@ In this chapter about  Linear  average consensus algorithm we will assume, that:
 
 
 Assume this {\em linear} update equation 
-
+\label[ue]
 $$ x(t+1) = {\bi P}(t) x(t), \eqmark $$
 where $x(t)= ( x_1(t), x_2(t), ..., x_N(t))^T \in  {\bbchar R}^{N} $ 
 and for all values of $t$, $  {\bi P} (t) \in  {\bbchar R}^{N{\times{N}}}  $ is a {\em stochastic matrix}, i.e. $p_{i,j} (t) \ge 0$ and $\sum _{j=1}^N p_{i,j} = 1, \forall i ,j \in {1, 2, ..., N}.$ Meaning, that all values in each row sum up to 1. The $p_{i,j}$ components are also often reffered to as {\em weights}  \cite[Xiao].
 
 Now, let's  rewrite the equation above expanding a matrix multiplication:
 
-\label[iteration_eq]$$ x(t+1) = \sum_{j=1}^N p_{i,j}(t) x_i (t) = x_i(t) + \sum_{j=1; j\not= i}^N p_{i,j}(x_j(t)-x_i(t)). \eqmark $$
+\label[iteration_eq]$$ x_i(t+1) = \sum_{j=1}^N p_{i,j}(t) x_i (t) = x_i(t) + \sum_{j=1; j\not= i}^N p_{i,j}(x_j(t)-x_i(t)). \eqmark $$
 This equation is for given ${\bi P} (t)$ a general form of a {\em linear consensus algorithm}, that may be usually found in the literature. Frankly spoken, all the theory behind linear consensus algorithm aims to find the best matrix $  {\bi P}(t)$, such as the consensus is reached. 
 
 Formally defined, we say that $  {\bi P}(t)$ solves {\em consensus problem}, if for all $i$ holds  $$\lim_{t\rightarrow\infty} x_i (t)= \alpha, \forall i. \eqmark $$ Then, for a solution of the {\em average consensus problem} must be in an addition to the previous condition fulfilled also $$\alpha = {1\over N} \sum_{i=1}^Nx_i(0). \eqmark$$
@@ -65,7 +65,7 @@ The ${\bi P} (t)$ matrix may be considered as: 1) constant ${\bi P} (t) = {\bi P
 
 
 
-\sec Basic convergence conditions
+\sec General convergence conditions
 
 Next, let's formulate some conditions for our constant ${\bi P} $ matrix.  We call a matrix ${\bi P} $ {\em compatible} with a graph $G$, if $p_{i,j}=0$ for $j\not\in {\cal{N}}_i$ (i.e. $i$-th node is not in a set of neighbours of the $j$-th node.) Still considering an undirected graph, we can write:
 $${\bi P} = {\bi P}^T. \eqmark$$
@@ -90,33 +90,33 @@ So far, we wrote down some conditions for {\bi P} matrix, however it should be c
 
 %To the stochastic matrix  condition \ref[stocha]  we will come back soon later, but for now, we it comes to be extremely useful, because it allows us to use powerfull tools from the Theory of Markov Chains. 
 
-We remind a definition of a Spectral Norm of a matrix . Let ${\bi A}^H$ be the conjugate transpose of the square matrix ${\bi A}$, so that $a_{ij}^H =a_{ij}^*$, then the spectral norm is defined as the square root of the maximum eigenvalue of  ${\bi A}^H {\bi A}$ \cite[spectNorm].
+%We remind a definition of a Spectral Norm of a matrix . Let ${\bi A}^H$ be the conjugate transpose of the square matrix ${\bi A}$, so that $a_{ij}^H =a_{ij}^*$, then the spectral norm is defined as the square root of the maximum eigenvalue of  ${\bi A}^H {\bi A}$ \cite[spectNorm].
 
 
-Assumming the convergence conditions are fulfilled, we can define {\em asymptotic convergence factor}   \cite[Xiao03fastlinear] $$ r_{asym}({\bi P}) = sup_{x(0)\not=\overline x}  \lim_{t\rightarrow \infty} \left(  {{\|x(t)-\overline x\|} \over {{\|x(0)-\overline x\|}}} \right) ^{1 \over t}, \eqmark $$ and {\em per-step convergence factor}   \cite[Xiao03fastlinear]$$ r_{step}({\bi P}) = sup_{x(t)\not=\overline x}{   {\| x(t+1) - \overline x\|}\over{\|x(t) - \overline x\|}} . \eqmark $$
+%Assumming the convergence conditions are fulfilled, we can define {\em asymptotic convergence factor}   \cite[Xiao03fastlinear] $$ r_{asym}({\bi P}) = sup_{x(0)\not=\overline x}  \lim_{t\rightarrow \infty} \left(  {{\|x(t)-\overline x\|} \over {{\|x(0)-\overline x\|}}} \right) ^{1 \over t}, \eqmark $$ and {\em per-step convergence factor}   \cite[Xiao03fastlinear]$$ r_{step}({\bi P}) = sup_{x(t)\not=\overline x}{   {\| x(t+1) - \overline x\|}\over{\|x(t) - \overline x\|}} . \eqmark $$
 
 
 \Theorem Equation  
 $$ lim_{t\rightarrow\infty} {\bi P}^t = {1\over N}{\bi 1 1}^T \eqmark $$ holds if and only if $$ {\bi 1 }^T {\bi P} = {\bi 1}^T  , \eqmark$$ i.e. $\bi 1$ is left eigenvector of $\bi P$ with eigenvalue 1,
 $$ \bi P \bi 1 = \bi 1 , \eqmark $$ i.e. $\bi 1$ is also right eigenvalue of $\bi P$ and
-$$ \rho\left(\bi P - J \right)<1, \eqmark $$
+$$ \rho\left({\bi P} -  {1\over N}{\bi 1 1}^T\right)<1, \eqmark $$
 where ${\rho(.)}$ denotes the spectral radius of a matrix, i.e. the greatest absolute value of	an eigenvalue. 
 
 
-Moreover, $$r_{asym}({\bi P}) = \rho\left( {\bi P} -{1\over N}{\bi 1 1}^T  \right), \eqmark$$ 
+%Moreover, $$r_{asym}({\bi P}) = \rho\left( {\bi P} -{1\over N}{\bi 1 1}^T  \right), \eqmark$$ 
 
 
-$$r_{step}({\bi P}) = \left\| {\bi P} -{1\over N}  \right\|_2, \eqmark $$ 
-where $\| . \|_2$ denotes spectral norm \cite[Xiao03fastlinear].
+%$$r_{step}({\bi P}) = \left\| {\bi P} -{1\over N}  \right\|_2, \eqmark $$ 
+%where $\| . \|_2$ denotes spectral norm \cite[Xiao03fastlinear].
 
-Combining the previous equations also holds that ${\bi P}$ must be definitely a doubly stochastic matrix.  And while the $\bi P$ matrix is stochastic, we can see, e.g. from Gershgorin theorem, that all of its eigenvalues must be located in a unit circle.
-
-
+%Combining the previous equations also holds that ${\bi P}$ must be definitely a doubly stochastic matrix.  And while the $\bi P$ matrix is stochastic, we can see, e.g. from Gershgorin theorem, that all of its eigenvalues must be located in a unit circle.
 
 
-{\em Proof:} Complete proof may be found in \cite[Xiao03fastlinear]. We will show only a part of it, while there appears an interesting construction, that in a limit, $t \rightarrow \infty$, the convergence matrix multiplication is a projection.
+
+
+{\em Proof:} Complete proof may be found in \cite[Xiao03fastlinear]. %We will show only a part of it, while there appears an interesting construction, that in a limit, $t \rightarrow \infty$, the convergence matrix multiplication is a projection.
  
-So, to prove sufficiency, if $\bi P$ satisfies $ \bi P \bi 1 = \bi 1 $ and $ {\bi 1 } ^T{\bi P} = {\bi 1}^T,$ then $$ {\bi P}^t - {1\over N}{\bi 1 1}^T =  {\bi P}^t \left( I - {1\over N}{\bi 1 1}^T\right) \buildrel \rm projection \over =  \eqmark $$ Next, we observe, that ${\bi P} = \left( I - {1\over N}{\bi 1 1}^T\right)$ is a projection matrix, so holds   ${\bi P} ={\bi P}^2 = {\bi P}^t.$ We can convince ourselves about this, when realizing that our matrix $\bi P$  is symmetric and has zero sum of rows and columns, respectively.              $$  \buildrel \rm projection \over = {\bi P}^t \left( I - {1\over N}{\bi 1 1}^T\right)^t=   \left( {\bi P} \left( I - {1\over N}{\bi 1 1}^T\right)\right)^t =    \left( {\bi P} - {1\over N}{\bi 1 1}^T\right)^t      .  \eqmark $$ Without further details, we must also strictly  fulfill $$\rho\left(\bi P - {1 \over N} {\bi 1 1}^T \right)<1, \eqmark$$  to reach the convergence  condition $ lim_{t\rightarrow\infty} {\bi P}^t = {1\over N}{\bi 1 1}^T $.
+%So, to prove sufficiency, if $\bi P$ satisfies $ \bi P \bi 1 = \bi 1 $ and $ {\bi 1 } ^T{\bi P} = {\bi 1}^T,$ then $$ {\bi P}^t - {1\over N}{\bi 1 1}^T =  {\bi P}^t \left( I - {1\over N}{\bi 1 1}^T\right) \buildrel \rm projection \over =  \eqmark $$ Next, we observe, that ${\bi P} = \left( I - {1\over N}{\bi 1 1}^T\right)$ is a projection matrix, so holds   ${\bi P} ={\bi P}^2 = {\bi P}^t.$ We can convince ourselves about this, when realizing that our matrix $\bi P$  is symmetric and has zero sum of rows and columns, respectively.              $$  \buildrel \rm projection \over = {\bi P}^t \left( I - {1\over N}{\bi 1 1}^T\right)^t=   \left( {\bi P} \left( I - {1\over N}{\bi 1 1}^T\right)\right)^t =    \left( {\bi P} - {1\over N}{\bi 1 1}^T\right)^t      .  \eqmark $$ Without further details, we must also strictly  fulfill $$\rho\left(\bi P - {1 \over N} {\bi 1 1}^T \right)<1, \eqmark$$  to reach the convergence  condition $ lim_{t\rightarrow\infty} {\bi P}^t = {1\over N}{\bi 1 1}^T $.
  
 
 
@@ -126,37 +126,19 @@ So, to prove sufficiency, if $\bi P$ satisfies $ \bi P \bi 1 = \bi 1 $ and $ {\b
 Basis material for following section comes mainly from \cite[Xiao03fastlinear].
 
 There have been developed some simple heuristics for choosing matrix $\bi P$, that fulfills the established conditions from the previous section. They are based on the construction of the Laplacian matrix, shown in Graph Theory chapter. 
-So then, let us heuristically take $$ {\bi P} = {\bi I} - \alpha {\bi L}, \ \alpha \in \bbchar R. \eqmark $$
+So then, let us heuristically take \label[const_perron]$$ {\bi P} = {\bi I} - \alpha {\bi L}, \ \alpha \in \bbchar R. \eqmark $$
  $\bi P$ is often refered to as Perron matrix, due to his pioneering work in last century \cite[ding2009nonnegative].
 
 
 Such a matrix in fact evaluates each edge with a value $\alpha.$ The first great advantage of this choice,  is that such a matrix $ {\bi P}$ will be automatically compatible with the graph, while it bears information about connected, respectively disconnected vertices. And also, in this way, as we build the ${\bi P}$ matrix like a substraction of an Identity matrix and some specified multiple of a Laplacian matrix, this substract-origined matrix is of course a stochastic matrix, regarding to the property of the Laplacian matrix, that  all its rows sum up exactly to zero. 
 
-
-\Theorem According to \cite[SaberMurray]. Let $G$ be an undirected graph with $N$ nodes and maximum degree $\Delta$.
- Then, the Perron matrix $\bi P$ with parameter $\alpha \in \left(0;{{ 1}\over{\Delta}}   \right]$ satisfies the following properties:
-
-i) P is a row stochastic non-negative matrix with a trivial eigenvalue of 1;
-
-ii) All eigenvalues of P are in a unit circle;
-
-iii) If $G$ is a balanced graph, then $\bi P$ is a doubly stochastic matrix;
-
-iv) If $G$ is strongly connected and $0<\alpha<{1\over\Delta}$ then $\bi P$ is a primitive matrix.
-
-
-
-     \vskip 0.3cm
-Next, the elements of ${\bi P}$ are 
+The elements of ${\bi P}$ are 
 $$ p_{i,j} = \cases{\alpha & if there is the edge $(v_i,v_j)$,  \cr 1-d_i \alpha & if $i=j, $ \cr 0 & otherwise,} \eqmark $$
- where we remind $d_i$ is the degree of vertex $i.$ The distributed averaging algorithm may be then rewritten as \cite[Xiao03fastlinear]
-$$ x_i(t+1)= x_i(t)+\alpha \sum_{j \in {\cal{N}}_i} (x_j(t)-x_i(t)), \ i = 1, 2, ... N. \eqmark $$
+ where we remind $d_i$ is the degree of vertex $i.$ 
 
-We already showed in Chapter 2, that Laplacian matrix is always positive semidefinite. Because of this property, we have to necessarily choose $$ \alpha > 0, \eqmark$$ to successfully accomplish the convergence condition  \cite[Xiao03fastlinear]
-$$ \rho\left({\bi P}-{1\over N}{\bi 1 1}^T \right)<1. \eqmark $$
+Now on, we can from equation $ {\bi P} = {\bi I} - \alpha {\bi L}$ determine an expression linking eigenvalues of matrix $ {\bi P}$ with eigenvalues of matrix $ {\bi L}.$
 
-Now on, we can from equation $ {\bi P} = {\bi I} - \alpha {\bi L}$ determine an expression linking eigenvalues of matrix $ {\bi P}$
-with eigenvalues of matrix $ {\bi L}.$
+
 \Theorem:
 $$ \lambda_i({\bi P} ) = 1 - \alpha \lambda_{N-i+1}( {\bi L} ) , i = 1, 2, ..., N, \eqmark $$
 where $\lambda_i (.)$ stands for the $i-$th smallest eigenvalue of the symmetric matrix. 
@@ -173,18 +155,45 @@ Next we want to solve characteristical equation $\det \left(  \left( 1-\lambda\r
 
 
 
- We have seen, that for Laplacian matrix of connected graph holds $$\lambda_1({\bi L} ) = 0. \eqmark $$  Then we can using previous theorem immediatly write  $$ \lambda_N({\bi P} ) =1  . \eqmark $$
+ We have seen, that for Laplacian matrix of connected graph holds $$\lambda_1({\bi L} ) = 0. \eqmark $$  Then we can using previous theorem immediatly write  \label[is_prim] $$ \lambda_N({\bi P} ) =1  . \eqmark $$
+
+This is for us extremely useful! Since because of Equation \ref[is_prim] the matrix $\bi P$ is primitive and holds Equation \ref[perfrob] from Perron-Frobenius theorem, i.e. exists the limit. 
+
+%\Theorem According to \cite[SaberMurray]. Let $G$ be an undirected graph with $N$ nodes and maximum degree $\Delta$.
+% Then, the Perron matrix $\bi P$ with parameter $\alpha \in \left(0;{{ 1}\over{\Delta}}   \right]$ satisfies the following properties:
+
+%i) {\bi P} is a row stochastic non-negative matrix with a trivial eigenvalue of 1;
+
+%ii) All eigenvalues of {\bi P} are in a unit circle;
+
+%iii) If $G$ is a balanced graph, then $\bi P$ is a doubly stochastic matrix;
+
+%iv) If $G$ is strongly connected and $0<\alpha<{1\over\Delta}$ then $\bi P$ is a primitive matrix.
+
+\Theorem (Convergence condition.)
+Consider a network of agents  given by a strongly connected graph $G$ with $N$ nodes and Perron matrix ${\bi P} = {\bi I} - \alpha {\bi L}.$ Applying the distributed
+consensus algorithm $$ x(t+1)= {\bi P}x(t),   \eqmark $$ where 
+$\alpha \in (0, \Delta],$ consensus is asymptotically reached for all initial states.
+
+
+     \vskip 0.3cm
+%The distributed averaging algorithm may be then rewritten as \cite[Xiao03fastlinear] $$ x_i(t+1)= x_i(t)+\alpha \sum_{j \in {\cal{N}}_i} (x_j(t)-x_i(t)), \ i = 1, 2, ... N. \eqmark $$
+
+We already showed in Chapter 2, that Laplacian matrix is always positive semidefinite. Because of this property, we have to necessarily choose $$ \alpha > 0, \eqmark$$ to successfully accomplish the convergence condition  \cite[Xiao03fastlinear]
+$$ \rho\left({\bi P}-{1\over N}{\bi 1 1}^T \right)<1. \eqmark $$
+
+
 
 The spectral radius of a matrix $ \left( {\bi P}-{1\over N}{\bi 1 1}^T  \right) $ may be then expressed as 
 $$ \rho \left( {\bi P} - {1\over N} {\bi 1 1}^T \right) = \max \{  \lambda_{N-1}( {\bi P} ), - \lambda_1({\bi P}  )  \} =  
   \max \{  1 - \alpha \lambda_{2}( {\bi L} ), \alpha \lambda_N({\bi L}  )-1  \}.                \eqmark $$ 
 Using the condition $ \rho \left( {\bi P} - {1\over N} {\bi 1 1}^T \right) < 1$  we can write
-$$ 0 < \alpha < {{2}\over{\lambda_N(\bi L)}}. \eqmark$$
+\label[cond_conv_alpha]$$ 0 < \alpha < {{2}\over{\lambda_N(\bi L)}}. \eqmark$$
 
-Finally, the choice of $\alpha$ to minimize $   \rho \left( {\bi P} - {1\over N} {\bi 1 1}^T \right)  $ is
+Finally \cite[Xiao03fastlinear], the choice of $\alpha$ to minimize $   \rho \left( {\bi P} - {1\over N} {\bi 1 1}^T \right)  $ is
 $$ \alpha^* = {{2}\over{\lambda_N({\bi L}) + \lambda_2({L})}}. \eqmark $$
 
-
+This is the best possible choice based on the Laplacian matrix. However, very useful is to select the coefficient as stated \cite[Consensus_and_Cooperation_in_Networked] $$ \alpha_{\Delta} = {1 \over \Delta}, \eqmark $$ which choice depends only on the maximum degree in the graph, asssuming the graph is strongly connected. It is useful, because we do not have to look for the eigenvalues of Laplacian matrix. Next interesting reason is, if in implementation the topology of graph would have changed, typicaly in a way that one of the nodes breaks and shuts down, the number ${\Delta}$ can only decrease, which implies the coefficient $ \alpha_{\Delta} $ to increase. Therefore we don't have to be worried of algorithm divergence. Proof of  assymptotical convergence might be found e.g. in \cite[Consensus_and_Cooperation_in_Networked].
 
 %................................To be edited................................
 
@@ -202,25 +211,24 @@ $$ \alpha^* = {{2}\over{\lambda_N({\bi L}) + \lambda_2({L})}}. \eqmark $$
 
 %na tento odstavecek jsem pysny, ten pisu od srdce
 
+Matlab script used in following Examples \ref[ex3_5], \ref[ex3_6] and \ref[ex3_7] may be found in Appendix \ref[perfect_script].
 
-
-\Example Let us take an undirected graph from Figure  \ref[Graph], initializing simply the $i-$th vertex with value $i$ , $i =1, 2, ..., 10. $ In the figure  \ref[conv_simple] are shown the time varying values in each vertex. It might be clearly seen, that the all vertex values converge to the expected value $5.5.$
-
-
+\label[ex3_5]
+\Example Let us take an undirected graph from Figure  \ref[Graph], initializing simply the $i-$th vertex with value $i$ , $i =1, 2, ..., 10. $ In the figure  \ref[conv_simple] are shown the time varying values in each vertex. It might be clearly seen, that the all values converge to the expected value $5,5.$
 \midinsert
-\picw=11cm \cinspic pictures/conv_simple.pdf
+\picw=12cm \cinspic pictures/conv_simple.pdf
 \clabel[conv_simple]{Example of averaging consensus algorithm.}
 \caption/f Averaging consensus algorithm in graph from Figure  \ref[Graph].
 \endinsert
 
+\label[ex3_6]
 \Example In next example in Figure \ref[conv_fix_v3], let's again take exactly the same graph \ref[Graph], but now we will during the run of algorithm fix the value in vertex $v_3 = 3.$ It is quite interesting, however not surprising, that this modification causes all values to converge to the value $3.$
-
 \midinsert
 \picw=12cm \cinspic pictures/conv_fix_v3.pdf
 \clabel[conv_fix_v3]{Example of averaging consensus algorithm with one fixed vertex value.}
 \caption/f Averaging consensus algorithm in graph from Figure \ref[Graph] with fixed value in $v_3, x_{v_3}(t)=3 $.
 \endinsert
-
+\label[ex3_7]
 \Example Last experiment \ref[conv_noise], that we want to present over topology from Figure \ref[Graph] is adding reasonably small Additive White Gaussian Noise (AWGN) to the updates. Noisy updates will be main subject of the next chapter.
 \midinsert
 \picw=16cm \cinspic pictures/conv_noise.pdf
@@ -228,7 +236,14 @@ $$ \alpha^* = {{2}\over{\lambda_N({\bi L}) + \lambda_2({L})}}. \eqmark $$
 \caption/f Averaging consensus algorithm in graph from Figure \ref[Graph] with noisy updates.
 \endinsert
 
-\sec The Metropolis-Hastings weighting method
+
+\vskip 10cm
+
+
+
+
+
+\secc The Metropolis-Hastings weighting method
 
 As mentioned before, the choice to construct ${\bi P}$ is not unique. Altough the Laplacian based approach is in the related basic literature probably the most common, we will briefly give some other  satisfactory examples. For illustration we provide only one example from \cite[nexxxxt].
 
@@ -241,20 +256,159 @@ $$ p_{i,j}^{MH} = \cases{  {1\over{1+\max(d_i, \ d_j)}}    & for $ j \in {\scrip
 
 Source for this section is  mainly \cite[Xiao]. 
 
-In previous text, we expected during the run of algorithm a perfectly reliable communication. Now, let's have a look, what happens, when this holds no more. The simplest case to begin with is an Additive noise $v(t) \in {\bbchar R}^N = (v_1(t), v_2(t), ..., v_N(t))$. In detail, the $v_i(t)$ is a random variable with zero mean and unit variance. Mathematically formulated, the averaging consensus algorithm affected by additive noise will be described  as
-\label[noisy] $$ x(t+1) = {\bi P} x(t) + v(t)  \eqmark,$$
+In previous text, we assumed during the run of algorithm a perfectly reliable communication. Now, let's have a look, what happens, when this holds no more. The simplest case to begin with, is an Additive noise $w(t) \in {\bbchar R}^N = (w_1(t), w_2(t), ..., w_N(t))$. In detail, the $w_i(t)$ is a random variable with zero mean and unit variance. Mathematically formulated, the averaging consensus algorithm affected by additive noise will be described  as
+\label[noisy] $$ x(t+1) = {\bi P} x(t) + w(t)  \eqmark,$$
 where we expect that ${\bi P}$ fulfills the convergence conditions stated before. Note, that now the sequence of the vectors $x(t)$ becomes to be a ${\em stochastic \  process},$ i.e. a set of random variables parametrized by the time $t.$
 
-By ${\bbchar E}[.],$ we denote an Expectation operator, (i.e. the Mean). Then since in \ref[noisy] we expected a zero mean, it implies that holds $${\bbchar E}[x(t+1)] = {\bi P} {\bbchar E}[x(t)]. $$ So using the opearator ${\bbchar E}[.],$ the algorithm doesn't even know about the noise, while its mean is zero. 
+By ${\bbchar E}[.],$ we denote an Expectation operator, (i.e. the Mean). Then since in \ref[noisy] we expected a zero mean, it implies that holds $${\bbchar E}[x(t+1)] = {\bi P} {\bbchar E}[x(t)]. $$ So using the opearator ${\bbchar E}[.],$ the algorithm doesn't even know about the noise, while its mean is zero. This models a situation, when to the updates that are being exchanged is added some noise. 
 However, the values in each vertex do not converge at all. To present this, let's define a function $$a(t) = {1\over N}{\bi 1}^T x(t), \eqmark$$ that provides an average value of a vector $x(t)$  (i.e. a scalar). Then
-$$\displaylines{ a(t+1) =  {1\over N}{\bi 1}^T x(t+1) = {1\over N}{\bi 1}^T   \left( {\bi P} x(t) + v(t) \right)= {1\over N}{\bi 1}^T   {\bi P} x(t)+ {1\over N}{\bi 1}^T v(t) = \cr = \left| {\bi 1}^T {\bi P} = {\bi 1}^T    \right| =   a(t) + {1\over N}{\bi 1}^T v(t) . } $$ 
-Note, the expression ${1\over N}{\bi 1}^T v(t)$ is nothing but a sequence of random variables, which implies that $a(t)$ has the following properties:  \label[meaee]$$ {\bbchar E}[ a(t) ]= a(0) \eqmark$$ and \label[rozupdsf]$${\bbchar E}\left[ a(t)  - {\bbchar E}(a(t))  \right]^2=t.   \eqmark$$ We emphasize that \ref[rozupdsf] means, the variance of a random variable $a(t)$ increases linearly with time. It's also interesting, that nor  \ref[meaee] nor \ref[rozupdsf]  do not depend on the structure of matrix $\bi P.$
+$$\displaylines{ a(t+1) =  {1\over N}{\bi 1}^T x(t+1) = {1\over N}{\bi 1}^T   \left( {\bi P} x(t) + w(t) \right)= {1\over N}{\bi 1}^T   {\bi P} x(t)+ {1\over N}{\bi 1}^T v(t) = \cr = \left| {\bi 1}^T {\bi P} = {\bi 1}^T    \right| =   a(t) + {1\over N}{\bi 1}^T w(t) . } $$ 
+Note, the expression ${1\over N}{\bi 1}^T w(t)$ is nothing but a sequence of random variables, which implies that $a(t)$ has the following properties:  \label[meaee]$$ {\bbchar E}[ a(t) ]= a(0) \eqmark$$ and \label[rozupdsf]$${\bbchar E}\left[ a(t)  - {\bbchar E}(a(t))  \right]^2=t.   \eqmark$$ We emphasize that \ref[rozupdsf] means, the variance of a random variable $a(t)$ increases linearly with time. It's also interesting, that nor  \ref[meaee] nor \ref[rozupdsf]  do not depend on the structure of matrix $\bi P.$ Let's revisit the Figure \ref[conv_noise]. The increasing variance problem may be seen in Figure
+ \ref[div_noise], which is the same setup as in Figure \ref[conv_noise] but showing more iterations of the algorithm. We can see that there is no convergence and the obtained data are therefore useless.
+
+\midinsert
+\picw=16cm \cinspic pictures/divergence_noise_120ksamples.pdf
+\clabel[div_noise] {More samples to Figure 3.3.  }
+\caption/f {More samples to Figure 3.3 show failure of the simplest version of algorithm in presence of noise. }
+\endinsert
+
+
+\sec Mean-square convergence in case of noisy updates and observations
+
+As we have seen above, when taking into account noisy updates, during the run of algorithm, as stated in Equation \ref[ue], i.e. with {\em constant} matrix $\bi P$, the algorithm fails to convergebecause of increasing variance. In the following section we provide a simple way, according to \cite[Mosquera], how to solve this problem. The core idea of the approach is to change the coefficient $\alpha$ from Equation  \ref[const_perron] to some time variable $\gamma$, i.e. $\gamma=\gamma(t)$, and decreasing in time, so that $\gamma(t+1)<\gamma(t).$ Rouhgly spoken, when properly choosing the sequence $\{ \gamma(t) \}_{t=1}^\infty$, the effect of updates gradually fades away. This is a basic concept, that is used in many more sofisticated methods that take into account the nonidealities of transmision. Later, we will provide some references.%The second approach to deal with the noise assumes, that the noise of previous update and the new one in average sum up to zero.  
+
+\secc Model setup
+
+Let's specify the model of the situation first. In the previous parts, we in fact didn't assumed anything about the values that were the inputs of the algorithm. The model could have been used as a way to compute an average value of any general inputs. %Now, we will assume, that the components of vector of initial measurements $x(0)$ have finite variance and mean value 
+
+Now we will follow a model of a situation, where our $N$ nodes observe one fixed-value $\theta\in \bbchar R$ in the network with presence  of Additive noise $w$ (with zero mean),  so that the observation of $i$-th node, $i=1,..., N,$ is $$ x_i(0)=\theta+w_i. \eqmark$$
+Let's again organize these observations into the vector $x(t)=(x_1(t), x_2(t),...,x_N(t))^T.$ So we keep the taken observations of the nodes, affected by the noise $w(t)$, in vector $x(0)=(x_1(0), x_2(0),...,x_N(0))^T.$   These observations are assumed to be unbiased, uncorrelated and with variance $\sigma^2$ and with some finite mean value. 
 
 
 
 
 
+\secc Time-varying weights
 
+Firstly, we change the Perron matrix of the algorithm by adding a  scalar weight $\gamma=\gamma(t)$ that will gradually decrease the impact of updates
+
+$$ {\bi P(t)}=  {\bi I } - \gamma(t) {\bi L}, \eqmark  $$
+
+and the  impact of noise on the according graph's edge will be integrated to the algorithm via elements of noise matrix ${\bi N} (t) $ , i.e. $n_{ij}(t),$ as
+
+$$ x(t+1) = {\bi P}(t) x(t) + diag\{{\bi P }(t) {\bi N}  (t)\}=  {\bi P}(t)x(t)+ \zeta(t), \eqmark  $$ where the vector $\zeta(t) = diag\{{\bi P }(t) {\bi N}  (t)\}$ consists of the diagonal elements of the product of matrices $({\bi P }(t) {\bi N}(t)),$ by which we model the situation when the values of neighbors reach the given node with Additive noise. The vector $\zeta(t)$ forms a random process and its stochastical parameters, i.e. variance and mean, will, of course, depend on the weight $\gamma(t)$, that is  hidden in ${\bi P}(t)$ and also on the parameters of matrix ${\bi N}(t)$ discussed above \cite[Mosquera52].
+ 
+
+ 
+%\label[noise_upd_eq]$$ x_i(t+1) = x_i(t) - \gamma(t) \sum_{j=1; j\not= i}^N p_{ij}(x_i(t)-x_j(t)-n_{ij}(t)), \eqmark $$
+%where, we emphasize, the term $(-x_j(t)-n_{ij}(t))$ corresponds to the receiving of noise affected updates from neighbors of the $i-$th node. Next, Equation \ref[noise_upd_eq] can be rewritten using the elegant matrix form, similiar to that one in \ref[ue]. To get there step by step, we write directly from Equation \ref[noise_upd_eq]
+
+%\label[update_eq_part]$$ x_i(t+1)=   (1-\gamma(t)) x_i(t)+ \gamma(t)   \sum_{j=1; j\not= i}^N p_{ij} x_j(t) + \gamma(t)   \sum_{j=1; j\not= i}^N p_{ij} n_{ij}(t). \eqmark$$ It might be easily seen, that the first two terms in Equation \ref[update_eq_part] are a direct generalization of the components of time-varying Perron matrix. Now for convinience let's define the last term in previous equation
+%$$\zeta_i(t)=  \gamma(t)   \sum_{j=1; j\not= i}^N p_{ij} n_{ij}(t) $$
+
+
+%eqmark's replace the model from Equation \ref[ue] by update equation%
+
+%$$x(t+1) = {\bi P}(t)(x(t)+{\bi I N}  (t))   ={\bi P}(t)x(t)+{\bi P}(t)n(t), \eqmark$$ and  $\{\gamma(t)\}_{t=0}^{\infty}$
+For the time-varying weight sequence must hold 
+\label[cond_1]$$\sum_{t=0}^{\infty}\gamma(t)=\infty ,\eqmark$$
+and \label[cond_2]$$\sum_{t=0}^{\infty}\gamma^2(t)<\infty ,\eqmark$$ in order to reach convergence. The proof may be found in \cite[5203882].
+
+
+\secc Design of descending step size  
+
+There are more approaches to design the step size weigths. In \cite[4641610] was verified that a valid choice might be e.g. sequence in form $$ \gamma(t) = {{a}\over{(b+t)^c}},  \eqmark$$
+where $a>0, b>0, c\in (0,5; 1].$ Using this sequence will guarantee the convergence for any initial step, because the conditions in Equations \ref[cond_1] and \ref[cond_2] are fulfilled, however to avoid an initial divergence of algorithm, coresponding to situation when doesn't hold Condition \ref[cond_conv_alpha], the initial step should be selected to be smaller then $2\over{\Delta}$ for the given graph \cite[Mosquera] \cite[5203882] \cite[Mosquera52].
+
+
+\label[ex_conv_noise_gamma] \Example Now we give an example, how the above method works. For this simulation we use a Matlab library graph Bucky with $N=60$ nodes, each having 3 neighbors. (Its  pattern looks like a surface of a soccer ball, see Figure \ref[bucky].) All nodes observe a constant $\theta = 10$ in a zero mean additive noise with variance $\sigma_{observation}=1$ and the according updates are, traveling through the graph, affected with zero mean additive noise with variance $\sigma_{updates}=0,1.$ Imagine, that the observed value is some physical quantity, e.g. time base, temperature, humidity, etc. with arbitrary scaling factor located e.g. somewhere in the middle of the bucky graph. Since the algorithm is linear, only ratio of the measured values and the variances $\sigma_{observation}$,  $\sigma_{updates}$ is meaningful.  The script used for the simulation is in Apendix \ref[noise_script] and it is prepared for a situation   $\sigma_{observation} = 10  \sigma_{updates}$.
+
+We selected the decreasing sequence $\gamma(t)={1\over(42+t)^{0,75}} $, which satisfies that $\gamma(0)<{1\over\Delta}={1\over3}.$ To demonstrate the convergence of algorithm, we run 100 000 iterations.  
+
+
+\label[bucky]
+\midinsert
+\picw=8cm \cinspic pictures/bucky.pdf
+\clabel[bucky]{Used Matlab library graph bucky.}
+\caption/f Graph used in simulation in Example 3.8.
+\endinsert
+
+
+
+\midinsert
+\picw=14.5cm \cinspic pictures/conv_noise_values_gamma.pdf
+\clabel[conv_noise_values_gamma] {Values of nodes from Example 3.8}
+\caption/f { The values  in nodes of graph in run of 100 000 iterations of the algorithm from Example 3.8 }
+\endinsert
+
+We can see in Figure \ref[conv_noise_values_gamma] that such a modification of algorithm works and the values in all nodes converge. In next Figure \ref[conv_noise_MSE_ave_gamma] we can see in loglog graph, how the Mean square error of values trully decreases. 
+
+\midinsert
+\picw=14.5cm \cinspic pictures/conv_noise_MSE_ave_gamma.pdf
+\clabel[conv_noise_MSE_ave_gamma] {Mean square error of values in nodes w.r.t an average of values in each iteration from Example   3.8 }
+\caption/f {Decreasing MSE w.r.t. moving average  in nodes of graph in run of the algorithm from Example \ref[ex_conv_noise_gamma]. Decrease of this value consequently slows down, because variance of the noise comes to be still more significant. }
+\endinsert
+
+\midinsert
+\picw=14.5cm \cinspic pictures/conv_noise_MSE_act_gamma.pdf
+\clabel[conv_noise_MSE_act_gamma] {Mean square error of values in nodes w.r.t an average of values in each iteration from Example 3.8 }
+\caption/f { Decreasing Mean square error w.r.t. Moving average in nodes of graph in each iteration of run of the algorithm from Example 3.8. We can note, that this value continues to decrease according to fact, that difference between nodes converge to unique value. }
+\endinsert
+
+
+\midinsert
+\picw=14.5cm \cinspic pictures/conv_noise_var.pdf
+\clabel[conv_noise_var] { Variance of the values in nodes of graph in run of the algorithm from Example 3.8. }
+\caption/f { Decreasing variance of the values in nodes of graph in run of the algorithm from Example 3.8. We note, that shape of this curve is the same as for Moving MSE from Figure 3.7. This is related to the fact, that for an unbiased estimation MSE is equal to variance.  }
+\endinsert
+
+
+\label[ex_conv_noise_ring] \Example
+
+Second example, that we provide here is with the same settings of $\theta, \sigma_{observation}$,  $\sigma_{updates}, \gamma(t)$  values as in Example \ref[ex_conv_noise_gamma], but this time with ring topology, again with 60 nodes. 
+
+
+\midinsert
+\picw=6cm \cinspic pictures/ring.pdf
+\clabel[conv_ring] { 60 nodes ring topology from Example 3.9.}
+\caption/f {60 nodes ring topology from Example 3.9.}
+\endinsert
+
+\midinsert
+%\picw=14.5cm \cinspic pictures/ring_noise_conv_fin.pdf
+\picw=14.5cm \cinspic pictures/ring_noise_conv32.pdf
+\clabel[conv_ring_val] {Values convergence from  Example 3.9.}
+\caption/f {Values convergence from  Example 3.9.}
+\endinsert
+
+\midinsert
+\picw=14.5cm \cinspic pictures/ring_noise_conv_variance.pdf
+\clabel[conv_ring_var] {Variance running from  Example 3.9.}
+\caption/f {Variance running from  Example 3.9.}
+\endinsert
+
+Let's compare the results from Examples \ref[ex_conv_noise_ring] and \ref[ex_conv_noise_gamma]. Both nodes topologies are in stochasticaly identical environment and hence, we can see the Bucky topology converges much faster. Of course it is  because of the connectivity of first graph is much bigger, specificaly in Ex. \ref[ex_conv_noise_ring] $\lambda_2^{bucky} \approx 0,24340 $
+and $\lambda_2^{ ring} \approx  0,01096.$
+
+Note: since Laplacian of ring topology graph depends only on the number of nodes, it is quite interesting, that the connectivity eigenvalue can be computed analyticaly. The equation to compute Connectivity eigenvalue of Laplacian matrix of $N$-node ring topology is:
+$$ \lambda_2=2-2\cos\left({2\pi}\over{N}\right),  \eqmark$$
+and one can check, that as the number of vertices increases, the connectivity decreases refering to the fact, that the information takes longer time to propagate \cite[CswN7iEXXv5Aomaj].
+
+\secc Recommendations of literature concerning noisy updates problematic
+
+Here we list some publications, that solve the problematic of noisy updates in a formal way with proofs, which are behind scope of this text.
+
+\begitems \style 0
+\item{*}  \cite[4641610] : Here is described the purpose of descending weights during the run of algorithm with noisy updates.
+
+\item{*}  \cite[Mosquera52] : This paper is about designing of the weights that minimize MSE during the run of algorithm.
+
+\item{*}  \cite[4663899] : Herein were presented two algorithms, that solve problematics of noisy updates. The basic idea remains in designing of sufficient descending  weights but solution provided here is probably state of the art. The same authors published also \cite[DBLP:journals/corr/abs-0809-0009] where are provided further details.
+
+
+\item{*}  \cite[7528041] : Takes into account quantization noise that takes affect while implementing algorithm in fixed point arithmetics.
+
+\enditems
 
 
 
@@ -280,7 +434,7 @@ Note, the expression ${1\over N}{\bi 1}^T v(t)$ is nothing but a sequence of ran
 
 
 
-\chap Recommendation of related literature
+%\chap Recommendation of related literature
 
 
 

@@ -1,0 +1,166 @@
+\def\ctustyle{{\tenss CTUstyle}}
+\def\ttb{\tt\char`\\} % pro tisk kontrolních sekvencí v tabulkách
+
+\chap Distributed Estimation in Wireless Sensor Networks
+
+The following chapter should serve as an introduction to the problematics of distributed estimations in wirelless networks. Hopefully, we will summarize firstly the problematics overview, with focus on the aspects that complicate the estimation process,  and   then provide some basic approaches of implementation of a consensus algorithm, that respects the true noniedeal properties of real networks. 
+
+This chapter is based on source \cite[spring_book].
+
+\sec{Introduction}
+
+Wireless networks are present in a great number of applications of an everyday life. The most commonly given examples are eg. communication systems (mobile networks, LTE, Wi-Fi), all sorts of measuring devices (technical, medical, industry and other usage). Currently very popular are autonomous cars. In the context of our main topic, the averaging consensus algorithm might be commonly seen in solving a problem of moving in coordinated formations (eg. flights of drons and others unmaned vehicles).
+
+Subject of our interest will be now Wirelless Sensor Networks (WSN) with smart nodes, i.e. nodes, that own some computing power and are programmable (i.e. not just an ordinary sensor). By localizing such nodes in some area to create a network, we aim to  avoid using any kind of centralized topology. One benefit is, that WSN becomes to be much more robust with respect to a single failure point of a central device. (We do not have any). Naturally, now we are not limited to a fixed topology and the nodes can move. Even more important is, that in a situation, when nodes of WSN aim to  estimate some value $ \theta$ in a distributed manner, it is naturally much more faster when the nodes communicate directly. Having nodes, that are battery-supplied, we are also glad to avoid using the limited amount of power without necessity. It seems naturally, that more effective way is to use only direct communication between nodes, that want to obtain the desired estimation, without employing some distant data center. 
+
+WSN networks may consist of hundreds of nodes. Its goal is to estimate   the value cooperatively and locally, instead of moving the calculation somewhere else, beacuase sometimes it might not be even possible. Typically, in wireless communication the nodes should obtain an overview of the network parameters (network topology, carrier frequency, common time base). Concerning the topology, one node initially knows only its direct neighbors. In digital communication applications, is typically necessary, that each node knows the topology of whole network (an Adjacency matrix). This is exactly the case, when we can not avoid a cooperation between nodes. With respect to the previous chapters, we note that the WSN can be for a purpose of distributed consensus algorithm simply coded into a graph with, expressing the possibility of an information exchange between nodes \cite[spring_book]. 
+
+
+
+\sec Overview of Distributed Consensus Estimation
+
+Our general observation model will be
+$$ z= {\bi H}x+w, \eqmark$$
+where $z$ is our observation, $x$ is the target value,  ${\bi H}$ is an observation matrix and $w$ is the additive noise. With respect to dynamic information of the target and a strategy used to obtain the estimation, we can sort the Distributed Consensus Estimation Algorithms into three groups with following main characteristics:\vskip 0.3cm
+\begitems \style 0
+
+  * Observation-only consensus
+  \itemitem{*} Observation and estimation are two independent actions. At the beginning, all nodes measure the available values and then algorithm continues by exchanging these values between nodes to reach the consensus. (This case was discussed in previous text.)
+  \itemitem{*} Works correctly only if the target parameter $x$ doesn't change in time.
+\itemitem{*} Is not convinient to estimate dynamicly changing values. 
+  \itemitem{*} Advantageous, when holds a special case $\bi H= I$ (i.e. all nodes posses a local  estimation of whole $\theta.$
+\vskip 0.2cm
+
+*Observation+innovation consensus
+  \itemitem{*} Repeats the observation (measurement) during the run of algorithm and estimation actions have available new values to improve the estimation.
+ \itemitem{*} We repeat the observation, because the parameter $x$ is time dependent and fluctuates, e.g. beacause of an additive noise.
+\vskip 0.2cm
+*Consensus-based filters for dynamic targets
+ \itemitem{*} Works as Observation+innovation consensus but takes in account, that $x=x(t)$ is changing in time dynamically.
+\enditems
+
+\vskip 0.2cm
+
+Typical problems in WSN estimation process are:
+\begitems \style 0
+\item{*}Noise in the network. We generally never receive the same value as we send. The observation process is also affected by noise.
+\vskip 0.2cm
+\item{*}Wireless devices are battery-powered and because of that, the estimation process should be effective and not to waste the power.
+\vskip 0.2cm
+\item{*}Topology of WSN may generally change.
+\vskip 0.2cm
+\item{*}The algorithm requires a common clock synchronization between nodes.
+\vskip 0.2cm
+\item{*}The communication between two nodes generally must not have symmetric characteristics, so that e.g. $A$ node can send information to $B,$ however $B$ is not able to $A.$  Hence, a graph describing the WSN inter-nodes communication is then the directed graph. 
+\enditems
+\vskip 0.2cm
+In next section, the algorithm provided by \cite[spring_book] tries to take some of these problems into account in a general matter.
+\sec Consensus-Based Distributed Parameter Estimation with Asymmetric Communications
+
+For now, to hold the situation as general, as possible, we will define two different kinds of nodes in our WSN. The first kind will be Sensor Node (SN), that locally measures the value we want to globally estimate. The second will be called Relay Node (RN) and they do not measure anything but distribute the measure results of SN to other nodes. This concept would have been practically used to save money for many expensive sensors. Such a network we call heterogeneous and hence, all the nodes do not have same impact on the result. By adding RN into the WSN, we  also naturally increase the connectivity of the graph. Typically, we can add cheap RN into the network to enable and/or improve the connectivity of all SN. In this section we will provide a decription of Distributed Consensus-based Unbiased Estimation (DCUE) as stated in \cite[spring_book].
+
+\secc Problem model
+
+In this subsection, we introduce the notation.
+
+We are about to solve a problem of estimation of a vector $ \theta \in {\bbchar R}^J,$ whose components are separately measured by SN. We have two kinds of nodes. First set of nodes $I_S = (1, 2, ..., M)$ are sensor nodes SN and  then $I_R = (M+1, M+2, ..., N)$ are the relay nodes RN. The measurement of the desired vector $ \theta$ is described as
+
+\label[observation] $$ y_i(t)={\bi H_i}  \theta + w_i(t), \forall i \in I_S  \eqmark$$
+
+where ${\bi H_i} \in {\bbchar R}^{J_i \times J}$ is an observation matrix and $w_i(t)$ is white Additive Gaussian noise. The statement  $J_i\le J$ for $i-$th SN means, that it generally provides only limited information about the vector $ \theta,$ because it can't measure the rest of components. The RN nodes can't measure $ \theta$ at all, because they are not equiped with the sensors.
+
+Neighbors of node $i$ will be denoted $ {\cal{N}}_i$. Subset of neigbors that are only SN will be noted as $ {\cal{N}}_i^S$ and subset of RN nodes will be $ {\cal{N}}_i^R$.
+
+Next, assuming, that $i-$th node transmits to the $j-$th at a constant power level $P_{T_i}$ in distance $d_{ij}$, the communication will be successful if holds the standard inequality for Signal to Noise Ratio (SNR)
+\label[snr]$$  {{P_{T_i}}\over{{\bbchar N}d_{ij}^\eta}} \ge \beta  , \eqmark$$
+where $  {\bbchar N} $ stands for a power level of noise in the channel, $\eta$ is an exponent expressing the lossy behavior of the channel and $\beta$ is the minimum SNR value fulfilling the condition for communication \cite[spring_book]. 
+From Equation \ref[snr] we can determine a maximum distance $d_{ij_{\max}}$ between nodes $i, j,$ that will serve as a threshold for evaluating the communication as possible
+$$ d_{ij_{\max}}= \root {\eta}\of{{P_{T_i}}\over{{\bbchar N}\beta}}. \eqmark$$ 
+
+
+\secc Graph representation
+
+Since we decided to model situation with asymmetric communication channels, we have to use a directed graph representation. In our case, a weigted  graph $G$ is a triplet $G= ( V, E, {\bi A})$, where $V=I_S \cup I_R,$  $ E \subset V\times V,$ and ${\bi A}$ is a matrix of weights associated to edges $E.$ For elements of $\bi A$ holds $$a_{ij} > 0 \Leftrightarrow (i,j)\in E. \eqmark$$ (Note, this $\bi A$ matrix is a generalization of already before used Adjacency matrix.) Considering directed graphps, it is in a litereature common to call a source vertex of an edge {\em parent} and the destination vertex {\em child }\cite[spring_book].
+
+
+\sec Description of Algorithm DCUE
+
+Before proceeding, let's note that in a description of DCUE Algorithm we will assume perfectly synchronized updates. 
+
+In each node $i$ is initially known a value $x_i(0).$ The update equation of DCUE algorithm states:
+\label[algorithm_SN] $$ \eqalign{
+ x_i(t+1) = x_i(t) +  \rho(t)\alpha_i    {\bi H_i}^T \left(y_i(t) - {\bi H_i}  x_i(t)  \right) 
++ \cr + {\rho(t) \over{c_i}}\left[ \sum_{j\in {\cal{N}}_i^S  } a_{ij} (x_j(t)-x_i(t)) + \sum_{j\in {\cal{N}}_{i}^R  } a_{ij} (z_j(t)-x_i(t))   \right],
+} \eqmark$$
+where $\alpha_i>0$ controls  the update rate of information during the run of algorithm; $\rho(t)>0$ is a weight controlling an impact of received updates; $c_i>0$ controls impact of $i-$th own measurement and $ a_{ij}=\sqrt{{P_{T_j}|h_{ij}|^2}\over{   d_{ij}^\eta }}$ represents an amplitude of a signal received by node $i$ from node $j$ , in which $h_{ij}$ is a fading coefficient describing a channel between $i$ and $j,$ and it is a reason why $a_{ij} \not=a_{ji}$ \cite[spring_book].
+
+Next, an update equation for RN nodes reads
+ \label[algorithm_RN] $$z_i(t) =\sum_{j\in {\cal{N}}_i^S  } \gamma_{ij}x_j(t)+ \sum_{j\in {\cal{N}}_i^R  } \gamma_{ij}z_j(t)   , \forall i \in I_R, \eqmark$$ where $\gamma_{ij}$ are some nonnegative weighting coefficents \cite[spring_book].
+
+
+Now, let's summarize the meaning of equations  describing the algorithm, that we stated above. Firstly, Equation \ref[observation] says, that observation of node $i$,  \ $y_i(t)$, in time $t$ are elements of vector $\theta$, according to its appropriate matrix $\bi H_i$,  and this observation is affected by the Gaussian noise $w_i.$  Next, Equation \ref[algorithm_SN] proposes the way how $i-$th SN should update the values to be estimated. It consists of a specific linear combination of values that node $i$ self measures and values that it recieves from neighbors SNs and RNs, respectively. Doing this, we take into account distance between neighbors (i.e. in units of length, not number of hops), properties of the channel between nodes, transmitting power and consequently we decide, whether the update can be applied, according to these channel characteristcs. Finally, Equation \ref[algorithm_RN] is an analogy update equation for $i$-th RN, whose updates are determined as a linear combination from values of its RNs and SNs neighbors.
+
+
+We define the following two terms, to describe  DCUE algorithm.
+
+\Definition(Consistency) The sequence of estimates $\{x_t(i)\}, t\ge 0$  of $\theta$ at SN $i$ is
+called consistent, if we have almost surely $$ \lim_{t\rightarrow\infty}x_i(t)=\theta. \eqmark$$
+
+\Definition (Asymptotic Unbiasedness) We call a sequence of estimates   $\{x_i(t)\}, t\ge 0$ of a value $\theta$ asymptotically unbiased, if holds $$ \lim_{t\rightarrow\infty}{\bbchar E}\left[\{x_i(t)\}\right]=\theta.\eqmark$$
+ 
+
+
+$$ , \eqmark$$
+
+
+
+\Definition (Kronecker Product) \cite[kroneckerPrd] Given matrix ${\bi A}\in {\bbchar R}^{m\times n}$  and matrix ${\bi B}\in {\bbchar R}^{p\times q},$ their Kronecker Pruduct ${\bi C}\in {\bbchar R}^{mp\times nq}$ is denoted
+$${\bi C}= {\bi A }\otimes{\bi B } ,$$
+where $c_{\alpha \beta}= a_{ij}b_{kl},$ using $\alpha=p(i-1)+k$ and $\beta=q(j-1)+l.$ 
+To give an intuition, we provide a simple example. 
+
+\Example (Kronecker product practise) Calculate a Kronecker product ${\bi C}= {\bi A }\otimes{\bi J },$ where
+$$ {\bi A}= \pmatrix{a&b\cr c&d}, {\bi J}= \pmatrix{j&k \cr l&m}.$$
+
+{\em Solution:}
+
+ $$ {\bi C}=  {\bi A }\otimes{\bi J } =\pmatrix{aj & ak& bj& bk\cr al & am& bl& bm\cr cj & ck & dj & dk \cr cl & cm & dl & dm }.$$
+
+
+\secc Global matrix description of DCUE algorithm
+
+***TBD. This subsection is incomplete, missing explanations of used symbols.***
+
+
+
+To make the stated equations more conviniate and suitable for an analysis, we will rewrite them using matrix multiplication. To begin with, we will place the vectors $x$ of values to be estimated in all nodes to a vector $\bi x$ and similarly the vectors of observations $y$ into vector $\bi y$. (Vector of vectors is in fact a matrix.) Formally
+$$ {\bi x } = (x_1^T, x_2^T,..., x_M^T)^T ,\eqmark$$
+$$ {\bi y } = (y_1^T, y_2^T,..., y_M^T)^T.\eqmark$$
+
+The matrix-like update description then reads
+$$ {\bi x}(t+1)  = {\bi \Psi}(t)   {\bi x}(t)  + \rho(t){\bi \Gamma}  {\bi y}(t	) ,\eqmark$$
+where $${\bi \Psi}(t) = {\bi I}- \rho(t) \left(    \Delta+ {\bi C}^{-1}    {\bi \hat L} \otimes  {\bi I}  \right)  , \eqmark$$ 
+$$ {\bi \Gamma}= \left( {\bi \Phi} \otimes {\bi I }\right) {\bi H}^T, \eqmark$$
+and 
+$${\bi C}= diag\{c_1, c_2, ..., c_M\}, \eqmark$$
+$$ \Delta = ({\bi \Phi} \otimes  {\bi I}  ) {\bi H}^T  {\bi H}  , \eqmark$$
+$${\bi \Phi}= diag\{\alpha_1, \alpha_2, ..., \alpha_M\},\eqmark$$
+$${\bi H}  =diag \{{\bi H_1}, {\bi H_2}, ...,{\bi H_M}\},\eqmark$$ and finally
+$ {\bi \hat L} \in {\bbchar R}^{M\times M} $,  whose  components are ${\hat l}_{ij}$ and holds
+$$ {\hat l}_{ij} = \sum_{j \in {\script N}_i^S} a_{ij} + \sum_{k \in {\script N}_i^R} a_{ik}  \sum_{j \in {\tilde I}_S \backslash \{ i \} }{\tilde \gamma_{kj}}, \   i = j,\eqmark$$
+and otherways
+$$ {\hat l}_{ij} = -a_{ij}- \sum_{k \in {\script N}_i^R} a_{ik} {\tilde \gamma_{kj}}  , \  i\not=j.\eqmark$$
+
+
+
+
+
+
+
+
+
+
+
+
+
+
