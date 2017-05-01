@@ -1,27 +1,25 @@
 \def\ctustyle{{\tenss CTUstyle}}
-\def\ttb{\tt\char`\\} % pro tisk kontrolních sekvencí v tabulkách
+\def\ttb{\tt\char'\\} % pro tisk kontrolních sekvencí v tabulkách
 
 \chap Distributed Estimation in Wireless Sensor Networks
 
-The following chapter should serve as an description of the problematics of distributed estimations in wirelless networks. We will summarize firstly the problematics overview, with focus on the aspects that complicate the estimation process,  and   then provide description of some basic approaches of implementation of a consensus algorithm, that respects the true noniedeal properties of real networks. 
+The following chapter should serve as an description of the problematic of distributed estimations in wireless networks. We will summarize firstly the problematic overview, with focus on the aspects that complicate the estimation process, and then provide description of some basic approaches of implementation of a consensus algorithm, that respects the true non ideal properties of real networks.
 
 This chapter is based on source \cite[spring_book].
 
 \sec{Introduction}
 
-Wireless networks are present in a great number of applications of an everyday life. The most commonly given examples are eg. communication systems (mobile networks, LTE, Wi-Fi), all sorts of measuring devices (technical, medical, industry and other usage). Currently very popular are autonomous cars. In the context of our main topic, the averaging consensus algorithm might be commonly seen in solving a problem of moving in coordinated formations (eg. flights of drons and others unmaned vehicles).
+Wireless networks are present in a great number of applications of an everyday life. The most commonly given examples are e.g. communication systems (mobile networks, LTE, Wi-Fi), all sorts of measuring devices (technical, medical, industry and other usage). Currently very popular are autonomous cars. In the context of our main topic, the average consensus algorithm might be commonly seen in solving a problem of moving in coordinated formations (e.g. flights of drones and others unmanned vehicles).
 
-Subject of our interest will be now Wirelless Sensor Networks (WSN) with smart nodes, i.e. nodes, that own some computing power and are programmable (i.e. not just an ordinary sensor). By localizing such nodes in some area to create a network, we aim to  avoid using any kind of centralized topology. One benefit is, that WSN becomes to be much more robust with respect to a single failure point of a central device. (We do not have any). Naturally, now we are not limited to a fixed topology and the nodes can move. Even more important is, that in a situation, when nodes of WSN aim to  estimate some value $ \theta$ in a distributed manner, it is naturally much more faster when the nodes communicate directly. Having nodes, that are battery-supplied, we are also glad to avoid using the limited amount of power without necessity. It seems naturally, that more effective way is to use only direct communication between nodes, that want to obtain the desired estimation, without employing some distant data center. 
+Subject of our interest will be now Wirelless Sensor Networks (WSN) with smart nodes, i.e. nodes, that own some computing power and are programmable (i.e. not just an ordinary sensor). By localizing such nodes in some area to create a network, we aim to avoid using any kind of centralized topology. One benefit is, that WSN becomes to be much more robust with respect to a single failure point of a central device. (We do not have any). Naturally, now we are not limited to a fixed topology and the nodes can move. Even more important is, that in a situation, when nodes of WSN aim to estimate some value $ \theta$ in a distributed manner, it is naturally much faster when the nodes communicate directly. Having nodes, that are battery-supplied, we are also glad to avoid using the limited amount of power without necessity. It seems naturally, that more effective way is to use only direct communication between nodes, that want to obtain the desired estimation, without employing some distant data center.
 
-WSN networks may consist of hundreds of nodes. Its goal is to estimate   the value cooperatively and locally, instead of moving the calculation somewhere else, beacuase sometimes it might not be even possible. Typically, in wireless communication the nodes should obtain an overview of the network parameters (network topology, carrier frequency, common time base). Concerning the topology, one node initially knows only its direct neighbors. In digital communication applications, is typically necessary, that each node knows the topology of whole network (an Adjacency matrix). This is exactly the case, when we can not avoid a cooperation between nodes. With respect to the previous chapters, we note that the WSN can be for a purpose of distributed consensus algorithm simply coded into a graph with, expressing the possibility of an information exchange between nodes \cite[spring_book]. 
-
-
+WSN networks may consist of hundreds of nodes. Its goal is to estimate the value cooperatively and locally, instead of moving the calculation somewhere else, because sometimes it might not be even possible. Typically, in wireless communication the nodes should obtain an overview of the network parameters (network topology, carrier frequency, common time base). Concerning the topology, one node initially knows only its direct neighbors. In digital communication applications, is typically necessary, that each node knows the topology of whole network (an Adjacency matrix). This is exactly the case, when we can not avoid a cooperation between nodes. With respect to the previous chapters, we note that the WSN can be for a purpose of distributed consensus algorithm simply coded into a graph with, expressing the possibility of an information exchange between nodes \cite[spring_book].
 
 \sec Overview of Distributed Consensus Estimation
 
 Our general observation model will be
-$$ z= {\bi H}x+w, \eqmark$$
-where $z$ is our observation, $x$ is the target value,  ${\bi H}$ is an observation matrix and $w$ is the additive noise. 
+$$ {\bi z}= {\bi H x}+ \bi w, \eqmark$$
+where ${\bi z}$ is our observation, ${\bi x}$ is the target value, ${\bi H}$ is an observation matrix and $\bi w$ is the additive noise.
 
 Typical problems in WSN estimation process are:
 \begitems \style 0
@@ -33,76 +31,132 @@ Typical problems in WSN estimation process are:
 \vskip 0.2cm
 \item{*}The algorithm requires a common clock synchronization between nodes.
 \vskip 0.2cm
-\item{*}The communication between two nodes generally must not have symmetric characteristics, so that e.g. $A$ node can send information to $B,$ however $B$ is not able to $A.$  Hence, a graph describing the WSN inter-nodes communication is then the directed graph. 
+\item{*}The communication between two nodes generally must not have symmetric characteristics, so that e.g. $A$ node can send information to $B,$ however $B$ is not able to $A.$ Hence, a graph describing the WSN inter-nodes communication is then the directed graph.
 \enditems
 \vskip 0.2cm
 
+\secc Consensus-Based Distributed Parameter Estimation
 
-\secc Consensus-Based Distributed Parameter Estimation 
-
-In \cite[spring_book] may be found quite general concept of solution to the estimation process in WSN. We will use it to present the main difficulties related to the algorithm design. The authors there use two kinds of sensors: Sensor Nodes (SN), that locally measure the value we want to globally estimate and  Relay Nodes (RN), that do not measure anything but only distribute the measure results of SN to other nodes. This concept would have been practically used to save money for many expensive sensors. Such a network we call heterogeneous and hence, all the nodes do not have same impact on the result. By adding RN into the WSN, we  also naturally increase the connectivity of the graph. Typically, we can add cheap RN into the network to enable and/or improve the connectivity of all SN. 
+In \cite[spring_book] may be found quite general concept of solution to the estimation process in WSN. We will use it to present the main difficulties related to the algorithm design. The authors there use two kinds of sensors: Sensor Nodes (SN), that locally measure the value we want to globally estimate and Relay Nodes (RN), that do not measure anything but only distribute the measure results of SN to other nodes. This concept would have been practically used to save money for many expensive sensors. Such a network we call heterogeneous and hence, all the nodes do not have the same impact on the result. By adding RN into the WSN, we also naturally increase the connectivity of the graph. Typically, we can add cheap RN into the network to enable and/or improve the connectivity of all SN.
 
 Next we briefly list the main difficulties that must be considered using this model.
- 
-\secc Asymetric communication
 
-Since this model describes situation with asymmetric communication channels a directed graph representation must be used.  In our case, a weigted  graph $G$ is a triplet $G= ( V, E, {\bi A})$, where $V$ is the set of RN and SN,  $ E \subset V\times V,$ and ${\bi A}$ is a matrix of weights associated to edges $E.$ For elements of $\bi A$ holds $$a_{ij} > 0 \Leftrightarrow (i,j)\in E. \eqmark$$ Note, this $\bi A$ matrix is a generalization of already before used Adjacency matrix. Considering directed graphps, it is in a litereature common to call a source vertex of an edge {\em parent} and the destination vertex {\em child }\cite[spring_book].
+\secc Asymmetric communication
 
-Assuming, that $i-$th node transmits to the $j-$th at a constant power level $P_{T_i}$ in distance $d_{ij}$, the communication will be successful if holds the  inequality for Signal to Noise Ratio (SNR)
-\label[snr]$$  {{P_{T_i}}\over{{\bbchar N}d_{ij}^\eta}} \ge \beta  , \eqmark$$
-where $  {\bbchar N} $ stands for a power level of noise in the channel, $\eta$ is an exponent expressing the lossy behavior of the channel and $\beta$ is the minimum SNR value fulfilling the condition for communication \cite[spring_book]. 
+Since this model describes situation with asymmetric communication channels a directed graph representation must be used. In our case, a weighted graph $G$ is a triplet $G= ( V, E, {\bi A})$, where $V$ is the set of RN and SN, $ E \subset V\times V,$ and ${\bi A}$ is a matrix of weights associated to edges $E.$ For elements of $\bi A$ holds $$a_{ij} > 0 \Leftrightarrow (i,j)\in E. \eqmark$$ Note, this $\bi A$ matrix is a generalization of already before used Adjacency matrix. Considering directed graphs, it is in a literature common to call a source vertex of an edge {\em parent} and the destination vertex {\em child }\cite[spring_book].
+
+Assuming, that $i-$th node transmits to the $j-$th at a constant power level $P_{T_i}$ in distance $d_{ij}$, the communication will be successful if holds the inequality for Signal to Noise Ratio (SNR)
+\label[snr]$$ {{P_{T_i}}\over{{\bbchar N}d_{ij}^\eta}} \ge \beta , \eqmark$$
+where $ {\bbchar N} $ stands for a power level of noise in the channel, $\eta$ is an exponent expressing the lossy behavior of the channel and $\beta$ is the minimum SNR value fulfilling the condition for communication \cite[spring_book].
 From Equation \ref[snr] we can determine a maximum distance $d_{ij_{\max}}$ between nodes $i, j,$ that will serve as a threshold for evaluating the communication as possible
-$$ d_{ij_{\max}}= \root {\eta}\of{{P_{T_i}}\over{{\bbchar N}\beta}}. \eqmark$$ 
-
+$$ d_{ij_{\max}}= \root {\eta}\of{{P_{T_i}}\over{{\bbchar N}\beta}}. \eqmark$$
 
 \secc Multidimensional observation
 
-\cite[spring_book] solves a problem of estimation of a vector $ \theta \in {\bbchar R}^J,$ whose components are separately measured by SN. The measurement of the desired vector $ \theta$ is described as
+In \cite[spring_book] is solved a problem of estimation of a vector $ \theta \in {\bbchar R}^J,$ whose components are separately measured by SN. The measurement of the desired vector $ \theta$ is described as
 
-\label[observation] $$ y_i(t)={\bi H_i}  \theta + w_i(t), \forall i \in I_S  \eqmark$$
+\label[observation] $$ {\bi y_i}(t)={\bi H_i} \theta +  {\bi w_i}(t), \forall i \in I_S \eqmark$$
 
-where ${\bi H_i} \in {\bbchar R}^{J_i \times J}$ is an observation matrix and $w_i(t)$ is white Additive Gaussian noise. The statement  $J_i\le J$ for $i-$th SN means, that it generally provides only limited information about the vector $ \theta,$ because it can't measure the rest of components. The RN nodes can't measure $ \theta$ at all, because they are not equiped with the sensors.
+where ${\bi H_i} \in {\bbchar R}^{J_i \times J}$ is an observation matrix and $  {\bi w_i}(t)$ is white Additive Gaussian noise. The statement $J_i\le J$ for $i-$th SN means, that it generally provides only limited information about the vector $ \theta,$ because it can't measure the rest of components. The RN nodes can't measure $ \theta$ at all, because they are not equipped with the sensors.
 
-The vector nature of $  \theta$ will consequently bring to the matrix description of the update equations, similiar to the Equation \ref[ue] Kronecker product. Although such a description is possible, it is very confusing and  is reasonable to use probably only in theory. To see this matrix description, we refer to \cite[spring_book].    
+The vector nature of $ \theta$ will consequently bring to the matrix description of the update equations, similar to the Equation \ref[ue] Kronecker product. Although such a description is possible, it is very confusing and is reasonable to use probably only in theory. To see this matrix description, we refer to \cite[spring_book].
 
-\Definition (Kronecker Product) \cite[kroneckerPrd] Given matrix ${\bi A}\in {\bbchar R}^{m\times n}$  and matrix ${\bi B}\in {\bbchar R}^{p\times q},$ their Kronecker Pruduct ${\bi C}\in {\bbchar R}^{mp\times nq}$ is denoted
+\Definition (Kronecker Product) \cite[kroneckerPrd] Given matrix ${\bi A}\in {\bbchar R}^{m\times n}$ and matrix ${\bi B}\in {\bbchar R}^{p\times q},$ their Kronecker Product ${\bi C}\in {\bbchar R}^{mp\times nq}$ is denoted
 $${\bi C}= {\bi A }\otimes{\bi B } ,$$
-where $c_{\alpha \beta}= a_{ij}b_{kl},$ using $\alpha=p(i-1)+k$ and $\beta=q(j-1)+l.$ 
-To give an intuition, we provide a simple example. 
+where $c_{\alpha \beta}= a_{ij}b_{kl},$ using $\alpha=p(i-1)+k$ and $\beta=q(j-1)+l.$
+To give an intuition, we provide a simple example.
 
-\Example (Kronecker product practise) Calculate a Kronecker product ${\bi C}= {\bi A }\otimes{\bi J },$ where
+\Example (Kronecker product practice.) Calculate a Kronecker product ${\bi C}= {\bi A }\otimes{\bi J },$ where
 $$ {\bi A}= \pmatrix{a&b\cr c&d}, {\bi J}= \pmatrix{j&k \cr l&m}.$$
 
 {\em Solution:}
 
- $$ {\bi C}=  {\bi A }\otimes{\bi J } =\pmatrix{aj & ak& bj& bk\cr al & am& bl& bm\cr cj & ck & dj & dk \cr cl & cm & dl & dm }.$$
-
+$$ {\bi C}= {\bi A }\otimes{\bi J } =\pmatrix{aj & ak& bj& bk\cr al & am& bl& bm\cr cj & ck & dj & dk \cr cl & cm & dl & dm }.$$
 
 \secc Description of Algorithm DCUE
 
-The DCUE algorithm assumes perfectly synchronized updates. In each node $i$ is initially known a value $x_i(0).$  $ {\cal{N}}_i^S$ and  ${\cal{N}}_i^R$ marks the set of SN neighbors and RN neighbors to the $i-$th node, respectively. The update equation of DCUE algorithm states:
+The DCUE algorithm assumes perfectly synchronized updates. In each node $i$ is initially known a value $x_i(0).$ $ {\cal{N}}_i^S$ and ${\cal{N}}_i^R$ marks the set of SN neighbors and RN neighbors to the $i-$th node, respectively. The update equation of DCUE algorithm states:
 \label[algorithm_SN] $$ \eqalign{
- x_i(t+1) = x_i(t) +  \rho(t)\alpha_i    {\bi H_i}^T \left(y_i(t) - {\bi H_i}  x_i(t)  \right) 
-+ \cr + {\rho(t) \over{c_i}}\left[ \sum_{j\in {\cal{N}}_i^S  } a_{ij} (x_j(t)-x_i(t)) + \sum_{j\in {\cal{N}}_{i}^R  } a_{ij} (z_j(t)-x_i(t))   \right],
+ {\bi x_i}(t+1) =  {\bi x_i}(t) + \rho(t)\alpha_i {\bi H_i}^T \left( {\bi y_i}(t) - {\bi H_i}  {\bi x_i}(t) \right)
++ \cr + {\rho(t) \over{c_i}}\left[ \sum_{j\in {\cal{N}}_i^S } a_{ij} ( {\bi x_j}(t)- {\bi x_i}(t)) + \sum_{j\in {\cal{N}}_{i}^R } a_{ij} ( {\bi z_j}(t)- {\bi x_i}(t)) \right],
 } \eqmark$$
-where $\alpha_i>0$ controls  the update rate of information during the run of algorithm; $\rho(t)>0$ is a weight controlling an impact of received updates; $c_i>0$ controls impact of $i-$th own measurement and $ a_{ij}=\sqrt{{P_{T_j}|h_{ij}|^2}\over{   d_{ij}^\eta }}$ represents an amplitude of a signal received by node $i$ from node $j$ , in which $h_{ij}$ is a fading coefficient describing a channel between $i$ and $j,$ and it is a reason why $a_{ij} \not=a_{ji}$ \cite[spring_book].
+where $\alpha_i > 0$ controls the update rate of information during the run of algorithm; $\rho(t)> 0$ is a weight controlling an impact of received updates; $c_i>0$ controls impact of $i-$th own measurement and $ a_{ij}=\sqrt{{P_{T_j}|h_{ij}|^2}\over{ d_{ij}^\eta }}$ represents an amplitude of a signal received by node $i$ from node $j$ , in which $h_{ij}$ is a fading coefficient describing a channel between $i$ and $j,$ and it is a reason why $a_{ij} \not=a_{ji}$ \cite[spring_book].
 
 Next, an update equation for RN nodes reads
- \label[algorithm_RN] $$z_i(t) =\sum_{j\in {\cal{N}}_i^S  } \gamma_{ij}x_j(t)+ \sum_{j\in {\cal{N}}_i^R  } \gamma_{ij}z_j(t)   , \forall i \in I_R, \eqmark$$ where $\gamma_{ij}$ are some nonnegative weighting coefficents \cite[spring_book].
+\label[algorithm_RN] $$ {\bi z_i}(t) =\sum_{j\in {\cal{N}}_i^S } \gamma_{ij} {\bi x_j}(t)+ \sum_{j\in {\cal{N}}_i^R } \gamma_{ij} {\bi z_j}(t) , \forall i \in I_R, \eqmark$$ where $\gamma_{ij}$ are some non negative weighting coefficients \cite[spring_book].
 
+Summarizing the meaning of equations describing the algorithm, that we stated above: Firstly, Equation \ref[observation] says, that observation of node $i$, \ $ {\bi y_i}(t)$, in time $t$ are elements of vector $\theta$, according to its appropriate matrix $\bi H_i$, and this observation is affected by the Gaussian noise $ {\bi w_i}.$ Next, Equation \ref[algorithm_SN] proposes the way how $i-$th SN should update the values to be estimated. It consists of a specific linear combination of values that node $i$ self measures and values that it receives from neighbors SNs and RNs, respectively. Doing this, we take into account distance between neighbors (i.e. in units of length, not number of hops), properties of the channel between nodes, transmitting power and consequently we decide, whether the update can be applied, according to these channel characteristics. Finally, Equation \ref[algorithm_RN] is an analogy update equation for $i$-th RN, whose updates are determined as a linear combination from values of its RNs and SNs neighbors.
 
-Summarizing the meaning of equations  describing the algorithm, that we stated above: Firstly, Equation \ref[observation] says, that observation of node $i$,  \ $y_i(t)$, in time $t$ are elements of vector $\theta$, according to its appropriate matrix $\bi H_i$,  and this observation is affected by the Gaussian noise $w_i.$  Next, Equation \ref[algorithm_SN] proposes the way how $i-$th SN should update the values to be estimated. It consists of a specific linear combination of values that node $i$ self measures and values that it recieves from neighbors SNs and RNs, respectively. Doing this, we take into account distance between neighbors (i.e. in units of length, not number of hops), properties of the channel between nodes, transmitting power and consequently we decide, whether the update can be applied, according to these channel characteristcs. Finally, Equation \ref[algorithm_RN] is an analogy update equation for $i$-th RN, whose updates are determined as a linear combination from values of its RNs and SNs neighbors.
+\chap Examples of Usage of Average consensus algorithm in wireless communication
 
+In this chapter we provide few more examples of usage of Average consensus algorithm in wireless digital communication.
 
+\sec Distributed estimation of the number of deployed nodes
 
+Let's consider a situation, that in some area we placed number of nodes, each marked with its unique identification $I$, for simplicity we take $ I= 1, 2, ..., N$ ; and these nodes are supposed to exchange information \cite[Umberto]. We want to estimate the overall number of sensors $N.$ We will model this problem as Average consensus algorithm over the set $I$ initialized to the specific vertex. From Figure \ref[values_nodes_number_estimation] we can read, that in this particular example an average node number $\overline I $ is
+$$ {\overline I} = {{1+N\over 2}} = 50. \eqmark $$
+ Then we follow to find the number $N$ as
+$$ \label[simmmmm] N=2 {\overline I} -1 = 2 \cdot 50-1 = 99,\eqmark$$
+and 99 is indeed the number used in simulation. Note: a priori none of the nodes didn't know the parameter $N,$ and using simple Equation \ref[simmmmm] the information about total number of nodes will be obtained in all nodes.
 
+An alternative to this approach is solving this problem in a way, that all nodes send some acknowledgment to a central point, CP computes them and sends the number of nodes back, but using the approach described in our example, we avoid a risk of a central point failure. Matlab script used for simulation is in Appendix \ref[nodes_number_script].
 
+\midinsert
+\picw=8cm \cinspic pictures/number_nodes_estimation.pdf
+\clabel[nodes_number_estimation]{ Graph used to demonstrate number of nodes estimation.}
+\caption/f  Figure of graph on which we demonstrate estimation of overall nodes number using local communication.
+\endinsert
 
+\midinsert
+\picw=15cm \cinspic pictures/values_number_nodes_estimation.pdf
+\clabel[values_nodes_number_estimation]{ Convergence process in node number estimation.}
+\caption/f Convergence process of estimation to find number of deployed nodes. Using the average consensus algorithm we find the average ID od nodes $\overline I$, from which  we can easily compute the overall number of deployed nodes. 
+\endinsert
 
+\sec Tracking of dynamic target
 
+Let's consider a small graph with only 5 nodes. Four of them, $v_1 - v_4$ are followers and they track a target $v_5.$
+In this implementation we expand the previous Example \ref[ex3_6], where we fixed one vertex value of the algorithm and observed how the rest of vertex values are asymptotically converging to it (see Figure \ref[conv_fix_v3]). We make two changes now. The first is trivial, we run parallel two runs of the algorithm with meaning of moving in plane $xy$ space (see Figure below). The second, the previosly fixed parameter will slowly change (randomly).
 
+In Matlab script in Appendix \ref[dynamic_tracking] we provide an implementation, where the target is initialized in some random position and for a half of the simulation time it has some small dynamics, implemented as moving for some small random distance in each step of iterative algorithm. Goal of the nodes $v_1 - v_4$ is to be as near as possible to $v_5$, with only some small $d$ distance, that $v_1 - v_4$ hold to prevent collision. In the simulation we had to significantly decrease the choice of $\alpha$ parameter, $\alpha = 0,1 \cdot \alpha^* ={1\over {10 \cdot \Delta}}$, that controls the choice of Perron matrix $\bi P$, which bears the algorithm. This is justified by fact, that the iterations of algorithm are too fast and we should respect, that the followers are moving with finite velocity. (Consequently, in such a case the animation would not be interesting at all.)
 
+In Figures \ref[track_pic_sim_1] and \ref[track_pic_sim_2] we provide some screens from simulation, that is an output of provided Matlab script in Appendix \ref[dynamic_tracking]. Note that as a result $v_1 - v_4$ perfectly tracks $v_5.$ Usage of Average consensus algorithm is quite common in automatic control of e.g. flights of drones, that should keep some given distance between each other; this is referred to as 'Multi-vehicle Formation Control' ( or also sometimes less formally flocking), and for more information and rich references we again recommend e.g. \cite[Consensus_and_Cooperation_in_Networked]. Average consensus algorithm may be so used to design feedback control system for such unmanned vehicles.
 
+\picw=.51\hsize
+\label[track_pic_sim_1]
+\centerline {\inspic pictures/tracking/initialization.pdf \hfil\hfil \inspic pictures/tracking/10_iterations.pdf }\nobreak
+\centerline {a)\hfil\hfil b)}\nobreak\medskip
+\caption/f Initialization and 10th iteration of Target tracking simulation.
 
+\picw=.51\hsize
+\label[track_pic_sim_2]
+\centerline {\inspic pictures/tracking/100_iterations.pdf \hfil\hfil \inspic pictures/tracking/1000_iterations.pdf }\nobreak
+\centerline {a)\hfil\hfil b)}\nobreak\medskip
+\caption/f 100th and 1000th iteration of Target tracking simulation.
+
+\label[distr_time_sync]
+\sec Distributed time synchronization
+
+Last example, that we want to provide concerns some basic time base synchronization. In the beginning we have to revise, that effectiveness of the algorithm as described is crucially dependent on fact, that the updates are to neighbor nodes delivered in perfectly synchronized time slots. So speaking about time synchronization, we expect, that the communication between nodes has already been set up. We also assume zero-noise updates here. The problem, that solves this section might have been motivated e.g. like this: Imagine, our $N$ sensors are supposed to measure some quantity, e.g. temperature. Because of typical WSN limitations, such as battery capacity, they are designed to shut down sensors at moments in which they are not in use to save power, and we want all the nodes to turn on the sensors and measure at same time instants. Usually, each sensor will keep its time as some big number, that increases in time based on ticks of some its internal oscillator. E.g. in time provided by GPS satellites the receivers obtain information in form of GPS-weeks and GPS-seconds since January 1980 \cite[gps_Time].
+
+A Matlab script, that we used to simulate the problem described above may be found in Appendix \ref[time_sync_app]. In the simulation we used 30 nodes of an average degree 4. In the first Figure we present detail to initial synchronization. Observation: the algorithm doesn't have any problem with fact, that the values still it uses in iterations still decreases, nevertheless we can not speak about something like convergence. The result, that we desire in this example is, that all the nodes have within about 30 iterations all the same time synchronized.
+
+\midinsert
+\picw=15cm \cinspic pictures/time_sync_beg.pdf
+\clabel[time_sync_beg] {Figure to Distributed time synchronization Example.}
+\caption/f { Detail view on result of the first 150 iterations of the simulation. Each node was initialized with time base $T=1000 \pm \delta_{offset}$, where $\delta_{offset}$ is random number from Uniform distribution from interval $[0; 1000].$ We can see, that the convergence is reached in about 30 iterations.}
+\endinsert
+
+\midinsert
+\picw=14.0cm \cinspic pictures/time_sync_beg_out.pdf
+\clabel[time_sync_beg_out] {Temporary loss of synchronization.}
+\caption/f { In next Figure to the Time synchronization we simulate an outage of 10 nodes between iterations number 300 to 500. We can see, that in this interval there is definitely a malfunction in the network, however once the nodes are up again, they synchronize quite quickly.}
+\endinsert
+
+\chap Conclusion
+
+Main goal of this Bachelor's thesis was to become acquainted with Linear average consensus algorithm on graph. We provided basic introduction to the Graph theory, including important terms that are common to describe the algorithm, with focus on the Laplacian matrix, i.e. its definition and basic properties. Next, we stated the Linear average consensus algorithm description, as it is common in related literature and also briefly overviewed the core idea concerning the convergence condition. This helped us to understand, why it appears advantageous to design the algorithm using the Laplacian matrix of the graph. We also briefly mentioned the problematic of noisy updates, which is important in wireless digital communication, and showed in particular example, that the algorithm scheme must be modified to preserve the convergence of algorithm. In this noisy-update example we, without proof, used Decreasing step size approach found in relevant mentioned literature. In the text are also mentioned the most common difficulties and pitfalls in context of estimation in wireless networks, including fact, that the mathematical description becomes in general cases quite complex. Finally, we used the knowledge to provide three simple examples, implemented as Matlab scripts (in Appendix), that are commented in the last part of the thesis.  
+
+Further work on this topic could have focus on the specific approaches to deal with the problematic of noisy updates, which is necessary for ability to use this algorithm in wireless communication. The algorithm is general and might have been used in more branches.
 
 

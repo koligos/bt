@@ -1,0 +1,397 @@
+
+\bibchap
+\ifx\usebib\undefined
+   \usebbl/c mybase
+\else
+   \usebib/c (simple) mybase
+\fi
+
+
+
+\app Matlab scripts
+
+\label[perfect_script]
+\sec Matlab script: Average consensus algorithm with perfect communication
+
+This is script $perfect\_communication\_example.m$ used in Examples \ref[ex3_5], \ref[ex3_6] and \ref[ex3_7]  to present the run of algorithm. In this case we do not use the built-in matlab functions to compute desired values, only to check them.
+
+%\picw=0.7\hsize % obrázek na šířku sazby
+%\cinspic scripts_export/script_perfect_communication_example.pdf
+
+\begtt
+% Run of average consensus algorithm with perfect communication       
+%###########################################################            
+clear all;
+s=[1 1 2 2 3 3 3 4 4 4 5 6 7 8 8 9 9 10  ];%source vertices
+t=[2 3 4 5 7 10 5 5 6 7 6 7 5 1 2 10 7 8];%destination vertices
+w=[1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1]; %weights of edges
+G = graph(s,t,w); %create graph G with parameters s, t, w
+iterations = 30;
+for i= 1:length(s) %A is adjacency matrix; A(i,j)=1 <=> exists edge (i,j)
+   A(s(i),t(i))=1;
+   A(t(i),s(i))=1; 
+end
+checkA=isequal(A, adjacency(G)); %check adjacency matrix
+M=0; %M is the highest degree of vertex
+for i=1:size(A)
+    sumRadek=sum(A(i,:))
+    if sumRadek>=M
+        M=sumRadek;        
+    end
+end
+for i = 1:size(A)
+    D(i,i)=sum(A(i,:))%D is degree matrix
+end
+L=D-A; %Laplacian matrix
+checkLaplacian=isequal(laplacian(G),L); %check Laplacian 
+for i= 1:length(s) %Incidence matrix
+    E(s(i),i)=1;
+    E(t(i),i)=-1;
+end
+L2=E*transpose(E); %another way to compute Laplacian
+checkLaplacian2=isequal(laplacian(G),L2); %check Laplacian 
+I=L*ones(max(s)); %check that Laplacian rows sum up to 1
+D = eig(L,'matrix');%diagonal matrix of eigenvalues of laplacian
+L_eig=eig(L);
+alpha=2/(L_eig(2)+L_eig(max(s)))
+
+for i = 1:max(s)
+node_initial_value(i)=i; %initialization of values to average
+%running_value(i+1,j)=node_value(j);
+running_value(1,i)=node_initial_value(i);
+running_value_Error(1,i)=-node_initial_value(i)+mean(node_initial_value);
+end
+for i= 1:max(s)
+final_value(i)=mean(node_initial_value); %expected average value
+end
+node_value=node_initial_value; %inicialization of nodes values
+running_value_Error(1,:)=final_value-node_initial_value;
+for i=1:iterations+1
+discrete_time(i)= i-1;
+end
+for i = 1:iterations;
+    IT=eye([max(s) max(s)])-alpha*L; %iteratation Perron matrix
+    node_value=node_value;
+    node_value= node_value* IT;
+    for j=1:max(s)
+            running_value(i+1,j)=node_value(j);
+            running_value_Error(i+1,j)=final_value(j)-node_value(j);
+    %node_value(5)=3; uncomment for convergence to v_3 initial value
+    end
+end
+
+figure;
+plot(discrete_time, running_value(:,:));
+ttl1=title( 'Run of algorithm with updates affected by AWGN '  )
+ttl1=set(ttl1,'Interpreter','latex','FontSize', 15);
+xlbl1=xlabel('Iterations [-]');
+xlbl1=set(xlbl1,'Interpreter','latex');
+ylbl1=ylabel('Value [-]');
+ylbl1=set(ylbl1,'Interpreter','latex');
+grid;
+figure;
+grid on
+plot(discrete_time, running_value_Error(:,:));
+title('shrinking of error');
+grid on
+figure;
+plot(G); %plot graph G
+\endtt
+
+\nextoddpage
+
+\label[noise_script]
+\sec Matlab script: Average consensus algorithm with noisy observation and updates using decreasing step size
+
+ This is script $script\_noisy\_updates\_gamma.m$ used in Example \label[ex_conv_noise_gamma] to present simple way to preserve convergence in case of noisy updates.
+
+\begtt
+% Run of average consensus algorithm with noisy 
+% updates using descending step size scheme gamma=a/(1+b)^c                     
+
+
+%% graph definition
+clear all; clc;
+variance_noise=0.1; %variance of the gaussian noise added to the updates
+iterations =5000; %number of iterations of the algorithm
+nodes=60; %number of graph nodes
+G=graph(bucky); % using matlab default graph bucky
+% i.e. 60 nodes with degree 3
+%% variables initialization
+equiv_noise_vector=zeros(1,nodes); 
+x_0=zeros(1,nodes);
+MSE_ave=zeros(zeros(1,iterations+1));
+VAR=zeros(zeros(1,iterations+1));
+MSE_act=zeros(zeros(1,iterations+1));
+diag_D=zeros(nodes,nodes);
+%plot the used graph
+figure;
+plot(G)
+deg=degree(G);
+for p=1:nodes
+   diag_D(p,p)=deg(p); 
+end
+%observation initialization const 10 + wgn with variance 1 
+for i=1:nodes     %initialize measurement
+    x_0(i)=(10+wgn(1,1,log10(10*variance_noise)));    
+end
+
+%% variables definition
+x_est_run(1,:) = x_0;
+MSE_act(1)= sum((x_0-mean(x_0)).^2);
+MSE_ave(1)=MSE_act(1);
+VAR(1)=var(x_0);
+noise_matrix=zeros(nodes);
+%Laplacian using library functions
+A=adjacency(G); %adjacency matrix
+L=laplacian(G); %laplacian matrix
+eig_L=eig(L);%eigenvalues of Laplacian
+gamma=2/(eig_L(2)+eig_L(nodes));%the best possible coefficient
+mean_0=mean(x_0);%value to converge to
+
+%% Iterations of the algorithm
+for i=1:iterations
+   gamma=1/(i+42)^0.75; %selected descending step size
+   P=eye(nodes)- gamma* L; %Perron matrix
+
+   for j=1:nodes %computation of the nise affecting updates exchange
+      noise_matrix(j,:)=wgn(nodes,1,10*log10(variance_noise)) ;
+      noise_matrix(j,j)=0 ;
+   end
+    equiv_noise_matrix= P*noise_matrix;
+   for j=1:nodes
+     equiv_noise_vector(j)= equiv_noise_matrix(j,j);
+   end
+   x_est_run(i+1,:)=  P*x_est_run(i,:)'+equiv_noise_vector';  
+end
+
+%calculation of the run statistics
+for i=1:iterations
+  MSE_ave(i+1)= sum((x_est_run(i+1,:)-mean(x_0)).^2)/nodes;
+  MSE_act(i+1)= sum((x_est_run(i+1,:)-mean(x_est_run(i+1,:))).^2)/nodes;   
+  VAR(i+1)= var(x_est_run(i+1,:));
+end
+
+%%  Plot results
+figure;
+plot(0:iterations, x_est_run(:,:));
+ttl1=title( 'Values in nodes'  )
+ttl1=set(ttl1,'Interpreter','latex','FontSize', 15);
+xlbl1=xlabel('Iterations [-]');
+xlbl1=set(xlbl1,'Interpreter','latex');
+ylbl1=ylabel('Value [-]');
+ylbl1=set(ylbl1,'Interpreter','latex');
+grid;
+
+figure;
+loglog(0:iterations, MSE_ave(:)   );
+ttl1=title( 'Mean square error w.r.t. initial average '  )
+ttl1=set(ttl1,'Interpreter','latex','FontSize', 15);
+xlbl1=xlabel('Iterations [-]');
+xlbl1=set(xlbl1,'Interpreter','latex');
+ylbl1=ylabel('MSE [-]');
+ylbl1=set(ylbl1,'Interpreter','latex');
+grid;
+
+figure;
+loglog(0:iterations, VAR(:));
+ttl1=title( 'Variance '  );
+ttl1=set(ttl1,'Interpreter','latex','FontSize', 15);
+xlbl1=xlabel('Iterations [-]');
+xlbl1=set(xlbl1,'Interpreter','latex');
+ylbl1=ylabel('Variance [-]');
+ylbl1=set(ylbl1,'Interpreter','latex');
+grid;
+
+\endtt
+
+
+
+
+\label[nodes_number_script]
+\sec Matlab script: Estimation of nodes number in given area
+
+
+
+\begtt
+% Script to find number of N sensors based on their ID
+%###########################################################
+
+%% Initialization
+clear all;
+nodes = 99;
+iterations = 30;
+G = WattsStrogatz(nodes,4,0.5); %generates random graph
+L=full(laplacian(G));
+degreeMax= max(max(L));
+alpha=1/degreeMax;
+P=eye(nodes)- alpha* L; %Perron matrix
+
+for i = 1:nodes
+x_running(1,i)=i; %initialization vertex with its ID
+end
+
+%% iterations of the algorithm
+for i = 1:iterations
+    x_running(1+i,:)=P*x_running(i,:)';
+end
+
+%% plot results
+figure;
+plot(0:iterations, x_running(:,:));
+ttl1=title( 'Average ID number estimation'  )
+ttl1=set(ttl1,'Interpreter','latex','FontSize', 15);
+xlbl1=xlabel('Iterations [-]');
+xlbl1=set(xlbl1,'Interpreter','latex');
+ylbl1=ylabel('Node ID [-]');
+ylbl1=set(ylbl1,'Interpreter','latex');
+grid;
+
+figure;
+h = plot(G);
+c = h.EdgeColor;
+h.EdgeColor = 'k';
+h.LineWidth=1
+h.MarkerSize=8;
+h.EdgeAlpha=1;
+labelnode(h,1:nodes,' ')
+
+\endtt
+
+\label[dynamic_tracking]
+\sec Matlab script: Tracking of dynamic target
+
+
+
+\begtt
+
+%Tracking of dynamic target script
+%###########################################################
+clear all;
+nodes = 5; % 4 followers and 1 target
+d=0.01;%distance between followers
+r=200; % range of plot axis (xy)
+iterations = 1000; 
+s=[1 1 1 1 2 2 2 3 3 4 ];%graph definition
+t=[5 2 3 4 5 3 4 5 4 5];
+v1_pos=[100,100]; %initialize followers position
+v2_pos=[-100,100];
+v3_pos=[100,-100];
+v4_pos=[-100,-100];
+v5_init_pos=[100*rand, 100*rand]; %target position is random
+
+G =graph(s,t)%generates  graph
+L=full(laplacian(G)); %matlab function for Laplacian
+degreeMax= max(max(L));%generate weight that control dynamics
+alpha=0.08*1/degreeMax; %coefficient 0.08 found experimentaly
+P=eye(nodes)- alpha* L; %Perron matrix
+
+x_pos_vect(1,:)=[v1_pos(1) v2_pos(1) v3_pos(1) v4_pos(1) v5_init_pos(1)];
+y_pos_vect(1,:)=[v1_pos(2) v2_pos(2) v3_pos(2) v4_pos(2) v5_init_pos(2)];
+
+v5_pos_x(1)=v5_init_pos(1);
+v5_pos_y(1)=v5_init_pos(2);
+
+
+for i = 1:iterations
+ x_pos_vect(i+1,:)=P* x_pos_vect(i,:)';
+y_position_vector(i+1,:)=P*y_position_vector(i,:)';
+
+if i<0.5*iterations %for first half of iterations the target moves
+y_position_vector(i+1,5)=y_position_vector(i,5)+0.5*rand*(-1^(i));
+ x_pos_vect(i+1,5)= x_pos_vect(i,5)+0.5*rand*(-1^(i));
+end
+
+% distance between followers
+y_position_vector(i+1,1)=y_position_vector(i+1,1)+d;
+ x_pos_vect(i+1,1)= x_pos_vect(i+1,1)+d;
+
+y_position_vector(i+1,2)=y_position_vector(i+1,1)+d;
+ x_pos_vect(i+1,2)= x_pos_vect(i+1,5)-d;
+
+y_position_vector(i+1,3)=y_position_vector(i+1,3)-d;
+ x_pos_vect(i+1,3)= x_pos_vect(i+1,3)+d;
+
+y_position_vector(i+1,4)=y_position_vector(i+1,4)-d;
+ x_pos_vect(i+1,4)= x_pos_vect(i+1,4)-d;
+
+end
+
+%% plot the animation of mooving point
+figure('Position', [100, 100, 450,300])
+for i=1:iterations
+hold off;
+plot(x_pos_vect(i,5),y_pos_vect(i,5),'ob','MarkerSize',8)
+hold on;
+plot(x_pos_vect(i,1),y_pos_vect(i,1),'or','MarkerFaceColor','r') 
+hold on;
+plot(x_pos_vect(i,2),y_pos_vect(i,2),'or',''MarkerFaceColor','r') 
+hold on;
+plot(x_pos_vect(i,3),y_pos_vect(i,3),'or','MarkerFaceColor','r') 
+hold on;
+plot(x_pos_vect(i,4),y_pos_vect(i,4),'or','MarkerFaceColor','r') 
+hold on;
+grid;
+ axis([-r r -r r])
+ pause(0.001)
+end
+\endtt
+
+\label[time_sync_app]
+\sec Matlab script: (Measurement) Time base synchronization
+
+This is script used to simulate synchronization of Time base, meant to e.g. synchronize the sensors to do the measurement at one common instant. See Section \ref[distr_time_sync].
+
+\begtt
+% Time base synchronization script
+%###########################################################
+%% Initialization
+clear all;
+nodes = 30; %number of nodes of graph
+iterations = 150; %number of iterations of the algorithm
+G = WattsStrogatz(nodes,2,1); %generates random graph
+L=full(laplacian(G)); %Laplacian using Matlab function
+degreeMax= max(max(L)); %find the greatest degree of graph
+alpha=1/degreeMax; %choose parameter to Define Perron matrix
+P=eye(nodes)- alpha* L; %create Perron matrix
+commonTimeBase=1000; % some big number used to initialize time base
+% e.g. in gps time used number of weeks and secs since January'80
+
+for i = 1:nodes %initialize the vertices time base + some random offset
+time_running(1,i)=commonTimeBase+1000*rand; %init of time base + offset
+end
+for i = 1:iterations
+    %average consensus iterations 
+    time_running(1+i,:)=P*time_running(i,:)'; 
+    %each vertex adds to the computed value some addition,... 
+    %... representing ticks of its internal oscilator
+    time_running(1+i,:)= time_running(1+i,:)+1+2*rand;
+    % between 300th and 350th we simulate an outage of 10 sensors
+    if (i>300)&(i<500)
+    time_running(1+i,10:20)= time_running(200,20:30)   ;
+    end
+end
+
+%% plot results
+figure;
+plot(0:iterations, time_running(:,:));
+ttl1=title( 'Online time synchronization'  )
+ttl1=set(ttl1,'Interpreter','latex','FontSize', 15);
+xlbl1=xlabel('Iterations [-]');
+xlbl1=set(xlbl1,'Interpreter','latex');
+ylbl1=ylabel('Time in the node [e.g. seconds,ticks]');
+ylbl1=set(ylbl1,'Interpreter','latex');
+grid;
+% 
+figure;
+h = plot(G);
+c = h.EdgeColor;
+h.EdgeColor = 'k';
+h.LineWidth=1
+h.MarkerSize=8;
+h.EdgeAlpha=1;
+labelnode(h,1:nodes,' ')
+\endtt
+\app Content of CD
+
+

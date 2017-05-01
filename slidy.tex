@@ -1,0 +1,124 @@
+\input ctuslides
+
+\worktype[B/EN]
+\faculty{F3}
+\department{Department of Radioelectronics}
+
+\slideshow 
+
+\tit Distributed signal processing \nl in radio communication
+
+\subtit\bf Jakub Kolář\nl kolarj39@fel.cvut.cz
+
+\subtit\rm Bachelors's thesis presentation
+
+\pg; %------------------------------------------------------------------
+
+\sec Average consensus algorithm \nl on the graph
+
+
+\medskip
+\centerline{\picw=15cm \inspic pictures/slides/asdf.pdf } 
+\caption/f { Run of Average consensus algorithm (left) on the graph (right)}
+\pg;
+
+\sec Graph theory
+
+* Define basic terms
+* Focus on matrix representation of graph
+* Laplacian of the graph and its spectrum
+  $$ {\bi L}(G) = {\bi D}(G) - {\bi A}(G) \eqmark $$
+*  ${\bi L}(G)$ bears relevant information about the graph
+$$ G \Leftrightarrow {\bi L}(G) \eqmark$$
+\pg;
+
+\sec Average consensus algorithm \nl on the graph
+
+* Update scheme \nl $$ x_i(t+1) = x_i(t)+\sum_{j=1; j\not= i}^N p_{i,j}(x_j(t)-x_i(t)) \eqmark $$
+
+* Expressed as matrix multiplication \nl $$ {\bi x}(t+1) = {\bi P} {\bi x}(t) \eqmark $$
+
+%* Convergence condition \nl $$ lim_{t\rightarrow\infty} {\bi P}^t = {1\over N}{\bi 1 1}^T \eqmark $$
+
+* Suits $${\bi P} = {\bi I} - \alpha {\bi L}, \ \alpha = {{1}\over{\Delta}} \in \bbchar R \eqmark $$
+
+\pg;
+
+
+
+\sec Noisy updates
+
+%* Updates affected by zero-mean additive noise
+
+
+\centerline{\picw=13cm \inspic pictures/slides/divergence_noise_120ksamples.pdf } 
+\caption/f Updates affected by zero-mean additive noise
+
+
+\pg;
+
+
+
+\sec Noisy updates - solution
+
+
+* Decreasing step size \nl $$\alpha \rightarrow \{ \gamma(t) | \gamma(t+1)<\gamma(t)  \}_{t=1}^\infty \eqmark$$
+
+
+\centerline{\picw=14cm \inspic pictures/slides/conv_noise_values_gamma.pdf } 
+\caption/f Run of algorithm with decreasing step size
+\pg;
+\sec Noisy updates - solution (2)
+
+
+* Converges in sense of decreasing variance
+
+\centerline{\picw=14cm \inspic pictures/slides/conv_noise_var.pdf } 
+\caption/f Decreasing variance from previous example using decreasing step size
+\pg;
+
+\sec Examples of application: \nl dynamic target tracking
+
+* Damaged version of algorithm (decreased $\alpha$)
+* Robustness
+
+\vskip 1cm
+
+\picw=7.5cm
+\centerline {\inspic pictures/tracking/initialization.pdf \hfil \inspic pictures/tracking/10_iterations.pdf }\nobreak
+\caption/f Initialization and 10th iteration of Target tracking simulation.
+\pg;
+
+\sec Examples of application: \nl dynamic target tracking (2)
+
+* Target stops moving after 500 iterations 
+
+\vskip 1cm
+
+\picw=7.5cm
+\centerline {\inspic pictures/tracking/100_iterations.pdf \hfil \inspic pictures/tracking/1000_iterations.pdf }\nobreak
+\caption/f 10th and 1000th iteration of Target tracking simulation
+\pg;
+
+
+\sec Examples of application: \nl time synchronization
+
+* Time in nodes represented as some big number
+* In simulation increases according to (non ideal) internal oscillator
+
+
+\centerline{\picw=16cm \inspic pictures/slides/time_sync_beg.pdf } 
+\caption/f Run of time base synchronization
+\pg;
+
+
+
+\null
+\vskip2cm
+\centerline{\typosize[35/40]\bf Thank you for your attention.}\pg+
+
+\vskip2cm
+\centerline{\Blue\typosize[60/70]\bf Questions?}
+
+\pg. %------------------------------KONEC-------------------------------
+

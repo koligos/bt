@@ -1,41 +1,31 @@
 
 \def\ctustyle{{\tenss CTUstyle}}
-\def\ttb{\tt\char`\\} % pro tisk kontrolních sekvencí v tabulkách
-
+\def\ttb{\tt\char'\\} % pro tisk kontrolních sekvencí v tabulkách
 
 \chap Graph theory
 
-
-
-
 \sec Motivation
 
-It is commonly well known \cite[hafRBdQjmyiRm2f2], that the elements of Graph theory were set by a mathematician Leonhard Euler in 1736. He solved a problem called Seven Bridges of Königsberg. 
+It is commonly known, that the elements of Graph theory were set by a mathematician Leonhard Euler in the 18th century  , when He solved a problem called Seven Bridges of Königsberg \cite[I9TmriFBrBC9Nqw7].
 
 \midinsert
 \picw=5cm \cinspic pictures/Konigsberg_bridges.png
 \clabel[Konigsberg]{View on city Konigsberg.}
-\caption/f View on city Konigsberg with marked bridges \cite[Giusca2005] . 
+\caption/f View on city Konigsberg with marked bridges \cite[Giusca2005] .
 
 \endinsert
 
+The problem was formulated like this: River Pregole flows through the city and creates two islands in there; these two islands were connected with the city by 7 bridges (see figure above) and the question was, whether it is possible to take a walk through the city in such a way, to pass each bridge exactly once \cite[I9TmriFBrBC9Nqw7]. Euler described this problem as a graph, where the edges represented the seven bridges, and the vertices were the separated parts of the city. He proved, that in this case, it is impossible to pass each bridge only once and showed, that such a way exists if and only if each vertex of the graph is of an even degree \cite[I9TmriFBrBC9Nqw7].
 
+Nowadays, a very modern and interesting example of usage of the Graph theory is visualization and simulation of the communication networks, such as the Internet, mobile network etc. A typical task is to find the best route from a source to a destination location with respect to a given specific metric. This metric can depend on many parameters. Typical choices are e.g. a number of intermediate devices, end-to-end delay or a bandwidth of the connectivity. These Graph algorithms are often based on a very efficient improvement of basic Depth-first search. (This is a case of the famous Dijkstra's algorithm used by OSPF routing protocol, to find the best way from each node to all the others with edges with a given cost.)
 
+Next interest, we will briefly meet also term Spanning tree. In Ethernet-based communication is very important to avoid loops in a network, because they might cause a congestion of the network and failure of the service. A Spanning tree of a graph is a factor of this graph, which originates by removing some of its edges, in a way to preserve all vertices reachable, and removes all cycles in the graph \cite[spanningTree]. In the chapter about Laplacian we shall see how to simply find a count of these Spanning trees.
 
-The problem was formulated like this: River Pregole flows through the city and creates two islands in there. These two islands are connected with the rest of the city by seven bridges (see figure above). The question was, whether it is possible to take a walk through the city in such a way, to pass each bridge exactly once. Euler described this problem as a graph, where the edges represented the seven bridges, and the vertices were the separated parts of the city.
-
-Euler proved, that in this case, it is impossible to pass each bridge only once and showed, that the Eulerian trial (i.e. a trial, that contents every edge exactly once) exists if and only if every vertex of the graph is of an even degree.
-
-Nowadays, a very modern and interesting example of usage of the Graph theory is visualisation and simulation of the communication networks, such as the Internet, mobile network etc. A typical task is to find the best route from a source to a destination location with respect to a given specific metric. This metric can depend on many paramaters, such as a number of intermediate devices (RIP), round-trip delay or a bandwidth of the connectivity (OSPF). These Graph algorithms are often based on a very efficient improvement of basic Depth-first search. (This is a case of the famous Dijkstra's algorithm used by OSPF routing protocol, to find the best way from each node to all the others with eges with a given cost.) 
-
-We also briefly mention the term of Spanning trees. In Ethernet-based communication is very important to avoid loops in a network, because they might cause a congestion of the network and failure of the service. A Spanning tree of a graph is a factor of this graph, which originates by removing some of its edges, in a way to preserve all vertices reachable, and removes all cycles in the graph. Later, in a chapter about Laplacian we shall see how to simply find a count of these Spanning trees.
-
-To finish this motivation part, a very nice example of the usage of distributed algorithm is a Network time protocol (NTP). It is important to have globally synchronised time between server computers. Few of the servers are connected to the reference clocks and next, to them hiearchically connected servers, are averaging neighbour's time to obtain final value of time, that they use and provide to next users.
-
+To finish this motivation part, a very nice example of the usage of distributed algorithm is a Network time protocol (NTP). It is important to have globally synchronized time between server computers. Few of the servers are connected to the reference clocks and next, to them hierarchically connected servers, are stochasticaly analyzing properties of neighbor's time to obtain final value of time, that they use and provide to next users   \cite[8QTNEpKBWSMYObR2].
 
 \sec Definitions
 
-A graph $G=(V, E)$ is described by a pair of its vertices $V$ and edges $E$. ${V=\{ v_1, v_2, ..., v_N \}}$ is a set of $N$ vertices. By the vertices we understand the points connected by the edges. 
+A graph $G=(V, E)$ is described by a pair of its vertices $V$ and edges $E$. ${V=\{ v_1, v_2, ..., v_N \}}$ is a set of $N$ vertices. By the vertices we understand the points connected by the edges.
 An edge $\left( v_i, v_j \right)$ means a connection between vertices $v_i$ and $v_j$.
 
 \secc Undirected graph
@@ -43,38 +33,31 @@ An edge $\left( v_i, v_j \right)$ means a connection between vertices $v_i$ and 
 \midinsert
 \picw=6cm \cinspic pictures/basic_graph.pdf
 \clabel[Graph]{Example of a undirected graph.}
-\caption/f Example of a simple undirected graph to demonstrate basic definitions. 
+\caption/f Example of a simple undirected graph to demonstrate basic definitions.
 \endinsert
 
-The graph $G=(V, E)$ above could be described by set of vertices ${V=\{ 1; 2; 3; 4; 5\}}$ and set of edges  $E=\{ (1, 4); (1, 3); (2, 4); (2,5); (3, 2); (3, 3); (3, 5); (4, 5) \}$.
+The graph $G=(V, E)$ above could be described by set of vertices ${V=\{ 1; 2; 3; 4; 5\}}$ and set of edges $E=\{ (1, 4); (1, 3); (2, 4); (2,5); (3, 2); (3, 3); (3, 5); (4, 5) \}$.
 
-Set of neigbours $ {\cal{N}}_i $ of a vertex $v_i$ is $ {\cal{N}}_i = \{ v_j \in V | (v_i , v_j)\in E \} $. For example $ {\cal{N}}_4 = \{1; 2; 5 \} .$ Degree of a node is  $d_i= |{\cal{N}}_i |$.
+Set of neighbors $ {\cal{N}}_i $ of a vertex $v_i$ is $ {\cal{N}}_i = \{ v_j \in V | (v_i , v_j)\in E \} $. For example $ {\cal{N}}_4 = \{1; 2; 5 \} .$ Degree of a node is $d_i= |{\cal{N}}_i |$.
 
 \secc Directed graph
 
 \midinsert
 \picw=7cm \cinspic pictures/basic_digraph.pdf
 \clabel[Digraph]{Example of a directed graph.}
-\caption/f Example of a directed graph. 
+\caption/f Example of a directed graph.
 \endinsert
-For directed graph holds the same as for undirected with only difference, we distinguish the edges 
-$ ( v_i, v_j ) $ and $ ( v_j, v_i ) . $ Then, for a degree of a node in directed graph, we have to consider only neighbours available via oriented edges,  $d_i^{IN}= |{\cal{N}}_i |$. Drawing the figure, we distinguish the orientation of edges with arrows.
+For directed graph holds the same as for undirected with only difference, we distinguish the edges
+$ ( v_i, v_j ) $ and $ ( v_j, v_i ) . $ Then, for a degree of a node in directed graph, we have to consider only neighbors available via oriented edges, $d_i^{IN}= |{\cal{N}}_i |$. Drawing the figure, we distinguish the orientation of edges with arrows.
 
+\secc Adjacency matrix
 
+Adjacency matrix is a very natural way of a full graph description. This matrix is ${\bi{A}} \in {\bbchar R}^{N\times{N}}$ and for graph $G$ with $N$ vertices describes inner connectivity of the graph with information, to what all vertices goes an edge from a given vertex. Its values $a_{i,j}$ are defined as \cite[adjmatrixycv]:
 
-
-\secc Adjacency matrix 
-
-Adjacency matrix is a very natural way of a full graph description. This matrix is ${\bi{A}} \in {\bbchar R}^{N\times{N}}$ and for graph $G$ with $N$ vertices describes inner connectivity of the graph with information, to what all vertices goes an edge from a given vertex.  Its values $a_{i,j}$ are defined as: 
-
-
-
-$$ a_{i,j} = \cases{1 & if there is the edge $(v_i,v_j)$,  \cr 0 & if $i=j,$ \cr 0 & otherwise.} \eqmark $$
-
-
+$$ a_{i,j} = \cases{1 & if there is the edge $(v_i,v_j)$, \cr 0 & if $i=j,$ \cr 0 & otherwise.} \eqmark $$
 
 Adjacency matrix of a graph from figure \ref[Graph] reads
-$$ {\bi A}_{2.2} = \pmatrix{0&0&1&1&0\cr 0&0&1&1&1\cr 1&1&0&0&1\cr 1&1&0&0&1\cr 0&1&1&1&0\cr} . \eqmark $$ 
+$$ {\bi A}_{2.2} = \pmatrix{0&0&1&1&0\cr 0&0&1&1&1\cr 1&1&0&0&1\cr 1&1&0&0&1\cr 0&1&1&1&0\cr} . \eqmark $$
 We can see, that Adjacency matrix of an undirected graph is symmetric.
 
 And adjacency matrix of a graph from figure \ref[Digraph] is
@@ -85,106 +68,83 @@ For undirected graphs allowing {\em Weighted graphs} means, that for each pair o
 
 \secc Degree matrix
 
-A Degree matrix  ${\bi{D}} \in {\bbchar R}^{N\times{N}}$ is a diagonal matrix bearing an information about degree of each vertex. Its diagonal elements are $d_i =  \sum_{i \not{=} j } a_{i,j}$ and all nondiagonal elements are equal to 0. For example Degree matrix of undirected graph from figure \ref[Graph] reads ${\bi{D}}_{2.2} = diag \{ 2, 3, 4, 3, 3 \}.$  Next, for the case of directed graph we have to consider only incoming edges. Which for graph from figure \ref[Digraph] means ${\bi{D}}_{2.3} = diag \{ 2, 1, 1, 2, 3 \}.$ And also let's define $\Delta = \max_{i} (d_i)$. 
+A Degree matrix ${\bi{D}} \in {\bbchar R}^{N\times{N}}$ is a diagonal matrix bearing an information about degree of each vertex. Its diagonal elements are $d_i = \sum_{i \not{=} j } a_{i,j}$ and all non diagonal elements are equal to 0 \cite[degrenadasd]. For example Degree matrix of undirected graph from figure \ref[Graph] reads ${\bi{D}}_{2.2} = diag \{ 2, 3, 4, 3, 3 \}.$ Next, for the case of directed graph we have to consider only incoming edges. Which for graph from figure \ref[Digraph] means ${\bi{D}}_{2.3} = diag \{ 2, 1, 1, 2, 3 \}.$ And also let's define $\Delta = \max_{i} (d_i)$.
 
+\secc Incidence matrix
 
-\secc Incidence matrix 
-
-An Incidence matrix of a directed graph provides for each edge an information about an initial and terminal vertex. For a graph with $N$ vertices and $L$ edges the Incidence matrix ${\bi{E}} \in {\bbchar R}^{N\times{L}}$  elements $e_{i,j}$ are defined as:
+An Incidence matrix of a directed graph provides for each edge an information about an initial and terminal vertex. For a graph with $N$ vertices and $L$ edges the Incidence matrix ${\bi{E}} \in {\bbchar R}^{N\times{L}}$ elements $e_{i,j}$ are defined as \cite[incidenceee]:
 
 $$ e_{i,j} = \cases{
-1 & if edge $j$ begins in the vertex $i$, 
+1 & if edge $j$ begins in the vertex $i$,
 \cr -1 & if edge $j$ ends in the vertex $i$ ,
 \cr 0 & otherwise.} \eqmark $$
 
-So Incidence matrix for graph on figure \ref[Digraph] reads 
+So Incidence matrix for graph on figure \ref[Digraph] reads
 
- $${\bi{E}}_{2.3} = \pmatrix{  -1&-1&0&1&0&0&0&1&0\cr
-0&0   & -1&0&1&0&0&0&0\cr
-1&0&0   & -1  &  -1 &   -1 &   -1&0&0\cr
-0&1&0&0&0&1&0  &  -1 &   -1\cr
+$${\bi{E}}_{2.3} = \pmatrix{ -1&-1&0&1&0&0&0&1&0\cr
+0&0 & -1&0&1&0&0&0&0\cr
+1&0&0 & -1 & -1 & -1 & -1&0&0\cr
+0&1&0&0&0&1&0 & -1 & -1\cr
 0&0&1&0&0&0&1&0&1\cr} \eqmark $$
 
-We can see, this matrix is very rare. In each column contains only one pair of 1 and~-1.  The adjacency matrix provides same information but with typicaly smaller matrix.
+We can see, this matrix is very rare. In each column contains only one pair of 1 and~-1. The adjacency matrix provides same information but with typically smaller matrix.
 
 \sec Laplacian matrix
 
-The structure of folowing section about Laplacian is based mainly on \cite[Mohar91thelaplacian]. Supplementary references are added at corresponding paragraphs.
+The structure of following section about Laplacian is based mainly on \cite[Mohar91thelaplacian]. Supplementary references are added at corresponding paragraphs.
 
-\secc Definitions 
+\secc Definitions
 
-Now, in previous text we defined Adjacency and Degree matrix of a graph $G$. Next, we define the {\em{Laplacian matrix} } ${\bi L} (G)$ of a  graph, $${\bi L} (G)={\bi{D}} (G)- {\bi{A}} (G). \eqmark $$ Matrix $ {\bi{L}} (G)$ for a graph with $N$ vertices is   ${\bi L} (G) \in {\bbchar R}^{N\times{N}}.$ From definitions of ${\bi{D}} (G)$ and ${\bi A} (G)$ implies, that loops in graph have no influence on ${\bi L} (G)$.
+Now, in previous text we defined Adjacency and Degree matrix of a graph $G$. Next, we define the {\em{Laplacian matrix} } ${\bi L} (G)$ of a graph  \cite[Mohar91thelaplacian], \label[lapDef2]$${\bi L} (G)={\bi{D}} (G)- {\bi{A}} (G). \eqmark $$ Matrix $ {\bi{L}} (G)$ for a graph with $N$ vertices is ${\bi L} (G) \in {\bbchar R}^{N\times{N}}.$ Loops do no affect ${\bi L} (G)$. To make hold some important results from Linear algebra and Matrix analysis, we will next consider only undirected graphs without loops. Which means, that the corresponding Adjacency matrix will be symmetric. Because the $ {\bi{A}} (G)$ is symmetric, the ${\bi L} (G)$ comes to be also symmetric.
 
- To make hold some important results from Linear algebra and Matrix analysis, we will next consider only undirected and loopless graphs. Which means, that the coresponding Adjacency matrix will be symmetric. Having symmetric $ {\bi{A}} (G)$, the coresponding Laplacian matrix will be also a symmetric matrix. 
+Using the Incidence matrix of graph ${\bi E} (G)$, we can find the Laplacian matrix of graph $G$ as \label[lapDef2]$${\bi L} (G)={\bi{E}} (G) {\bi{E}}^T (G). \eqmark $$ The Laplacian definitions in Equations \label[lapDef1] and \label[lapDef2] are equivalent.
 
-
-Taking the Incidence matrix of graph ${\bi E} (G)$, we can find the Laplacian matrix of graph $G$ as $${\bi L} (G)={\bi{E}} (G) {\bi{E}}^T (G). \eqmark $$
-
-
-Next, we mark $\mu(G, x)$ the characteristical polynom of $ {\bi L} (G)$ defined as $$\mu(G, x) = \det ( {\bi L} - x {\bi I}). \eqmark$$  Roots of this characteristical polynom are called {\em Laplacian eigenvalues} of $G$.  As it is common in literature, we will denote them $\lambda_1 \le \lambda_2 \le ... \le \lambda_N $, enumerated with lower indices in an increasing order with counting multiplicities. $N$ denotes the number of vertices. The set $\{ \lambda_1 , \lambda_2 , ... , \lambda_N \} $ is called the {\em{spectrum}} of ${\bi L} (G).$
-
-
-
+Let's denote $\mu(G, x)$ the characteristic polynomial of $ {\bi L} (G)$, i.e. $$\mu(G, x) = \det ( {\bi L} - x {\bi I}). \eqmark$$ Roots of this characteristic polynomial are called {\em Laplacian eigenvalues} of $G$. As it is common in literature, we will denote them $\lambda_1 \le \lambda_2 \le ... \le \lambda_N $, enumerated with lower indices in an increasing order with counting multiplicities. $N$ denotes the number of vertices. The set $\{ \lambda_1 , \lambda_2 , ... , \lambda_N \} $ is called the {\em{spectrum}} of ${\bi L} (G)$ and is in interest of {\em spectral graph theory}   \cite[Mohar91thelaplacian].
 
 \secc Basic properties
-
 
 \def\Definition {\numberedpar A{Definiton}}
 \def\Theorem {\numberedpar A{Theorem}}
 
 \def\Example {\numberedpar A{Example}}
 
-\Theorem {If $ {\bi{A}} \in {\bbchar R}^{N\times{N}}$  is symmetric then $ {\bi{A}}$ has real eigenvalues. }
+\Theorem {If $ {\bi{A}} \in {\bbchar R}^{N\times{N}}$ is symmetric then $ {\bi{A}}$ has real eigenvalues. }
 
+{\em Proof:} Ommited. For example \cite[Dont], page number 92.
 
-{\em Proof:} For example \cite[Dont] , page number 92.
-
-
-\Theorem Let $G$  be an undirected graph without loops. Then 0 is an eigenvalue for the Laplacian matrix of $G $ with an eigenvector $(1, 1, ..., 1)^T.$
-
+\Theorem Let $G$ be an undirected graph without loops. Then 0 is an eigenvalue for the Laplacian matrix of $G $ with an eigenvector $(1, 1, ..., 1)^T.$
 
 {\em Proof:}
-Found in \cite[Marsden2013EigenvaluesOT]. If $G$ is an undirected graph then the sum of the entries in row $i$ of Adjacency matrix  $ {\bi{A}}$ gives exactly the degree  $d_i$ of vertex $i$. So we can write:
+Found in \cite[Marsden2013EigenvaluesOT]. If $G$ is an undirected graph then the sum of the entries in row $i$ of Adjacency matrix $ {\bi{A}}$ gives exactly the degree $d_i$ of vertex $i$. So we can write:
 
-
- $$ {\bi{A}} \pmatrix{  1 \cr 1 \cr \vdots \cr 1} =  \pmatrix{  d_1 \cr d_2 \cr \vdots \cr d_N \cr}. \eqmark $$
+$$ {\bi{A}} \pmatrix{ 1 \cr 1 \cr \vdots \cr 1} = \pmatrix{ d_1 \cr d_2 \cr \vdots \cr d_N \cr}. \eqmark $$
 
 And from that:
 
+$$ {\bi{L}} (G) \pmatrix{ 1 \cr 1 \cr \vdots \cr 1} = ({\bi{D}} (G) - {\bi{A}} (G) ) \pmatrix{ 1 \cr 1 \cr \vdots \cr 1} = \pmatrix{ d_1 - d_1 \cr d_2 - d_2 \cr \vdots \cr d_N - d_N} = \pmatrix{ 0 \cr 0 \cr \vdots \cr 0 \cr} = 0 \pmatrix{ 1 \cr 1 \cr \vdots \cr 1}. \eqmark $$
 
-$$ {\bi{L}} (G)  \pmatrix{  1 \cr 1 \cr \vdots \cr 1} = ({\bi{D}} (G) - {\bi{A}} (G) )  \pmatrix{  1 \cr 1 \cr \vdots \cr 1} =  \pmatrix{  d_1 - d_1 \cr d_2 - d_2 \cr \vdots \cr d_N - d_N} = \pmatrix{ 0 \cr 0 \cr \vdots \cr 0 \cr} = 0  \pmatrix{  1 \cr 1 \cr \vdots \cr 1}. \eqmark $$
-
-In which we easily recognize the relation holding for eigenvalues. 
-
-
-
-
+In which we easily recognize the relation holding for eigenvalues.
 
 \Theorem{The Laplacian matrix ${\bi{L}} (G) $ is positive semi-definite and singular. \cite[Liaghat2015] }
 
-{\em Proof:} Let $\lambda$ be an eigenvalue and $v$ its coresponding eigenvector. Then
-$${\bi{L}}  v = \lambda v, \eqmark $$
-$$ \lambda = v^T {\bi{L}} v  = v^T {\bi{E}} {\bi{E}}^T v =  ( v^T {\bi{E}}) ( {\bi{E}}^T v ) = ( {\bi{E}}^T v )^T ( {\bi{E}}^T v ) = \| {\bi{E}^T} v\| \ge 0. \eqmark $$
+{\em Proof:} Let $\lambda$ be an eigenvalue and $v$ its corresponding eigenvector. Then
+$${\bi{L}} v = \lambda v, \eqmark $$
+$$ \lambda = v^T {\bi{L}} v = v^T {\bi{E}} {\bi{E}}^T v = ( v^T {\bi{E}}) ( {\bi{E}}^T v ) = ( {\bi{E}}^T v )^T ( {\bi{E}}^T v ) = \| {\bi{E}^T} v\| \ge 0. \eqmark $$
 
 ${\bi{L}}$ is singular, because sum of all elements in each column is zero.
 
+%We can come to the positive semidefiniteness also using the following quadratic form:
 
-We can come to the positive semidefiniteness also using the following quadratic form:
-
-$$ \left< { \bi{L}} x, x \right> = \sum_{(u,v)\in E(G)} (x_u - x_v)^2 , \eqmark $$ which results will be always non-negative.
-
-
+%$$ \left<{ \bi{L}} x, x \right>  = \sum_{(u,v)\in E(G)} (x_u - x_v)^2 , \eqmark $$ which results will be always non-negative.
 
 \secc Bounds for eigenvalues
 
+\Theorem {\em Gershgorin circle theorem} \cite[Dont]. Consider matrix $ {\bi{A}} \in {\bbchar C}^{N\times{N}} $ and $i~=~{1, 2, ..., N.}$ Let's denote $$r_i = \sum_{j=1 ; \ i \not= j}^N =|a_{ij}|, \ \ K_i = \{z \in {\bbchar C} \mid |z - a _{ii}|\le r_i \} . \eqmark $$
+The $K_i$ sets are called {\em Gershgorin circles}. It holds for all eigenvalues $\{ \lambda_1 , \lambda_2, ..., \lambda_N \}$ of the matrix $ {\bi{A}}$, that they are all localized in the union of {\em Gershgorin circles} $\{ K_1 \cup K_2 \cup ... \cup K_N \} $ in the Complex plane.
 
-
-\Theorem {\em Gershgorin circle theorem} \cite[Dont]. Consider matrix $ {\bi{A}} \in {\bbchar C}^{N\times{N}} $ and $i~=~{1, 2, ..., N.}$ Let's denote $$r_i = \sum_{j=1 ; \  i \not= j}^N =|a_{ij}|, \ \ K_i = \{z \in {\bbchar C} \mid |z - a _{ii}|\le r_i \} . \eqmark $$
-The $K_i$ sets are called {\em Gershgorin circles}. It holds for all eigenvalues $\{ \lambda_1 , \lambda_2, ..., \lambda_N \}$ of the matrix  $ {\bi{A}}$, that they are all localized in the union of {\em Gershgorin circles}  $\{ K_1 \cup K_2 \cup ... \cup K_N \} $ in the Complex plane.
-
-{\em Proof:} Let {$\lambda $} be an eigenvalue of $ {\bi{A}}$  and its corresponding eigenvector ${\bi{x}}   = (x_1 , x_2, ..., x_N)$ . So holds $ {\bi{A}} {\bi{x}}  = \lambda {\bi{x}}$ . Let $x_k$ be the biggest absolute value number in vector ${\bi{x}}$. Then $\lambda x_k = \sum_{j=1}^N a_{kj}x_{j}.$ Next move the $a_{kk}x_k$ summand from RHS to LHS. We obtain $x_k (\lambda  - a_{kk} ) = \sum_{j=1; j\not=k}^N a_{kj}x_{j}.$ Now we take an absolute value of this equation, divide by $x_k$ and using Triangle inequality we go to: $$ |\lambda  - a_{kk}| = {\left|{   \sum_{j=1; j\not=k}^N a_{kj}x_{j}  \over x_k }\right|} \le   \sum_{j=1; j\not=k}^N {\left| { a_{kj}x_{j}  \over x_k }\right|} \le \sum_{j=1; j\not=k}^N {\left|  a_{kj} \right|} = r_k. \eqmark  $$ 
- \nl
-\Example To present Gershgorin theorem practicaly, consider the graph below:
+{\em Proof:} Let {$\lambda $} be an eigenvalue of $ {\bi{A}}$ and its corresponding eigenvector ${\bi{x}} = (x_1 , x_2, ..., x_N)$ . So holds $ {\bi{A}} {\bi{x}} = \lambda {\bi{x}}$ . Let $x_k$ be the biggest absolute value number in vector ${\bi{x}}$. Then $\lambda x_k = \sum_{j=1}^N a_{kj}x_{j}.$ Next move the $a_{kk}x_k$ summand from RHS to LHS. We obtain $x_k (\lambda - a_{kk} ) = \sum_{j=1; j\not=k}^N a_{kj}x_{j}.$ Now we take an absolute value of this equation, divide by $x_k$ and using Triangle inequality we go to: $$ |\lambda - a_{kk}| = {\left|{ \sum_{j=1; j\not=k}^N a_{kj}x_{j} \over x_k }\right|} \le \sum_{j=1; j\not=k}^N {\left| { a_{kj}x_{j} \over x_k }\right|} \le \sum_{j=1; j\not=k}^N {\left| a_{kj} \right|} = r_k. \eqmark $$
+\nl
+\Example To present Gershgorin theorem practically, consider the graph below:
 
 \midinsert
 \picw=7cm \cinspic pictures/test_graph.pdf
@@ -193,7 +153,6 @@ The $K_i$ sets are called {\em Gershgorin circles}. It holds for all eigenvalues
 \endinsert
 
 With its Laplacian matrix:
-
 
 $$ { \bi{L}} = \pmatrix{3&-1&-1&0&0&0&0&-1&0&0\cr
 -1&4&0&-1&-1&0&0&-1&0&0\cr
@@ -206,18 +165,17 @@ $$ { \bi{L}} = \pmatrix{3&-1&-1&0&0&0&0&-1&0&0\cr
 0&0&0&0&0&0&-1&0&2&-1\cr
 0&0&-1&0&0&0&0&-1&-1&3\cr}.\eqmark $$
 
-And  a characteristical polynomial:
-$\mu(G, x) = x^{10}	-36 x^9+561 x^8	-4 \ 954 x^7 +27 \ 236 x^6-96 \ 318 x^5 +218 \  121 x^4-303 \ 398 x^3+	233 \ 888x^2-75 \  870 x$. Note, that $ { \bi{L}}$ is a symmetric matrix and 0 is clearly a root of $\mu(G, x). $
+And a characteristic polynomial:
+$\mu(G, x) = x^{10} -36 x^9+561 x^8 -4 \ 954 x^7 +27 \ 236 x^6-96 \ 318 x^5 +218 \ 121 x^4-303 \ 398 x^3+ 233 \ 888x^2-75 \ 870 x$. Note, that $ { \bi{L}}$ is a symmetric matrix and 0 is clearly a root of $\mu(G, x). $
 
-Nummerically solving $\mu(G, x) = 0$  we obtain the folowing eigenvalues (rounding for 3 decimal points):
-$\{ 0; \ 1,274; \  1,416; \  3,100; \  3,233; \  3,936; \  4,826; \  5,280; \  6,458; \  6,476 \}.$ All values are real and non-negative. Finally, plotting the graph with marked eigenvalues and Gershgorin circles. As expected, all eigenvalues are included in the circles.
+Numerically solving $\mu(G, x) = 0$ we obtain the following eigenvalues (rounding for 3 decimal points):
+$\{ 0; \ 1,274; \ 1,416; \ 3,100; \ 3,233; \ 3,936; \ 4,826; \ 5,280; \ 6,458; \ 6,476 \}.$ All values are real and non-negative. Finally, plotting the graph with marked eigenvalues and Gershgorin circles. As expected, all eigenvalues are included in the circles.
 
 \midinsert
 \picw=9cm \cinspic pictures/gershgorin.pdf
 \clabel[Gershgorin_circles]{Plot of Gershgorin circles.}
 \caption/f Plot of Eigenvalues and according Gershgorin circles.
 \endinsert
-
 
 
 \Theorem {  Let $G$ be a graph with $N$ vertices \cite[Mohar91thelaplacian]. Then holds: }
@@ -239,24 +197,21 @@ $\{ 0; \ 1,274; \  1,416; \  3,100; \  3,233; \  3,936; \  4,826; \  5,280; \  6
 
 \enditems
 
-These may be found very usefull for example when using numerical methods for solving the roots of $\mu(G,x)$. It is well known, that we don't have exact analytical formulas to obtain roots of polynoms with higher degree than 5. Using these bounds, we know where the roots must be, respective where they can not be.
+These may be found very useful for example when using numerical methods for solving the roots of $\mu(G,x)$. It is well-known, that we don't have exact analytical formulas to obtain roots of polynomials with higher degree than 5. Using these bounds, we know where the roots must be, respective where they can not be. Especially Equation (2.18) will be later used to simplify a choice an optimal weight for the algorithm.
 
 %to do: disjunktni graf_blokova; kombinace laplacianu; lambda mluvi o connectivity; nasobeni char polynomu
 
 \secc Matrix tree theorem
 
-	
+${\bi L} (G)$ may be also referred to as Kirchhoff matrix due to the following theorem. We revise: A {\em tree} is a connected, acyclic graph; a {\em spanning tree} of graph $G$ is a tree which origins as a subgraph, preserving the set of vertices $V(G)$ and removing some of its edges to avoid cycles. A spanning tree may be found only for connected graphs.
 
+An $(i,j)$-cofactor of a matrix is a determinant of a sub-matrix created by deleting the $i$-th and the $j$-th column from this matrix \cite[cofactor].
 
-${\bi L} (G)$ may be also refferred to as Kirchhoff matrix due to the following theorem. A {\em tree} is a connected, acyclic graph. A {\em spanning tree} of graph $G$ is a tree which origins as a subgraph, preserving the set of vertices $V(G)$ and removing some of its edges to avoid cycles. It is clear, that a spanning tree may be found only for connected graphs.
+\vskip 0.3cm
 
-An $(i,j)$-cofactor of a matrix is a determinant of a submatrix formed by deleting the $i$-th row and the $j$-th column.
+\Theorem {\em Kirchhoff's Matrix-Tree Theorem.} Let $G$ be a connected graph with its Laplacian matrix ${\bi L} (G)$. Then all ${\bi L} (G)$ cofactors are equal and this common value is the number of spanning trees of $G$ \cite[pFDW46az7oYNnM8b].
 
-    \vskip 0.3cm
-
-\Theorem {\em Kirchhoff's Matrix-Tree Theorem.}  Let $G$ be a connected graph with its Laplacian matrix ${\bi L} (G)$. Then all ${\bi L} (G)$ cofactors are equal and this common value is the number of spanning trees of $G$ \cite[pFDW46az7oYNnM8b].
-
-{\em Proof:} Ommited. Is based on decomposing the Laplacian matrix into product of Incidednce matrix and its transpose and then usage of Cauchy-Binet formula.
+{\em Proof:} Omitted. Is based on decomposing the Laplacian matrix into product of Incidence matrix and its transpose and then usage of Cauchy-Binet formula.
 
 \Example For graph from Figure \ref[Test_graph] we could so find 7587 spanning-trees.
 
@@ -266,32 +221,26 @@ An $(i,j)$-cofactor of a matrix is a determinant of a submatrix formed by deleti
 
 We call graph $G$ with $N$ vertices connected if there is a path from any vertex $v_i$ to any other vertex $v_j$ , $ \forall i,j \in \{ 1, 2, ..., N \}$.
 
-Eigen value $\lambda_2$ is also called {\em graph connectivity} \cite[Mohar91thelaplacian]. This eigenvalue is probably the most important from the whole spectrum. Holds, that   $\lambda_2 > 0 $ if and only if the graph is connected. Moreover, the multiplicity of 0 as an eigenvalue of ${\bi L} (G)$ is the number of connected components.
+Eigenvalue $\lambda_2$ is also called {\em graph connectivity} \cite[Mohar91thelaplacian]. This eigenvalue is probably the most important from the whole spectrum, or at least in context of our consensus algorithm is in center of interest. Holds, that $\lambda_2 > 0 $ if and only if the graph is connected and the multiplicity of $0$ as is the number of connected components \cite[Mohar91thelaplacian]. We emphasize, $\lambda_2$ is directly proportional to the rate of connectivity, i.e. high $\lambda_2$ means dense graph.
 
 Diameter of a graph $G$, $diam(G)$, is the biggest number of edges we have to pass, to get from one vertex to another.
 
-There exist some properties and bounds for $\lambda_2$.  Very interesting and easily interpratable, in context of the connectivity term, is the following one. Let's consider graph $G$ with $N$ vertices and diameter $diam(G)$. Then holds  \cite[Mohar91thelaplacian]:
+There exist some properties and bounds for $\lambda_2$. Very interesting and easily interpretable, in context of the connectivity term, is the following one. Let's consider graph $G$ with $N$ vertices and diameter $diam(G)$. Then holds \cite[Mohar91thelaplacian]:
 
 $$ diam(G) \ge {4\over N \lambda_2}. \eqmark $$
- 	
 
-\secc Operations with disjoint graphs 
+\secc Operations with disjoint graphs
 
-Very detailed reading about this part of Laplacian topic may be found beside in \cite[Mohar91thelaplacian]  also in \cite[Newman00thelaplacian]. Let's now briefly mention what happens with Laplacian of a graph, that is not connected.
+Very detailed reading about this part of Laplacian topic may be found beside in \cite[Mohar91thelaplacian] also in \cite[Newman00thelaplacian]. Let's now briefly mention what happens with Laplacian of a graph, that is not connected.
 
-Considering the definition of the Laplacian ${\bi L} (G) ={\bi D} (G) - {\bi A} (G) $, we are not surprised, that Laplacian matrix of a graph consisting of $k$ mutually disjoint sets of vertices will have block diagonal form obtained from matrices ${\bi L} (G_1), {\bi L} (G_2), ..., {\bi L} (G_k) $. 
-
+Considering the definition of the Laplacian ${\bi L} (G) ={\bi D} (G) - {\bi A} (G) $, we are not surprised, that Laplacian of a graph consisting of $k$ mutually disjoint sets of vertices will have block diagonal form obtained from matrices ${\bi L} (G_1), {\bi L} (G_2), ..., {\bi L} (G_k) $  \cite[Mohar91thelaplacian].
 
 \Theorem Let $G$ be a graph created as a union of disjoint graphs $G_1, G_2, ..., G_k.$ Then holds \cite[Mohar91thelaplacian]:
- $$ \mu (G,x) = \prod_{i=1}^k \mu_i(G_i, x) . \eqmark $$
-
-
+$$ \mu (G,x) = \prod_{i=1}^k \mu_i(G_i, x) . \eqmark $$
 
 \Example
 
-Let's take a graph from the following figure, consisting of two disjoint components with vertices $\{1, 2, 3  \}$ and $\{4, 5, 6, 7 \}$.
-
-
+Let's take a graph from the following figure, consisting of two disjoint components with vertices $\{1, 2, 3 \}$ and $\{4, 5, 6, 7 \}$.
 
 \midinsert
 \picw=7cm \cinspic pictures/two_components.pdf
@@ -309,11 +258,10 @@ $${\bi L} (G) = \pmatrix{2&-1&-1&0&0&0&0 \cr
 0&0&0&-1&-1&2&0\cr
 0&0&0&0&-1&0&1\cr}. \eqmark $$
 
- ${\bi L} (G)$ is a block diagonal matrix consisting of submatrices ${\bi L} (G_{\{1,2,3\}})$ and ${\bi L} (G_{\{4,5,6,7\}})$ . 
-For characteristic polynomoial holds:
+${\bi L} (G)$ is a block diagonal matrix consisting of submatrices ${\bi L} (G_{\{1,2,3\}})$ and ${\bi L} (G_{\{4,5,6,7\}})$ .
+For characteristic polynomial holds:
 
-
-$\mu(G,x) = \mu(G_{\{1, 2, 3\}},x)  \mu(G_{\{4, 5, 6,7\}},x) = (x^3-6x^2+9x) (x^4-8^3+19x^2-12x) = x^7-14x^6+76x^5-198x^4+243x^3-108 x^2.$ Note, that 0 is clearly double root corresponding to the 2 components.
+$\mu(G,x) = \mu(G_{\{1, 2, 3\}},x) \mu(G_{\{4, 5, 6,7\}},x) = (x^3-6x^2+9x) (x^4-8^3+19x^2-12x) = x^7-14x^6+76x^5-198x^4+243x^3-108 x^2.$ Note, that 0 is clearly double root corresponding to the 2 components.
 
 \Example To get more intuition about {\em Connectivity eigenvalue} $ \lambda_2$, consider two graphs in Figure \ref[spare_dense] below.
 
@@ -324,32 +272,26 @@ $\mu(G,x) = \mu(G_{\{1, 2, 3\}},x)  \mu(G_{\{4, 5, 6,7\}},x) = (x^3-6x^2+9x) (x^
 \endinsert
 
 The eigenvalues of the spare and low connected graph on the left are
-$$\lambda_1^S = 0, \ \lambda_2^S \approx 0.21 , ..., \ \lambda_{10}^S \approx  5.46.$$
+$$\lambda_1^S = 0, \ \lambda_2^S \approx 0.21 , ..., \ \lambda_{10}^S \approx 5.46.$$
 
 The eigenvalues of the dense graph on the right are
-$$\lambda_1^D = 0, \ \lambda_2^D \approx  1.65 , ..., \ \lambda_{10}^D \approx  7.56.$$
+$$\lambda_1^D = 0, \ \lambda_2^D \approx 1.65 , ..., \ \lambda_{10}^D \approx 7.56.$$
 
 We notice, that $\lambda_2^S $ of the spare graph is almost eight times smaller than $\lambda_2^D $ of relatively dense graph. In next chapter we shall see, that the {\em Connectivity eigenvalue} directly limits the speed of convergence.
 
+\secc Laplacian matrix - notes
 
-\secc Laplacian matrix - notes 
+%\midinsert \picw=6cm \cinspic pictures/admitance.pdf \clabel[admitance]{Example of admittance electrical circuit. } \caption/f Example of admittance electrical circuit to be described with Laplacian matrix. \endinsert
 
-%\midinsert \picw=6cm \cinspic pictures/admitance.pdf  \clabel[admitance]{Example of admitance electrical circuit. } \caption/f Example of admitance electrical circuit to be described with Laplacian matrix. \endinsert
+%Laplacian matrix appears also in other fields, sometimes with other name. For example in Electrical circuits theory, Laplacian is called {\em Admittance matrix.} In the Figure \ref[admitance] is an example of such an electrical circuit described using admittance (i.e. reciprocal value of impedance) parameters. The aim in this case is to find all values of current $I$ phasors in all edges and voltage $U$ phasors in all nodes. These values may be placed in column vectors ${\bi I} $, ${\bi U}$ respectively. All the important information about the electrical circuit is encoded into the Admittance matrix ${\bi Y}$ and using Ohm's Law we are about to solve equation {\bi Y I = U.}
 
-%Laplacian matrix appears also in other fields, sometimes with other name. For example in Electrical circuits theory, Laplacian is called {\em Admitance matric.} In the Figure \ref[admitance] is an example of such an electrical circuit described using admitance (i.e. reciprocal value of impedance) parameters. The aim in this case is to find all values of current $I$ phasors in all edges and voltage $U$ phasors in all nodes. These values may be placed in column vectors ${\bi I} $, ${\bi U}$ respectively. All the important information about the electrical circuit is encoded into the Admitance matrix ${\bi Y}$  and using Ohm's Law we are about to solve equation {\bi Y I = U.}
+%An Admittance matrix corresponding to circuit in Figure \ref[admitance] is:
+%$${\bi Y} (G) =\pmatrix{y_1+y_{12}+y_{13}&-y_{12}&-y_{13}&0 \cr -y_{12}&y_2+y_{12}+y_{14}&0&-y_{14}\cr -y_{13}&0&y_3+y_{13}+y_{34} &-y_{34}\cr 0&-y_{24}&-y_{34}&y_4+y_{24}+y_{34}\cr}.\eqmark $$
 
-%An Admitance matrix corresponding to circuit in Figure \ref[admitance] is: 
-%$${\bi Y} (G) =\pmatrix{y_1+y_{12}+y_{13}&-y_{12}&-y_{13}&0 \cr -y_{12}&y_2+y_{12}+y_{14}&0&-y_{14}\cr -y_{13}&0&y_3+y_{13}+y_{34}  &-y_{34}\cr 0&-y_{24}&-y_{34}&y_4+y_{24}+y_{34}\cr}.\eqmark $$
+To demonstrate relation between Laplacian matrix and continuous Laplacian operator $\Delta$, let's consider a differential equation $$ \Delta z (x,y) + \lambda \Delta z (x,y) = 0,\eqmark $$ with initial condition $z(x,y)=0$ on a simple closed curve $\Gamma$ in $xy$-plane. Solution of this task is determined by an infinite sequence of eigenvalues $\lambda_1 \le \lambda_2 \le... .$ An approximation of this solution may be found by placing a grid over the area in plane curved by $\Gamma.$ The matrix of this finite, discretized problem, comes to be the Laplacian matrix \cite[pFDW46az7oYNnM8b].
 
-To demonstrate relation between Laplacian matrix and continuous Laplacian operator $\Delta$, let's consider a differential equation $$ \Delta z (x,y) + \lambda \Delta z (x,y) = 0,\eqmark $$ with initial condition $z(x,y)=0$ on a simple closed curve $\Gamma$ in $xy$-plane. Solution of this task is determined by an infinite sequence of eigenvalues $\lambda_1 \le \lambda_2 \le... .$ An aproximation of this solution may be found by placing a grid over the area in plane curved by $\Gamma.$ The matrix  of this finite, discretized problem, comes to be the Laplacian matrix \cite[pFDW46az7oYNnM8b].
+%to do_ laplacian matrix is exactly admittance matrix of an Electrical circuit.
 
-
-
-
-%to do_ laplacian matrix is exactly admitance matrix of an Electrical circuit.
-
-%laplacian appears as a direct discretization 
-
-
+%laplacian appears as a direct discretization
 
 
