@@ -4,6 +4,10 @@
 
 \chap Introduction
 
+Topic of distributed algorithms used in radio communication has been for last decades subject of research. Throughout this Thesis we study and comment the basic results found in the corresponding literature, with emphasis on the understanding of Average consensus algorithm.
+
+\sec Motivation
+
 To begin with an idea of an average consensus algorithm, let's make a thought experiment. We are looking for an average quantity, for example an average temperature in a room, with a group of wireless communication devices, that can exchange information, provided they are in range to reach each other. We deploy these thermometers in the room randomly, with no special requirements on a topology. Next, let's consider, that for each pair of the thermometers we can decide, whether they can exchange information or not - meaning we know all neighbors of all devices, that are mutually in range to communicate.
 
 Now, we can encode our experiment settings to a graph. A very natural way to represent this graph is drawing it. To do so, we simply take all thermometers as different vertices. Of course, every vertex always knows a result of its own measurement. By an edge between two vertices we mark the situation, that these two nodes can exchange information. Which means, every node can get know also the value that measures its neighbor. This ought to be only a very simple illustration how to transfer a physically realizable experiment to the terms of graphs.
@@ -14,9 +18,6 @@ Finally, as we shall see, if we fulfill some basic convergence conditions on the
 
 %In practise is sometimes extremely useful to use graphs to represent a given problem. Totally different problems may be surprisingly found to have common and simple solution when represented as the graph.
 
-A Graph theory provides a very elegant way to represent information encoded by graphs as matrices. In the first chapter we will provide some basic definitions to the Graph theory and properties of these important matrices. Using matrices, we will also briefly mention some very useful results from Matrix analysis, because also a serious object of our interest will be topic of eigenvalues of matrices. We will define a Laplacian of a graph and show some of its basic properties.
+A Graph theory provides a very elegant way to represent information encoded by graphs as matrices. In the first chapter we will provide some basic definitions to the Graph theory and properties of these important matrices. Using matrices, we will also briefly mention some very useful results from Matrix analysis, because also a serious object of our interest will be topic of eigenvalues of matrices. We will define a Laplacian of a graph and show some of its basic properties. In next chapter, we will provide a description of the average consensus algorithm and show some examples with graphically illustrated solution. In the last part of this thesis, we will try to implement this algorithm, to easily solve some typical problems in area of wireless digital communication - such as time synchronization. In a very simple case, we can also show, how do the nonidealities change the result of algorithm, in our case additive zero mean noise.
 
-In next chapter, we will provide a description of the average consensus algorithm and show some examples with graphically illustrated solution.
-
-In last part of this thesis, we will try to implement this algorithm, to easily solve some typical problems in area of wireless digital communication - such as time synchronization or carrier frequency synchronization. In a very simple case, we can also show how do the nonidealities change the result of algorithm (additive zero-mean noise).
 

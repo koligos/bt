@@ -76,13 +76,13 @@ for i = 1:iterations;
     for j=1:max(s)
             running_value(i+1,j)=node_value(j);
             running_value_Error(i+1,j)=final_value(j)-node_value(j);
-    %node_value(5)=3; uncomment for convergence to v_3 initial value
+    %node_value(3)=3; % uncomment for convergence to v_3 initial value
     end
 end
 
 figure;
 plot(discrete_time, running_value(:,:));
-ttl1=title( 'Run of algorithm with updates affected by AWGN '  )
+ttl1=title( 'Run of algorithm '  )
 ttl1=set(ttl1,'Interpreter','latex','FontSize', 15);
 xlbl1=xlabel('Iterations [-]');
 xlbl1=set(xlbl1,'Interpreter','latex');
@@ -391,6 +391,47 @@ h.LineWidth=1
 h.MarkerSize=8;
 h.EdgeAlpha=1;
 labelnode(h,1:nodes,' ')
+\endtt
+
+\label[time_syasdfnc_app]
+\sec Matlab script: Initial time base synchronization
+
+\begtt
+
+% Initial time base synchronization
+
+%% Initialization
+clear all;
+nodes = 30; %number of nodes of graph
+iterations = 120; %number of iterations of the algorithm
+s=(1:1:30); %source and destination vertices of ring graph 
+t=[30,1:1:29];
+G = graph(s,t); %create graph
+L=full(laplacian(G)); %Laplacian using Matlab function
+Ti=1; %period of the i-th's clock
+%all nodes have the same inner oscillator
+offsets=10*rand(1,nodes); %define initial offsets
+time_base(1,:)=offsets;%detected by the TD block in PLL
+L_eig=eig(L); %eigenvector of Laplacian
+alpha=2/(0.5+L_eig(2)+L_eig(max(s)));%choose parameter Perron matrix
+P=eye(nodes)- alpha * L; %create Perron matrix
+
+for i = 1:iterations
+    %averaging consensus iterations 
+    time_base(1+i,:)=P*time_base(i,:)'; 
+end
+
+%% plot results
+figure;
+plot(0:iterations, time_base(:,:));
+ttl1=title( 'Time base synchronization - ring topology with 30 nodes ')
+ttl1=set(ttl1,'Interpreter','latex','FontSize', 15);
+xlbl1=xlabel('Iterations [-]');
+xlbl1=set(xlbl1,'Interpreter','latex');
+ylbl1=ylabel('Offsets received by TD block [ms]');
+ylbl1=set(ylbl1,'Interpreter','latex');
+grid;
+
 \endtt
 \app Content of CD
 

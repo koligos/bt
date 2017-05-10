@@ -13,7 +13,7 @@ Wireless networks are present in a great number of applications of an everyday l
 
 Subject of our interest will be now Wirelless Sensor Networks (WSN) with smart nodes, i.e. nodes, that own some computing power and are programmable (i.e. not just an ordinary sensor). By localizing such nodes in some area to create a network, we aim to avoid using any kind of centralized topology. One benefit is, that WSN becomes to be much more robust with respect to a single failure point of a central device. (We do not have any). Naturally, now we are not limited to a fixed topology and the nodes can move. Even more important is, that in a situation, when nodes of WSN aim to estimate some value $ \theta$ in a distributed manner, it is naturally much faster when the nodes communicate directly. Having nodes, that are battery-supplied, we are also glad to avoid using the limited amount of power without necessity. It seems naturally, that more effective way is to use only direct communication between nodes, that want to obtain the desired estimation, without employing some distant data center.
 
-WSN networks may consist of hundreds of nodes. Its goal is to estimate the value cooperatively and locally, instead of moving the calculation somewhere else, because sometimes it might not be even possible. Typically, in wireless communication the nodes should obtain an overview of the network parameters (network topology, carrier frequency, common time base). Concerning the topology, one node initially knows only its direct neighbors. In digital communication applications, is typically necessary, that each node knows the topology of whole network (an Adjacency matrix). This is exactly the case, when we can not avoid a cooperation between nodes. With respect to the previous chapters, we note that the WSN can be for a purpose of distributed consensus algorithm simply coded into a graph with, expressing the possibility of an information exchange between nodes \cite[spring_book].
+WSN networks may consist of hundreds of nodes. Its goal is to estimate the value cooperatively and locally, instead of moving the calculation somewhere else, because sometimes it might not be even possible. Typically, in wireless communication the nodes should obtain an overview of the network parameters (network topology, carrier frequency, common time base). Concerning the topology, one node initially knows only its direct neighbors. In digital communication applications is typically necessary, that each node knows the topology of whole network (an Adjacency matrix). This is exactly the case, when we can not avoid a cooperation between nodes. With respect to the previous chapters, we note that the WSN can be for a purpose of distributed consensus algorithm simply coded into a graph with, expressing the possibility of an information exchange between nodes \cite[spring_book].
 
 \sec Overview of Distributed Consensus Estimation
 
@@ -31,7 +31,7 @@ Typical problems in WSN estimation process are:
 \vskip 0.2cm
 \item{*}The algorithm requires a common clock synchronization between nodes.
 \vskip 0.2cm
-\item{*}The communication between two nodes generally must not have symmetric characteristics, so that e.g. $A$ node can send information to $B,$ however $B$ is not able to $A.$ Hence, a graph describing the WSN inter-nodes communication is then the directed graph.
+\item{*}The communication between two nodes generally doesn't have to be symmetric, so that e.g. $A$ node can send information to $B,$ however $B$ is not able answer to $A$ directly. Hence, a graph describing the WSN inter-nodes communication is then the directed graph.
 \enditems
 \vskip 0.2cm
 
@@ -59,7 +59,7 @@ In \cite[spring_book] is solved a problem of estimation of a vector $ \theta \in
 
 where ${\bi H_i} \in {\bbchar R}^{J_i \times J}$ is an observation matrix and $  {\bi w_i}(t)$ is white Additive Gaussian noise. The statement $J_i\le J$ for $i-$th SN means, that it generally provides only limited information about the vector $ \theta,$ because it can't measure the rest of components. The RN nodes can't measure $ \theta$ at all, because they are not equipped with the sensors.
 
-The vector nature of $ \theta$ will consequently bring to the matrix description of the update equations, similar to the Equation \ref[ue] Kronecker product. Although such a description is possible, it is very confusing and is reasonable to use probably only in theory. To see this matrix description, we refer to \cite[spring_book].
+The vector nature of $ \theta$ will consequently bring to the matrix description of the update equations, similar to the Equation \ref[ue], Kronecker product. Although such a description is possible, it is in my opinion very confusing and is reasonable to use probably only in theory. To see this matrix description, we refer to \cite[spring_book].
 
 \Definition (Kronecker Product) \cite[kroneckerPrd] Given matrix ${\bi A}\in {\bbchar R}^{m\times n}$ and matrix ${\bi B}\in {\bbchar R}^{p\times q},$ their Kronecker Product ${\bi C}\in {\bbchar R}^{mp\times nq}$ is denoted
 $${\bi C}= {\bi A }\otimes{\bi B } ,$$
@@ -75,17 +75,17 @@ $$ {\bi C}= {\bi A }\otimes{\bi J } =\pmatrix{aj & ak& bj& bk\cr al & am& bl& bm
 
 \secc Description of Algorithm DCUE
 
-The DCUE algorithm assumes perfectly synchronized updates. In each node $i$ is initially known a value $x_i(0).$ $ {\cal{N}}_i^S$ and ${\cal{N}}_i^R$ marks the set of SN neighbors and RN neighbors to the $i-$th node, respectively. The update equation of DCUE algorithm states:
+The DCUE algorithm assumes perfectly synchronized updates. We use the following notation in this subsection: ${\bi y_i}(t)$ is, as defined in Equation \ref[observation], an observation of vector $\theta,$ determined in the $i-$th node by the Observation matrix $\bi H_i$ in the specific node and affected by the noise vector ${\bi w_i}(t).$ Next, ${\bi x_i} (t)$ is a vector containing local estimations of the vector parameter $\theta$ in the particular nodes.  All the column vectors of local estimations in nodes might be placed into a vector of vectors (i.e. a matrix) ${\bi X}(t)= \left( {\bi x_1}(t), \  {\bi x_2}(t),  \ ...,   {\bi x_N}(t)      \right)   $. In the case of convergence of the algorithm, as $t \rightarrow \infty,$ single elements of each raw of this matrix ${\bi X}(\infty)$ will be equal. In each node $i$ is initially known a value ${\bi x_i}(0)$ (motivated as the measurement). $ {\cal{N}}_i^S$ and ${\cal{N}}_i^R$ mark the set of SN neighbors and RN neighbors to the $i-$th node, respectively. The update equation of DCUE algorithm states:
 \label[algorithm_SN] $$ \eqalign{
  {\bi x_i}(t+1) =  {\bi x_i}(t) + \rho(t)\alpha_i {\bi H_i}^T \left( {\bi y_i}(t) - {\bi H_i}  {\bi x_i}(t) \right)
 + \cr + {\rho(t) \over{c_i}}\left[ \sum_{j\in {\cal{N}}_i^S } a_{ij} ( {\bi x_j}(t)- {\bi x_i}(t)) + \sum_{j\in {\cal{N}}_{i}^R } a_{ij} ( {\bi z_j}(t)- {\bi x_i}(t)) \right],
 } \eqmark$$
-where $\alpha_i > 0$ controls the update rate of information during the run of algorithm; $\rho(t)> 0$ is a weight controlling an impact of received updates; $c_i>0$ controls impact of $i-$th own measurement and $ a_{ij}=\sqrt{{P_{T_j}|h_{ij}|^2}\over{ d_{ij}^\eta }}$ represents an amplitude of a signal received by node $i$ from node $j$ , in which $h_{ij}$ is a fading coefficient describing a channel between $i$ and $j,$ and it is a reason why $a_{ij} \not=a_{ji}$ \cite[spring_book].
+where $\alpha_i > 0$ controls the update rate of information during the run of algorithm; $\rho(t)> 0$ is a weight controlling an impact of received updates (we preserve the notation of the authors of \cite[spring_book] here: in the previous text, see Subection \ref[dec_step_sizesadfasdf], this factor $\rho(t)$ was denoted as $\gamma (t)$ i.e. it provides the descending step size); $c_i>0$ controls impact of $i-$th own measurement (i.e. we use more different observations in different times in particular nodes) and $ a_{ij}=\sqrt{{P_{T_j}|h_{ij}|^2}\over{ d_{ij}^\eta }}$ represents an amplitude of a signal received by node $i$ from node $j$ (i.e. elements of the Adjacency matrix), in which $h_{ij}$ is a fading coefficient describing a channel between $i$ and $j,$ and it is a reason why $a_{ij} \not=a_{ji}$ \cite[spring_book].
 
 Next, an update equation for RN nodes reads
 \label[algorithm_RN] $$ {\bi z_i}(t) =\sum_{j\in {\cal{N}}_i^S } \gamma_{ij} {\bi x_j}(t)+ \sum_{j\in {\cal{N}}_i^R } \gamma_{ij} {\bi z_j}(t) , \forall i \in I_R, \eqmark$$ where $\gamma_{ij}$ are some non negative weighting coefficients \cite[spring_book].
 
-Summarizing the meaning of equations describing the algorithm, that we stated above: Firstly, Equation \ref[observation] says, that observation of node $i$, \ $ {\bi y_i}(t)$, in time $t$ are elements of vector $\theta$, according to its appropriate matrix $\bi H_i$, and this observation is affected by the Gaussian noise $ {\bi w_i}.$ Next, Equation \ref[algorithm_SN] proposes the way how $i-$th SN should update the values to be estimated. It consists of a specific linear combination of values that node $i$ self measures and values that it receives from neighbors SNs and RNs, respectively. Doing this, we take into account distance between neighbors (i.e. in units of length, not number of hops), properties of the channel between nodes, transmitting power and consequently we decide, whether the update can be applied, according to these channel characteristics. Finally, Equation \ref[algorithm_RN] is an analogy update equation for $i$-th RN, whose updates are determined as a linear combination from values of its RNs and SNs neighbors.
+Summarizing the meaning of equations describing the algorithm, that we stated above: Firstly, Equation \ref[observation] says, that observation of node $i$, \ $ {\bi y_i}(t)$, in time $t$ are elements of vector $\theta$, according to its appropriate matrix $\bi H_i$, and this observation is affected by the Gaussian noise $ {\bi w_i}.$ Next, Equation \ref[algorithm_SN] proposes the way how $i-$th SN should update the values to be estimated. It consists of a specific linear combination of values that node $i$ self measures and values that it receives from neighbors SNs and RNs, respectively. Doing this, we take into account distance between neighbors (i.e. in units of length, not number of hops), properties of the channel between nodes, transmitting power and consequently we decide, whether the update can be applied, according to these channel characteristics. Finally, Equation \ref[algorithm_RN] is an analogy update equation for $i$-th RN, whose updates are determined as a linear combination from values of its RNs and SNs neighbors. 
 
 \chap Examples of Usage of Average consensus algorithm in wireless communication
 
@@ -135,28 +135,75 @@ In Figures \ref[track_pic_sim_1] and \ref[track_pic_sim_2] we provide some scree
 \caption/f 100th and 1000th iteration of Target tracking simulation.
 
 \label[distr_time_sync]
-\sec Distributed time synchronization
+\sec Distributed time synchronization of already communicating nodes 
 
-Last example, that we want to provide concerns some basic time base synchronization. In the beginning we have to revise, that effectiveness of the algorithm as described is crucially dependent on fact, that the updates are to neighbor nodes delivered in perfectly synchronized time slots. So speaking about time synchronization, we expect, that the communication between nodes has already been set up. We also assume zero-noise updates here. The problem, that solves this section might have been motivated e.g. like this: Imagine, our $N$ sensors are supposed to measure some quantity, e.g. temperature. Because of typical WSN limitations, such as battery capacity, they are designed to shut down sensors at moments in which they are not in use to save power, and we want all the nodes to turn on the sensors and measure at same time instants. Usually, each sensor will keep its time as some big number, that increases in time based on ticks of some its internal oscillator. E.g. in time provided by GPS satellites the receivers obtain information in form of GPS-weeks and GPS-seconds since January 1980 \cite[gps_Time].
+In this Example we want to show, that the Average consensus algorithm may be used  by perfectly communicating nodes to synchronize to e.g. make a measurement at one  moment. {\em We assume, that there has already been established communication between  the nodes.}
+%Next example, that we want to provide concerns some basic time base synchronization. Firstly with assumption, that the commuication between nodes is already synchronized. In the beginning we have to revise, that effectiveness of the algorithm as described is crucially dependent on fact, that the updates are to the neighboring nodes delivered in perfectly synchronized time slots. So speaking about time synchronization, we now expect, that the communication between nodes has already been set up. We also assume zero noise updates here.
+The problem, that solves this section might have been motivated e.g. like this: Imagine, our $N$ sensors are supposed to measure some quantity, e.g. temperature. Because of typical WSN limitations, such as battery capacity, they are designed to shut down sensors at moments during which they are not in use to save power, and we want all the nodes to turn on the sensors and measure at same time instants. Usually, each sensor will keep its time as some big number, i.e. an integer in its memmory, that is being  periodically increased according to ticks of its internal oscillator. E.g. in time provided by GPS satellites the receivers obtain information in form of GPS-weeks and GPS-seconds since January 1980 \cite[gps_Time]. 
 
-A Matlab script, that we used to simulate the problem described above may be found in Appendix \ref[time_sync_app]. In the simulation we used 30 nodes of an average degree 4. In the first Figure we present detail to initial synchronization. Observation: the algorithm doesn't have any problem with fact, that the values still it uses in iterations still decreases, nevertheless we can not speak about something like convergence. The result, that we desire in this example is, that all the nodes have within about 30 iterations all the same time synchronized.
+A Matlab script, that we used to simulate the problem described above may be found in Appendix \ref[time_sync_app]. In the simulation we used 30 nodes of an average degree 4. In the first Figure we present a detail look to initial synchronization. Observation: the algorithm doesn't have any problem with fact, that the values in nodes in each iteration  increase, nevertheless we can not speak about something like convergence. The variables, that are inputs of the algorithm still increase and the iterations of the algorithm hold the error in nodes reasonably small. The result, that we desire in this example is, that all the nodes have, within about 30 iterations, the same time base synchronized, which may be used e.g. to turn on the sensors in specific moments.
 
 \midinsert
-\picw=15cm \cinspic pictures/time_sync_beg.pdf
+\picw=\hsize \cinspic pictures/time_sync_beg.pdf
 \clabel[time_sync_beg] {Figure to Distributed time synchronization Example.}
 \caption/f { Detail view on result of the first 150 iterations of the simulation. Each node was initialized with time base $T=1000 \pm \delta_{offset}$, where $\delta_{offset}$ is random number from Uniform distribution from interval $[0; 1000].$ We can see, that the convergence is reached in about 30 iterations.}
 \endinsert
 
-\midinsert
-\picw=14.0cm \cinspic pictures/time_sync_beg_out.pdf
-\clabel[time_sync_beg_out] {Temporary loss of synchronization.}
-\caption/f { In next Figure to the Time synchronization we simulate an outage of 10 nodes between iterations number 300 to 500. We can see, that in this interval there is definitely a malfunction in the network, however once the nodes are up again, they synchronize quite quickly.}
-\endinsert
+%\midinsert
+%\picw=\hsize \cinspic pictures/time_sync_beg_out.pdf
+%\clabel[time_sync_beg_out] {Temporary loss of synchronization.}
+%\caption/f { In next Figure to the Time synchronization we simulate an outage of 10 nodes between iterations number 300 to 500. We can see, that in this interval there is definitely a malfunction in the network, however once the nodes are up again, they synchronize quite quickly. (With some nodes shut down, a synchronized measurement of all nodes is not realizable.)}
+%\endinsert
+
+
+
+\sec Initial Distributed time base synchronization of nodes
+
+The last example concerns again time base synchronization, but in a different manner, than previously. This time we want to find out, how to use the Average consensus algorithm to synchronize time base, that will serve to rule timing of the communication between nodes, e.g. motivated by purpose of usage a Time Division Multiple Access (TDMA), i.e. situation, when we want to ensure, that transmissions from different nodes will not overlap and cause collisions. Or, as another example, may be given by a situation, when the sensors measure position of a moving object and we want to determine its trajectory: to do so, it is naturally necessary, that the measured data are labeled also with some time stamp.
+
+So we are given $N$ nodes, denoted as $i=1, 2, ..., N$, and each equipped with its internal oscillator with a (possibly different) period $T_i.$
+%However, we will in sequel assume, that all $T_i$ are equal.
+To clarify the difference between this task and the previous one: in the previous example we expected, that time synchronization from this example was already performed and therefore the nodes could have been exchanging only the variables that symbolized some global time. {\em Now we do not assume, that there has already been established communication between nodes.}
+
+Meaning of the TDMA is explained on the following Figures \ref[tdma_bad] and \ref[tdma_good], see the labels.
+
+\picw=\hsize
+\centerline {\inspic pictures/TDMA_bad.pdf }
+\clabel[tdma_bad] {Tx without TDMA.}
+\caption/f Without TDMA synchronization it happens, that the transmissions overlap and the received signal is therefore damaged. (Tx2 damages Tx1 and Tx3.)
+
+\picw=\hsize
+\centerline{\inspic pictures/TDMA_good.pdf }
+\clabel[tdma_good] {Tx with TDMA.}
+\caption/f TDMA prevents the transmissions to overlap, because each node has designated time slots, when it is allowed to transmit.
+
+A very nice summary of this time synchronization problematic may be found in \cite[4607217]. We will now present here one possible approach, that may be found there. Solution may be described like this (see Figure \ref[PLL]): $i-$th node's internal oscillator ticks on frequency $1/T_i$. Next, e.g. at the end of each period, its antenna sends out an impuls that propagates towards the rest of nodes and reaches its neighbors. These impulses {\em reveal} the $i-$th node's time base to its neighbors. Simultaneously the $i-$th node receives these impulses from neighbors, so we assume possibility of implementation in full-duplex communication. For simplicity, we now assume, that distances between all nodes are approximately comparable and therefore we neglect time differences caused by different times of propagation of the impulses. Then comes the role of 'Time difference' block, whose inputs are the, time delayed or advanced, impulses received from the neighbors and $i-$th node's own internal time base (see Figure \ref[time_diffffasdf]). Output of this block is denoted as $\Delta t_i$ and it is a weighted linear combination of these time differences, specified by the weights previously denoted as $p_{ij}$ (i.e. elements of the Perron matrix $\bi P$). We can thus write down the corresponding update equation for this part of loop as:
+$$ \Delta t_i(n) = \sum_{i=1; i\not=j}^N p_{ij}(t_j(n) - t_i(n)).\eqmark$$
+Finally as $\alpha_i$ is denoted a filter, that operates over $\Delta t_i(n)$ to determine $t_i$. The situation is presented on the following Figures. Therefore, we can write the following update Equation
+$$ \label[plllfdaf] t_i(n+1) = t_i(n)+T_i+\alpha \sum_{i=1; i\not=j}^N p_{ij}(t_j(n) - t_i(n)), \eqmark$$ which is very familiar. We can see, that our problem to synchronize time base of nodes using Average consensus algorithm may be solved using Phase-lock loop. The $T_i$ in Eq. \ref[plllfdaf] is an increment of Time in each iteration and the whole Eq. \ref[plllfdaf] should be seen to correspond with Figure \ref[PLL].
+
+\picw=\hsize
+\centerline{\inspic pictures/PLL.pdf }
+\clabel[PLL] {Phase-lock loop.}
+\caption/f Scheme of 2 nodes with Phase-lock loop. Generally VCO in each node ticks with its frequency signed as $1/T_i$. Each node sends out an impulse at moments that the node's clock have e.g. zero value. We neglect the differences in propagating of these impulses (they propagate by speed of light). The Time difference block (TD) then provides input to the filter $\alpha_i$, that calculates a weighted combination of the offsets and its output goes to the VCO. Also, note, that the input from TD block to antenna is scalar, however from antenna to TD is generally vector of the received neighboring node's impulses. This Figure is according to \cite[4607217].
+
+\picw=\hsize
+\centerline{\inspic pictures/time_differences.pdf }
+\clabel[time_diffffasdf] {Inputs of the Time difference block.}
+\caption/f {Inputs of the Time difference block. The impulses come in to the block with either time delay or advance. The green value located in 0 of horizontal axis corresponds to the value, that the nodes expects to be the correct time base. Asymptotically should the offsets decrease and be zero once the time base is synchronized. Output of the block is $\Delta t_i$ .}
+
+Using the update equation \ref[plllfdaf], we provide result of simulation of this approach.
+
+\picw=\hsize
+\centerline{\inspic pictures/time_syn_2.pdf }
+\clabel[time_syn_2] {Time base synchronization (PLL).}
+\caption/f {Time base synchronization: we use ring topology with 30 nodes and assume, that distances between all neighbors are comparable. Each nodes initializes with random offset selected from uniform distribution $[0; 10]$.  Each node receives in each iteration 2 impulses, that are shifted from 0 according to this graph of the offsets. After about 80 iterations of the algorithm we can say, that the nodes synchronized mutually their time base.}
+
 
 \chap Conclusion
 
-Main goal of this Bachelor's thesis was to become acquainted with Linear average consensus algorithm on graph. We provided basic introduction to the Graph theory, including important terms that are common to describe the algorithm, with focus on the Laplacian matrix, i.e. its definition and basic properties. Next, we stated the Linear average consensus algorithm description, as it is common in related literature and also briefly overviewed the core idea concerning the convergence condition. This helped us to understand, why it appears advantageous to design the algorithm using the Laplacian matrix of the graph. We also briefly mentioned the problematic of noisy updates, which is important in wireless digital communication, and showed in particular example, that the algorithm scheme must be modified to preserve the convergence of algorithm. In this noisy-update example we, without proof, used Decreasing step size approach found in relevant mentioned literature. In the text are also mentioned the most common difficulties and pitfalls in context of estimation in wireless networks, including fact, that the mathematical description becomes in general cases quite complex. Finally, we used the knowledge to provide three simple examples, implemented as Matlab scripts (in Appendix), that are commented in the last part of the thesis.  
+Main goal of this Bachelor's thesis was to become acquainted with Linear average consensus algorithm on graph. We provided basic introduction to the Graph theory, including important terms that are common to describe the algorithm, with focus on the Laplacian matrix, i.e. its definition and basic properties. Next, we stated the Linear average consensus algorithm description, as it is common in related literature and also briefly overviewed the core idea concerning the convergence condition. This helped us to understand, why it appears advantageous to design the algorithm using the Laplacian matrix of the graph. We also briefly mentioned the problematic of noisy updates, which is important in wireless digital communication, and showed in particular example, that the algorithm scheme must be modified to preserve the convergence of algorithm. In this noisy-update example we, without proof, used Decreasing step size approach found in relevant mentioned literature. In the text are also mentioned the most common difficulties and pitfalls in context of estimation in wireless networks, including fact, that the mathematical description becomes in general cases quite complex. Finally, we used the knowledge to provide simple examples, implemented as Matlab scripts (in Appendix), that are commented in the last part of the thesis.  
 
-Further work on this topic could have focus on the specific approaches to deal with the problematic of noisy updates, which is necessary for ability to use this algorithm in wireless communication. The algorithm is general and might have been used in more branches.
+Further work on this topic could have focus on the specific approaches to deal with the problematic of noisy updates, which is necessary for ability to use this algorithm in wireless communication. The algorithm itself is general and may be used in many branches.
 
 

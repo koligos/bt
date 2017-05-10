@@ -23,6 +23,14 @@ Next interest, we will briefly meet also term Spanning tree. In Ethernet-based c
 
 To finish this motivation part, a very nice example of the usage of distributed algorithm is a Network time protocol (NTP). It is important to have globally synchronized time between server computers. Few of the servers are connected to the reference clocks and next, to them hierarchically connected servers, are stochasticaly analyzing properties of neighbor's time to obtain final value of time, that they use and provide to next users   \cite[8QTNEpKBWSMYObR2].
 
+
+
+\sec Notation
+
+In the sequel we will use the following notation. Scalars are denoted by small leters, such as $a, d, \alpha .$ Vectors are marked as e.g. ${\bi u}$ or $ {\bi v}$. We use column vectors. Especically ${\bi 1}$ is a column vector of all ones (in the text always of length $N$ as number of nodes). Matrices are marked by capitals, such as $ {\bi L}, \bi P.$ $\bi I$ stands for Identity matrix.  Single elements of vectors and matrices are denoted as scalars with lower indices with meaning of the position, e.g.  $v_i$ or ${p}_{ij}$, respectively. Finally in last chapter we use e.g. $\bi x_i$ to mark vector that is in $i$-th node.
+
+
+
 \sec Definitions
 
 A graph $G=(V, E)$ is described by a pair of its vertices $V$ and edges $E$. ${V=\{ v_1, v_2, ..., v_N \}}$ is a set of $N$ vertices. By the vertices we understand the points connected by the edges.
@@ -95,7 +103,7 @@ The structure of following section about Laplacian is based mainly on \cite[Moha
 
 \secc Definitions
 
-Now, in previous text we defined Adjacency and Degree matrix of a graph $G$. Next, we define the {\em{Laplacian matrix} } ${\bi L} (G)$ of a graph  \cite[Mohar91thelaplacian], \label[lapDef2]$${\bi L} (G)={\bi{D}} (G)- {\bi{A}} (G). \eqmark $$ Matrix $ {\bi{L}} (G)$ for a graph with $N$ vertices is ${\bi L} (G) \in {\bbchar R}^{N\times{N}}.$ Loops do no affect ${\bi L} (G)$. To make hold some important results from Linear algebra and Matrix analysis, we will next consider only undirected graphs without loops. Which means, that the corresponding Adjacency matrix will be symmetric. Because the $ {\bi{A}} (G)$ is symmetric, the ${\bi L} (G)$ comes to be also symmetric.
+Now, in previous text we defined Adjacency and Degree matrix of a graph $G$. Next, we define the {\em{Laplacian matrix} } ${\bi L} (G)$ of a graph  \cite[Mohar91thelaplacian], \label[lapDef2]$${\bi L} (G)={\bi{D}} (G)- {\bi{A}} (G). \eqmark $$ Matrix $ {\bi{L}} (G)$ for a graph with $N$ vertices is ${\bi L} (G) \in {\bbchar R}^{N\times{N}}.$ Loops do not affect ${\bi L} (G)$. To make hold some important results from Linear algebra and Matrix analysis, we will next consider only undirected graphs without loops. Which means, that the corresponding Adjacency matrix will be symmetric. Because the $ {\bi{A}} (G)$ is symmetric, the ${\bi L} (G)$ comes to be also symmetric.
 
 Using the Incidence matrix of graph ${\bi E} (G)$, we can find the Laplacian matrix of graph $G$ as \label[lapDef2]$${\bi L} (G)={\bi{E}} (G) {\bi{E}}^T (G). \eqmark $$ The Laplacian definitions in Equations \label[lapDef1] and \label[lapDef2] are equivalent.
 
@@ -125,11 +133,11 @@ $$ {\bi{L}} (G) \pmatrix{ 1 \cr 1 \cr \vdots \cr 1} = ({\bi{D}} (G) - {\bi{A}} (
 
 In which we easily recognize the relation holding for eigenvalues.
 
-\Theorem{The Laplacian matrix ${\bi{L}} (G) $ is positive semi-definite and singular. \cite[Liaghat2015] }
+\Theorem{The Laplacian matrix ${\bi{L}} (G) $ is positive semi-definite and singular \cite[Liaghat2015]. }
 
-{\em Proof:} Let $\lambda$ be an eigenvalue and $v$ its corresponding eigenvector. Then
-$${\bi{L}} v = \lambda v, \eqmark $$
-$$ \lambda = v^T {\bi{L}} v = v^T {\bi{E}} {\bi{E}}^T v = ( v^T {\bi{E}}) ( {\bi{E}}^T v ) = ( {\bi{E}}^T v )^T ( {\bi{E}}^T v ) = \| {\bi{E}^T} v\| \ge 0. \eqmark $$
+{\em Proof:} Let $\lambda$ be an eigenvalue and $ \bi v$ its corresponding eigenvector. Then
+$${\bi{L}}  {\bi v} = \lambda {\bi v}, \eqmark $$
+$$ \lambda = {\bi v}^T {\bi{L}} {\bi v} = {\bi v}^T {\bi{E}} {\bi{E}}^T {\bi v} = ( {\bi v}^T {\bi{E}}) ( {\bi{E}}^T {\bi v} ) = ( {\bi{E}}^T {\bi v} )^T ( {\bi{E}}^T {\bi v} ) = \| {\bi{E}^T} {\bi v}\|^2 \ge 0. \eqmark $$
 
 ${\bi{L}}$ is singular, because sum of all elements in each column is zero.
 
@@ -139,20 +147,20 @@ ${\bi{L}}$ is singular, because sum of all elements in each column is zero.
 
 \secc Bounds for eigenvalues
 
+
 \Theorem {\em Gershgorin circle theorem} \cite[Dont]. Consider matrix $ {\bi{A}} \in {\bbchar C}^{N\times{N}} $ and $i~=~{1, 2, ..., N.}$ Let's denote $$r_i = \sum_{j=1 ; \ i \not= j}^N =|a_{ij}|, \ \ K_i = \{z \in {\bbchar C} \mid |z - a _{ii}|\le r_i \} . \eqmark $$
 The $K_i$ sets are called {\em Gershgorin circles}. It holds for all eigenvalues $\{ \lambda_1 , \lambda_2, ..., \lambda_N \}$ of the matrix $ {\bi{A}}$, that they are all localized in the union of {\em Gershgorin circles} $\{ K_1 \cup K_2 \cup ... \cup K_N \} $ in the Complex plane.
 
 {\em Proof:} Let {$\lambda $} be an eigenvalue of $ {\bi{A}}$ and its corresponding eigenvector ${\bi{x}} = (x_1 , x_2, ..., x_N)$ . So holds $ {\bi{A}} {\bi{x}} = \lambda {\bi{x}}$ . Let $x_k$ be the biggest absolute value number in vector ${\bi{x}}$. Then $\lambda x_k = \sum_{j=1}^N a_{kj}x_{j}.$ Next move the $a_{kk}x_k$ summand from RHS to LHS. We obtain $x_k (\lambda - a_{kk} ) = \sum_{j=1; j\not=k}^N a_{kj}x_{j}.$ Now we take an absolute value of this equation, divide by $x_k$ and using Triangle inequality we go to: $$ |\lambda - a_{kk}| = {\left|{ \sum_{j=1; j\not=k}^N a_{kj}x_{j} \over x_k }\right|} \le \sum_{j=1; j\not=k}^N {\left| { a_{kj}x_{j} \over x_k }\right|} \le \sum_{j=1; j\not=k}^N {\left| a_{kj} \right|} = r_k. \eqmark $$
 \nl
-\Example To present Gershgorin theorem practically, consider the graph below:
-
+\Example To present Gershgorin theorem practically, consider the graph in Figure \ref[Test_graph] ith its Laplacian matrix:
 \midinsert
 \picw=7cm \cinspic pictures/test_graph.pdf
 \clabel[Test_graph]{A bigger graph to present Gershgorin theorem.}
 \caption/f Graph to present Gershgorin theorem.
 \endinsert
 
-With its Laplacian matrix:
+
 
 $$ { \bi{L}} = \pmatrix{3&-1&-1&0&0&0&0&-1&0&0\cr
 -1&4&0&-1&-1&0&0&-1&0&0\cr
@@ -172,13 +180,12 @@ Numerically solving $\mu(G, x) = 0$ we obtain the following eigenvalues (roundin
 $\{ 0; \ 1,274; \ 1,416; \ 3,100; \ 3,233; \ 3,936; \ 4,826; \ 5,280; \ 6,458; \ 6,476 \}.$ All values are real and non-negative. Finally, plotting the graph with marked eigenvalues and Gershgorin circles. As expected, all eigenvalues are included in the circles.
 
 \midinsert
-\picw=9cm \cinspic pictures/gershgorin.pdf
+\picw=13cm \cinspic pictures/gershgorin.pdf
 \clabel[Gershgorin_circles]{Plot of Gershgorin circles.}
 \caption/f Plot of Eigenvalues and according Gershgorin circles.
 \endinsert
-
-
-\Theorem {  Let $G$ be a graph with $N$ vertices \cite[Mohar91thelaplacian]. Then holds: }
+Since Laplacian matrix has an interesting construction, e.g. its  rows and columns sum up to zero, there may be found some interesting properties holding for its eigenvalues. We provide them here according to   \cite[Mohar91thelaplacian].
+\Theorem {  Let $G$ be a graph with $N$ vertices. Then holds: }
 \begitems \style 0
 
   * $$\lambda_2 \le {N \over N-1} \min_i \{ d(v_i)| v_i \in V(G) \}, \eqmark $$
@@ -187,17 +194,17 @@ $\{ 0; \ 1,274; \ 1,416; \ 3,100; \ 3,233; \ 3,936; \ 4,826; \ 5,280; \ 6,458; \
  * $$ \lambda_N \le \max_i \{ d(v_i) + d(v_j) |  \left( v_i, v_j \right) \in E(G) \}, \eqmark $$
 
 
-  * If $G$ is a simple graph, then $$\lambda_N \le N, \eqmark$$
+  * if $G$ is a simple graph, then $$\lambda_N \le N, \eqmark$$
 
 
  * $$ \sum_{m=1}^N \lambda_m = 2 |E(G)| = \sum_{v_i} d(v_i), \eqmark $$
 
 
-* $$ \lambda_N \ge {N \over N-1} \max_i \{ d(v_i)| v_i \in V(G) \}. \eqmark $$
+* $$ \lambda_N \ge {N \over N-1} \max_i \{ d(v_i)| v_i \in V(G) \} \cite[Mohar91thelaplacian].  \eqmark $$
 
 \enditems
 
-These may be found very useful for example when using numerical methods for solving the roots of $\mu(G,x)$. It is well-known, that we don't have exact analytical formulas to obtain roots of polynomials with higher degree than 5. Using these bounds, we know where the roots must be, respective where they can not be. Especially Equation (2.18) will be later used to simplify a choice an optimal weight for the algorithm.
+One is recommended to check these rules e.g. on the matrix from Example 2.5. These may be found very useful for example when using numerical methods for solving the roots of $\mu(G,x)$. It is well-known, that we don't have exact analytical formulas to obtain roots of polynomials with higher degree than 5. Using these bounds, we know where the roots must be, respective where they can not be. % Especially Equation (2.18) will be later used to simplify a choice an optimal weight for the algorithm.
 
 %to do: disjunktni graf_blokova; kombinace laplacianu; lambda mluvi o connectivity; nasobeni char polynomu
 
@@ -211,8 +218,8 @@ An $(i,j)$-cofactor of a matrix is a determinant of a sub-matrix created by dele
 
 \Theorem {\em Kirchhoff's Matrix-Tree Theorem.} Let $G$ be a connected graph with its Laplacian matrix ${\bi L} (G)$. Then all ${\bi L} (G)$ cofactors are equal and this common value is the number of spanning trees of $G$ \cite[pFDW46az7oYNnM8b].
 
-{\em Proof:} Omitted. Is based on decomposing the Laplacian matrix into product of Incidence matrix and its transpose and then usage of Cauchy-Binet formula.
-
+{\em Proof:} Omitted. Is based on decomposing the Laplacian matrix into product of Incidence matrix and its transpose and then usage of Cauchy-Binet formula \cite[pFDW46az7oYNnM8b].
+ 
 \Example For graph from Figure \ref[Test_graph] we could so find 7587 spanning-trees.
 
 \vskip 0.3cm
@@ -221,13 +228,13 @@ An $(i,j)$-cofactor of a matrix is a determinant of a sub-matrix created by dele
 
 We call graph $G$ with $N$ vertices connected if there is a path from any vertex $v_i$ to any other vertex $v_j$ , $ \forall i,j \in \{ 1, 2, ..., N \}$.
 
-Eigenvalue $\lambda_2$ is also called {\em graph connectivity} \cite[Mohar91thelaplacian]. This eigenvalue is probably the most important from the whole spectrum, or at least in context of our consensus algorithm is in center of interest. Holds, that $\lambda_2 > 0 $ if and only if the graph is connected and the multiplicity of $0$ as is the number of connected components \cite[Mohar91thelaplacian]. We emphasize, $\lambda_2$ is directly proportional to the rate of connectivity, i.e. high $\lambda_2$ means dense graph.
+Eigenvalue $\lambda_2$ is also called {\em graph connectivity} \cite[Mohar91thelaplacian]. This eigenvalue is probably the most important from the whole spectrum, or at least in context of our consensus algorithm is in center of interest. Holds, that $\lambda_2 > 0 $ if and only if the graph is connected and the multiplicity of $0$ as eigenvalue is the number of connected components \cite[Mohar91thelaplacian]. We emphasize, $\lambda_2$ is directly proportional to the rate of connectivity, i.e. high $\lambda_2$ means dense graph.
 
 Diameter of a graph $G$, $diam(G)$, is the biggest number of edges we have to pass, to get from one vertex to another.
 
 There exist some properties and bounds for $\lambda_2$. Very interesting and easily interpretable, in context of the connectivity term, is the following one. Let's consider graph $G$ with $N$ vertices and diameter $diam(G)$. Then holds \cite[Mohar91thelaplacian]:
 
-$$ diam(G) \ge {4\over N \lambda_2}. \eqmark $$
+$$ \lambda_2  \ge {4\over N \cdot diam(G) }. \eqmark $$
 
 \secc Operations with disjoint graphs
 
@@ -258,10 +265,10 @@ $${\bi L} (G) = \pmatrix{2&-1&-1&0&0&0&0 \cr
 0&0&0&-1&-1&2&0\cr
 0&0&0&0&-1&0&1\cr}. \eqmark $$
 
-${\bi L} (G)$ is a block diagonal matrix consisting of submatrices ${\bi L} (G_{\{1,2,3\}})$ and ${\bi L} (G_{\{4,5,6,7\}})$ .
+${\bi L} (G)$ is a block diagonal matrix consisting of submatrices ${\bi L} (G_{\{1,2,3\}})$ and ${\bi L} (G_{\{4,5,6,7\}}).$ 
 For characteristic polynomial holds:
 
-$\mu(G,x) = \mu(G_{\{1, 2, 3\}},x) \mu(G_{\{4, 5, 6,7\}},x) = (x^3-6x^2+9x) (x^4-8^3+19x^2-12x) = x^7-14x^6+76x^5-198x^4+243x^3-108 x^2.$ Note, that 0 is clearly double root corresponding to the 2 components.
+$\mu(G,x) = \mu(G_{\{1, 2, 3\}},x) \mu(G_{\{4, 5, 6,7\}},x) = (x^3-6x^2+9x) (x^4-8^3+19x^2-12x) = x^7-14x^6+76x^5-198x^4+243x^3-108 x^2.$ Note, that 0 is clearly double root corresponding to the 2 components of graph.
 
 \Example To get more intuition about {\em Connectivity eigenvalue} $ \lambda_2$, consider two graphs in Figure \ref[spare_dense] below.
 
@@ -279,7 +286,7 @@ $$\lambda_1^D = 0, \ \lambda_2^D \approx 1.65 , ..., \ \lambda_{10}^D \approx 7.
 
 We notice, that $\lambda_2^S $ of the spare graph is almost eight times smaller than $\lambda_2^D $ of relatively dense graph. In next chapter we shall see, that the {\em Connectivity eigenvalue} directly limits the speed of convergence.
 
-\secc Laplacian matrix - notes
+%\secc Laplacian matrix - notes
 
 %\midinsert \picw=6cm \cinspic pictures/admitance.pdf \clabel[admitance]{Example of admittance electrical circuit. } \caption/f Example of admittance electrical circuit to be described with Laplacian matrix. \endinsert
 
@@ -288,7 +295,7 @@ We notice, that $\lambda_2^S $ of the spare graph is almost eight times smaller 
 %An Admittance matrix corresponding to circuit in Figure \ref[admitance] is:
 %$${\bi Y} (G) =\pmatrix{y_1+y_{12}+y_{13}&-y_{12}&-y_{13}&0 \cr -y_{12}&y_2+y_{12}+y_{14}&0&-y_{14}\cr -y_{13}&0&y_3+y_{13}+y_{34} &-y_{34}\cr 0&-y_{24}&-y_{34}&y_4+y_{24}+y_{34}\cr}.\eqmark $$
 
-To demonstrate relation between Laplacian matrix and continuous Laplacian operator $\Delta$, let's consider a differential equation $$ \Delta z (x,y) + \lambda \Delta z (x,y) = 0,\eqmark $$ with initial condition $z(x,y)=0$ on a simple closed curve $\Gamma$ in $xy$-plane. Solution of this task is determined by an infinite sequence of eigenvalues $\lambda_1 \le \lambda_2 \le... .$ An approximation of this solution may be found by placing a grid over the area in plane curved by $\Gamma.$ The matrix of this finite, discretized problem, comes to be the Laplacian matrix \cite[pFDW46az7oYNnM8b].
+%To demonstrate relation between Laplacian matrix and continuous Laplacian operator $\Delta$, let's consider a differential equation $$ \Delta z (x,y) + \lambda \Delta z (x,y) = 0,\eqmark $$ with initial condition $z(x,y)=0$ on a simple closed curve $\Gamma$ in $xy$-plane. Solution of this task is determined by an infinite sequence of eigenvalues $\lambda_1 \le \lambda_2 \le... .$ An approximation of this solution may be found by placing a grid over the area in plane curved by $\Gamma.$ The matrix of this finite, discretized problem, comes to be the Laplacian matrix \cite[pFDW46az7oYNnM8b].
 
 %to do_ laplacian matrix is exactly admittance matrix of an Electrical circuit.
 
