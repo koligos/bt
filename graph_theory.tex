@@ -6,18 +6,18 @@
 
 \sec Motivation
 
-It is commonly known, that the elements of Graph theory were set by a mathematician Leonhard Euler in the 18th century  , when He solved a problem called Seven Bridges of Königsberg \cite[I9TmriFBrBC9Nqw7].
+It is commonly known, that the elements of Graph theory were set by a mathematician Leonhard Euler in the 18th century, when he solved a problem called Seven Bridges of Königsberg \cite[I9TmriFBrBC9Nqw7].
 
 \midinsert
 \picw=5cm \cinspic pictures/Konigsberg_bridges.png
-\clabel[Konigsberg]{View on city Konigsberg.}
-\caption/f View on city Konigsberg with marked bridges \cite[Giusca2005] .
+\clabel[Konigsberg]{View on city Königsberg.}
+\caption/f View on city Königsberg with marked bridges \cite[Giusca2005] .
 
 \endinsert
 
-The problem was formulated like this: River Pregole flows through the city and creates two islands in there; these two islands were connected with the city by 7 bridges (see figure above) and the question was, whether it is possible to take a walk through the city in such a way, to pass each bridge exactly once \cite[I9TmriFBrBC9Nqw7]. Euler described this problem as a graph, where the edges represented the seven bridges, and the vertices were the separated parts of the city. He proved, that in this case, it is impossible to pass each bridge only once and showed, that such a way exists if and only if each vertex of the graph is of an even degree \cite[I9TmriFBrBC9Nqw7].
+The problem was formulated like this: River Pregole flows through the city and creates two islands in there; these two islands were connected with the city by 7 bridges (see Figure \ref[Konigsberg] above) and the question was, whether it is possible to take a walk through the city in such a way, to pass each bridge exactly once \cite[I9TmriFBrBC9Nqw7]. Euler described this problem as a graph, where the edges represented the seven bridges, and the vertices were the separated parts of the city. He proved, that in this case, it is impossible to pass each bridge only once and showed, that such a way exists if and only if each vertex of the graph is of an even degree \cite[I9TmriFBrBC9Nqw7].
 
-Nowadays, a very modern and interesting example of usage of the Graph theory is visualization and simulation of the communication networks, such as the Internet, mobile network etc. A typical task is to find the best route from a source to a destination location with respect to a given specific metric. This metric can depend on many parameters. Typical choices are e.g. a number of intermediate devices, end-to-end delay or a bandwidth of the connectivity. These Graph algorithms are often based on a very efficient improvement of basic Depth-first search. (This is a case of the famous Dijkstra's algorithm used by OSPF routing protocol, to find the best way from each node to all the others with edges with a given cost.)
+Nowadays, a modern and interesting example of usage of the Graph theory is visualization and simulation of the communication networks, such as the Internet, mobile network etc. A typical task is to find the best route from a source to a destination location with respect to a given, specific, metric. This metric can possibly depend on many parameters. Typical criteria are e.g. a number of intermediate devices, end-to-end delay or a bandwidth of the connectivity. These Graph algorithms are often based on a efficient improvement of basic Depth-first search. (This is a case of the famous Dijkstra's algorithm used by OSPF routing protocol, to find the best way from each node to all the others with edges with a given cost.)
 
 Next interest, we will briefly meet also term Spanning tree. In Ethernet-based communication is very important to avoid loops in a network, because they might cause a congestion of the network and failure of the service. A Spanning tree of a graph is a factor of this graph, which originates by removing some of its edges, in a way to preserve all vertices reachable, and removes all cycles in the graph \cite[spanningTree]. In the chapter about Laplacian we shall see how to simply find a count of these Spanning trees.
 

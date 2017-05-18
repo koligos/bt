@@ -27,7 +27,7 @@
 \studyinfo  {Open Electronic Systems}  % Study programme etc.
 \workname   {Bachelor's thesis} % Used only if \worktype [O/*] (Other)
             % optional more information about the document:
-\workinfo   {kolarj39@fel.cvut.cz}
+%\workinfo   {kolarj39@fel.cvut.cz}
             % Title / Subtitle in minor language:
 \titleEN    {CTUstyle -- the user manual}
 \subtitleEN {the plain\TeX{} template for theses at CTU}
@@ -35,29 +35,28 @@
             % use \titleCZ, \subtitleCZ or \titleSK, \subtitleSK instead it.
 \pagetwo    {}  % The text printed on the page 2 at the bottom.
 
-\abstractEN { Main scope of this Bachelor’s thesis
+\abstractEN { The major objective of this Bachelor’s thesis
 is to provide an introduction to Linear
 average consensus algorithm over
 graph. It is an iterative algorithm,
 that works with values assigned to
 vertices of graph and the goal is to
 asymptotically obtain in all vertices an
-average of initial values, respecting the
-graph topology. In the text we use a
+average of initial values, respecting the topology
+ of the graph. In the text we have used a
 matrix representation of graph and to
 design the parameters of algorithm is
 used Laplacian matrix. Using matrix
-representation, the algorithm solving
+representation, the algorithm that solves
 the original problem is transferred to
-iterative matrix multiplication. Next,
-we provide examples of algorithm run
+iterative matrix multiplication. In the next step,
+we have provided examples of run of the algorithm 
 in case of ideal and reliable communication and also an outline of solution
-in case of zero-mean noisy updates. A
-part of work are also Matlab scripts
+in case of zero-mean noisy updates. Included are Matlab scripts
 with algorithm implementation. More
 difficult formal proofs and derivations
-are not included, but we provide a
-reference, where to find them. Finally, we provide few simple examples of application of the described algorithm.
+are not included, but we have provided  
+references, where is possible to find them in the literature. In the final part, we've implemented a few simple examples  of the described algorithm.
 }
 
 \abstractCZ { Cílem této bakalářské práce je seznámení se s lineárním konsenzuálním algoritmem nad grafy. Jde o iterativní algoritmus, který pracuje s hodnotami přiřazenými vrcholům grafu a jehož cílem je, aby asymptoticky byly tyto hodnoty ve všech vrcholech stejné a průměrem hodnot počátečních. Studovaný algoritmus toho docílí jen komunikací mezi dvojicemi vrcholů přes existující hrany grafu.  V práci využíváme maticovou reprezentaci grafu a pro nalezení vhodných parametrů algoritmu používáme Laplaceovu matici. Algoritmus je tak převeden na opakující se maticové násobení, jehož význam zachovává původní úlohu. Dále uvádíme  názorné ukázky toho, jak algoritmus pracuje v případě ideálních aktualizací a základní řešení v případě ovlivňování aktualizací šumem s nulovou střední hodnotou. Součástí práce je implementace algoritmu v Matlabu. V práci nejsou uvedeny složitější důkazy a odvození, ale odkazujeme se na příslušnou uvedenou literaturu. Na závěr uvádíme několik jednoduchých příkladů využívajících popsané iterativní schéma.
@@ -69,12 +68,22 @@ reference, where to find them. Finally, we provide few simple examples of applic
 \keywordsCZ {%
    Graf, Laplaceova matice, Lineární konsenzus, Aktualizace s rušením, Odhad parametru
 }
-\thanks {           % Use main language here
-  % The first great thank belongs to prof. Ing. Jan Sýkora, CSc., for such an interesting assignement offer and precious advice during the consultations, too. Also I'd like to write here thanks to  all my  beloved friends and  family, who  all formed me, inspire me and motivate me as well.
+\thanks {           %Use main language here
+  %I would like to thank the supervisor of this thesis, prof.~Ing.~Jan Sýkora,~CSc., for such an interesting assignement. Also, I'd like to write here thanks to  my  beloved friends and  family, who  all form me, inspire me and motivate me as well.
+  TBD.
 }
-\declaration {      % Use main language here
-   TBD.
-  In Prague, 26. 5. 2017 % !!! Attention, you have to change this item.
+\declaration { 
+I declare that I completed the presented thesis independently and that all used sources are quoted in accordance with the Methodological Instructions that cover the ethical principles for writing an academic thesis.
+
+In Prague, 26. 5. 2017
+
+\hfil\break\hfil\break\hfil\break\hfil\break
+
+Prohlašuji, že jsem předloženou práci vypracoval samostatně a že jsem uvedl veškeré použité informační zdroje v~souladu s Metodickým pokynem o dodržování etických principů při přípravě vysokoškolských závěrečných prací.
+
+V Praze, 26. 5. 2017
+
+ % !!! Attention, you have to change this item.
    \signature % makes dots
 }
 \specification {\picw=\hsize \cinspic appendix/assignment.pdf}
