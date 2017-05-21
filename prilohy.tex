@@ -20,7 +20,6 @@ This is script $perfect\_communication\_example.m$ used in Examples \ref[ex3_5],
 
 \begtt
 % Run of average consensus algorithm with perfect communication       
-%###########################################################            
 clear all;
 s=[1 1 2 2 3 3 3 4 4 4 5 6 7 8 8 9 9 10  ];%source vertices
 t=[2 3 4 5 7 10 5 5 6 7 6 7 5 1 2 10 7 8];%destination vertices
@@ -108,8 +107,6 @@ plot(G); %plot graph G
 \begtt
 % Run of average consensus algorithm with noisy 
 % updates using descending step size scheme gamma=a/(1+b)^c                     
-
-
 %% graph definition
 clear all; clc;
 variance_noise=0.1; %variance of the gaussian noise added to the updates
@@ -135,7 +132,6 @@ end
 for i=1:nodes     %initialize measurement
     x_0(i)=(10+wgn(1,1,log10(10*variance_noise)));    
 end
-
 %% variables definition
 x_est_run(1,:) = x_0;
 MSE_act(1)= sum((x_0-mean(x_0)).^2);
@@ -148,7 +144,6 @@ L=laplacian(G); %laplacian matrix
 eig_L=eig(L);%eigenvalues of Laplacian
 gamma=2/(eig_L(2)+eig_L(nodes));%the best possible coefficient
 mean_0=mean(x_0);%value to converge to
-
 %% Iterations of the algorithm
 for i=1:iterations
    gamma=1/(i+42)^0.75; %selected descending step size
@@ -164,14 +159,12 @@ for i=1:iterations
    end
    x_est_run(i+1,:)=  P*x_est_run(i,:)'+equiv_noise_vector';  
 end
-
 %calculation of the run statistics
 for i=1:iterations
   MSE_ave(i+1)= sum((x_est_run(i+1,:)-mean(x_0)).^2)/nodes;
   MSE_act(i+1)= sum((x_est_run(i+1,:)-mean(x_est_run(i+1,:))).^2)/nodes;   
   VAR(i+1)= var(x_est_run(i+1,:));
 end
-
 %%  Plot results
 figure;
 plot(0:iterations, x_est_run(:,:));
@@ -202,21 +195,16 @@ xlbl1=set(xlbl1,'Interpreter','latex');
 ylbl1=ylabel('Variance [-]');
 ylbl1=set(ylbl1,'Interpreter','latex');
 grid;
-
 \endtt
 
 
-
+\nextoddpage
 
 \label[nodes_number_script]
-\sec Matlab script: Estimation of nodes number in given area
-
-
+\sec Matlab script: Estimation of nodes number~in~given area
 
 \begtt
 % Script to find number of N sensors based on their ID
-%###########################################################
-
 %% Initialization
 clear all;
 nodes = 99;
@@ -261,12 +249,8 @@ labelnode(h,1:nodes,' ')
 \label[dynamic_tracking]
 \sec Matlab script: Tracking of dynamic target
 
-
-
 \begtt
-
 %Tracking of dynamic target script
-%###########################################################
 clear all;
 nodes = 5; % 4 followers and 1 target
 d=0.01;%distance between followers
@@ -279,44 +263,33 @@ v2_pos=[-100,100];
 v3_pos=[100,-100];
 v4_pos=[-100,-100];
 v5_init_pos=[100*rand, 100*rand]; %target position is random
-
 G =graph(s,t)%generates  graph
 L=full(laplacian(G)); %matlab function for Laplacian
 degreeMax= max(max(L));%generate weight that control dynamics
 alpha=0.08*1/degreeMax; %coefficient 0.08 found experimentaly
 P=eye(nodes)- alpha* L; %Perron matrix
-
 x_pos_vect(1,:)=[v1_pos(1) v2_pos(1) v3_pos(1) v4_pos(1) v5_init_pos(1)];
 y_pos_vect(1,:)=[v1_pos(2) v2_pos(2) v3_pos(2) v4_pos(2) v5_init_pos(2)];
-
 v5_pos_x(1)=v5_init_pos(1);
 v5_pos_y(1)=v5_init_pos(2);
-
-
 for i = 1:iterations
  x_pos_vect(i+1,:)=P* x_pos_vect(i,:)';
 y_position_vector(i+1,:)=P*y_position_vector(i,:)';
-
 if i<0.5*iterations %for first half of iterations the target moves
 y_position_vector(i+1,5)=y_position_vector(i,5)+0.5*rand*(-1^(i));
  x_pos_vect(i+1,5)= x_pos_vect(i,5)+0.5*rand*(-1^(i));
 end
-
 % distance between followers
 y_position_vector(i+1,1)=y_position_vector(i+1,1)+d;
- x_pos_vect(i+1,1)= x_pos_vect(i+1,1)+d;
-
+x_pos_vect(i+1,1)= x_pos_vect(i+1,1)+d;
 y_position_vector(i+1,2)=y_position_vector(i+1,1)+d;
- x_pos_vect(i+1,2)= x_pos_vect(i+1,5)-d;
-
+x_pos_vect(i+1,2)= x_pos_vect(i+1,5)-d;
 y_position_vector(i+1,3)=y_position_vector(i+1,3)-d;
- x_pos_vect(i+1,3)= x_pos_vect(i+1,3)+d;
-
+x_pos_vect(i+1,3)= x_pos_vect(i+1,3)+d;
 y_position_vector(i+1,4)=y_position_vector(i+1,4)-d;
- x_pos_vect(i+1,4)= x_pos_vect(i+1,4)-d;
+x_pos_vect(i+1,4)= x_pos_vect(i+1,4)-d;
 
 end
-
 %% plot the animation of mooving point
 figure('Position', [100, 100, 450,300])
 for i=1:iterations
@@ -344,7 +317,6 @@ This is script used to simulate synchronization of Time base, meant to e.g. sync
 
 \begtt
 % Time base synchronization script
-%###########################################################
 %% Initialization
 clear all;
 nodes = 30; %number of nodes of graph
@@ -356,7 +328,6 @@ alpha=1/degreeMax; %choose parameter to Define Perron matrix
 P=eye(nodes)- alpha* L; %create Perron matrix
 commonTimeBase=1000; % some big number used to initialize time base
 % e.g. in gps time used number of weeks and secs since January'80
-
 for i = 1:nodes %initialize the vertices time base + some random offset
 time_running(1,i)=commonTimeBase+1000*rand; %init of time base + offset
 end
@@ -371,7 +342,6 @@ for i = 1:iterations
     time_running(1+i,10:20)= time_running(200,20:30)   ;
     end
 end
-
 %% plot results
 figure;
 plot(0:iterations, time_running(:,:));
@@ -397,9 +367,7 @@ labelnode(h,1:nodes,' ')
 \sec Matlab script: Initial time base synchronization
 
 \begtt
-
 % Initial time base synchronization
-
 %% Initialization
 clear all;
 nodes = 30; %number of nodes of graph
@@ -408,31 +376,43 @@ s=(1:1:30); %source and destination vertices of ring graph
 t=[30,1:1:29];
 G = graph(s,t); %create graph
 L=full(laplacian(G)); %Laplacian using Matlab function
-Ti=1; %period of the i-th's clock
-%all nodes have the same inner oscillator
-offsets=10*rand(1,nodes); %define initial offsets
+Ti=1; %period of the i-th's clock; all nodes have same oscillator
+a=-10;b=10;
+offsets= a + (b-a).*rand(nodes,1);%define initial offsets
 time_base(1,:)=offsets;%detected by the TD block in PLL
 L_eig=eig(L); %eigenvector of Laplacian
-alpha=2/(0.5+L_eig(2)+L_eig(max(s)));%choose parameter Perron matrix
+alpha=2/(0.5+L_eig(2)+L_eig(max(s)));%choose parameter to Perron matrix
 P=eye(nodes)- alpha * L; %create Perron matrix
 
 for i = 1:iterations
     %averaging consensus iterations 
     time_base(1+i,:)=P*time_base(i,:)'; 
 end
-
 %% plot results
 figure;
 plot(0:iterations, time_base(:,:));
-ttl1=title( 'Time base synchronization - ring topology with 30 nodes ')
+ttl1=title( 'Time base synchronization - ring topology with 30 nodes '  )
 ttl1=set(ttl1,'Interpreter','latex','FontSize', 15);
 xlbl1=xlabel('Iterations [-]');
 xlbl1=set(xlbl1,'Interpreter','latex');
 ylbl1=ylabel('Offsets received by TD block [ms]');
 ylbl1=set(ylbl1,'Interpreter','latex');
 grid;
-
 \endtt
 \app Content of CD
 
+\begtt
 
+|-- Distributed_signal_processing_in_radio_communication_networks.pdf
+|-- scripts
+    |-- ACA_large_random_graph.m
+    |-- consensus_algorithm_short_version.m
+    |-- moving_point.m
+    |-- nodes_number_estimation.m
+    |-- noisy_update_decreasing_weights.m
+    |-- noisy_updates_diferential_converges_slowly.m
+    |-- rounding_experiment_diverges.m
+    |-- target_tracking.m
+    |-- time_base_syn.m
+    |-- without_librbraries_perfect_communication_example.m
+\endtt

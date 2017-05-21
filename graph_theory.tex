@@ -17,23 +17,22 @@ It is commonly known, that the elements of Graph theory were set by a mathematic
 
 The problem was formulated like this: River Pregole flows through the city and creates two islands in there; these two islands were connected with the city by 7 bridges (see Figure \ref[Konigsberg] above) and the question was, whether it is possible to take a walk through the city in such a way, to pass each bridge exactly once \cite[I9TmriFBrBC9Nqw7]. Euler described this problem as a graph, where the edges represented the seven bridges, and the vertices were the separated parts of the city. He proved, that in this case, it is impossible to pass each bridge only once and showed, that such a way exists if and only if each vertex of the graph is of an even degree \cite[I9TmriFBrBC9Nqw7].
 
-Nowadays, a modern and interesting example of usage of the Graph theory is visualization and simulation of the communication networks, such as the Internet, mobile network etc. A typical task is to find the best route from a source to a destination location with respect to a given, specific, metric. This metric can possibly depend on many parameters. Typical criteria are e.g. a number of intermediate devices, end to end delay or a bandwidth of the connectivity. These Graph algorithms are often based on an efficient improvement of Depth-first search. (This is a case of the famous Dijkstra's algorithm used by OSPF routing protocol, to find the best way from each node to all the others with edges with a given cost.)
+Nowadays, a modern and interesting example of usage of the Graph theory is visualization and simulation of the communication networks, such as the Internet, mobile network etc. A typical task is to find the best route from a source to a destination location with respect to a given, specific, metric. This metric can possibly depend on many parameters. Typical criteria are e.g. a number of intermediate devices, end-to-end delay or a bandwidth of the connectivity. These Graph algorithms are often based on an efficient improvement of Depth-first search. (This is a case of the famous Dijkstra's algorithm used by OSPF routing protocol, to find the best way from each node to all the others with edges with a given cost.)
 
-For interest, we will briefly meet also term Spanning tree. In Ethernet-based communication is very important to avoid loops in a network, because they might cause a congestion of the network and failure of the service. A Spanning tree of a graph is a factor of this graph, which originates by removing some of its edges, in a way to preserve all vertices reachable, and removes all cycles in the graph \cite[spanningTree]. In the chapter about Laplacian we shall see how to simply find a count of these Spanning trees.
+For interest, we will briefly meet also term Spanning tree. In Ethernet-based communication is very important to avoid loops in a network, because they might cause a congestion of the network and failure of the service. A Spanning tree of a graph is a factor of this graph, which originates by removing some of its edges, in a way to preserve all vertices reachable, and removes all cycles in the graph \cite[spanningTree]. In the chapter about Laplacian, we shall see how to simply find a count of these Spanning trees.
 
-To finish this motivation part, a very nice example of the usage of distributed algorithm is a Network time protocol (NTP). It is important to have globally synchronized time between server computers. Few of the servers are connected to the reference clocks. To them are hierarchically connected other devices, servers, that are statistically analyzing properties of {\em neighbor's time} to obtain final value of time, that they use and provide to next users   \cite[8QTNEpKBWSMYObR2].
-
+To finish this motivation part, a very nice example of the usage of distributed algorithm is a Network time protocol (NTP). It is important to have globally synchronized time between server computers. Few of the servers are connected to the reference clocks. To them are hierarchically connected other devices, servers, that are statistically analyzing properties of {\em neighbor's time} to obtain the final value of time, that they use and provide to next users   \cite[8QTNEpKBWSMYObR2].
 
 
 \sec Notation
 
-In the sequel we will use the following notation. Scalars are denoted by small leters, such as $a, d, \alpha .$ Vectors are marked as e.g. ${\bi u}$ or $ {\bi v}$. We use column vectors. Especially ${\bi 1}$ is a column vector of all ones (in the text always of length $N$ as number of nodes). Matrices are marked by capitals, such as $ {\bi L}, \bi P.$ $\bi I$ stands for the Identity matrix.  Single elements of vectors and matrices are denoted as scalars with lower indices with meaning of the position, e.g.  $v_i$ or ${p}_{ij}$, respectively. Finally, in the last chapter we use e.g. $\bi x_i$ to mark a vector that is in $i$-th node.
+In the sequel, we will use the following notation. Scalars are denoted by small letters, such as $a, d, \alpha .$ Vectors are marked as e.g. ${\bi u}$ or $ {\bi v}$. We use column vectors. Especially ${\bi 1}$ is a column vector of all ones (in the text always of length $N$ as a number of nodes). Matrices are marked by capitals, such as $ {\bi L}, \bi P.$ $\bi I$ stands for the Identity matrix.  Single elements of vectors and matrices are denoted as scalars with lower indices with the meaning of the position, e.g.  $v_i$ or ${p}_{ij}$, respectively. Finally, in the last chapter, we use e.g. $\bi x_i$ to mark a vector that is in $i$-th node.
 
 
 
 \sec Definitions
 
-A graph $G=(V, E)$ is described by a pair of its vertices $V$ and edges $E$. ${V=\{ v_1, v_2, ..., v_N \}}$ is a set of $N$ vertices. By the vertices we understand the points connected by the edges.
+A graph $G=(V, E)$ is described by a pair of its vertices $V$ and edges $E$. ${V=\{ v_1, v_2, ..., v_N \}}$ is a set of $N$ vertices. By the vertices, we understand the points connected by the edges.
 An edge $\left( v_i, v_j \right)$ means a connection between vertices $v_i$ and $v_j$.
 
 \secc Undirected graph
@@ -95,7 +94,7 @@ $${\bi{E}}_{2.3} = \pmatrix{ -1&-1&0&1&0&0&0&1&0\cr
 0&1&0&0&0&1&0 & -1 & -1\cr
 0&0&1&0&0&0&1&0&1\cr} \eqmark $$
 
-We can see, this matrix is very spare. In each column contains only one pair of 1 and~-1. The Adjacency matrix provides the same information, but with typically smaller matrix.
+We can see, this matrix is very spare. In each column contains only one pair of 1 and~-1. The Adjacency matrix provides the same information, but with a typically smaller matrix.
 
 \sec Laplacian matrix
 
@@ -139,7 +138,7 @@ In which we can  easily recognize the relation holding for eigenvalues.
 $${\bi{L}}  {\bi v} = \lambda {\bi v}, \eqmark $$
 $$ \lambda = {\bi v}^T {\bi{L}} {\bi v} = {\bi v}^T {\bi{E}} {\bi{E}}^T {\bi v} = ( {\bi v}^T {\bi{E}}) ( {\bi{E}}^T {\bi v} ) = ( {\bi{E}}^T {\bi v} )^T ( {\bi{E}}^T {\bi v} ) = \| {\bi{E}^T} {\bi v}\|^2 \ge 0. \eqmark $$
 
-${\bi{L}}$ is singular, because sum of all elements in each column is zero  \cite[Liaghat2015].
+${\bi{L}}$ is singular because the sum of all elements in each column is zero  \cite[Liaghat2015].
 
 %We can come to the positive semidefiniteness also using the following quadratic form:
 
@@ -218,7 +217,7 @@ An $(i,j)$-cofactor of a matrix is a determinant of a submatrix created by delet
 
 \Theorem {\em Kirchhoff's Matrix-Tree Theorem.} Let $G$ be a connected graph with its Laplacian matrix ${\bi L} (G)$. Then all ${\bi L} (G)$ cofactors are equal and this common value is the number of spanning trees of $G$ \cite[pFDW46az7oYNnM8b].
 
-{\em Proof:} Omitted. Is based on decomposing the Laplacian matrix into product of Incidence matrix and its transpose and then usage of Cauchy-Binet formula \cite[pFDW46az7oYNnM8b].
+{\em Proof:} Omitted. Is based on decomposing the Laplacian matrix into the product of Incidence matrix and its transpose and then usage of Cauchy-Binet formula \cite[pFDW46az7oYNnM8b].
  
 \Example For graph from Figure \ref[Test_graph] we could so find 7587 spanning-trees.
 
@@ -228,9 +227,9 @@ An $(i,j)$-cofactor of a matrix is a determinant of a submatrix created by delet
 
 We call graph $G$ with $N$ vertices connected if there is a path from any vertex $v_i$ to any other vertex $v_j$ , $ \forall i,j \in \{ 1, 2, ..., N \}$.
 
-Eigenvalue $\lambda_2$ is also called {\em graph connectivity} \cite[Mohar91thelaplacian]. This eigenvalue is probably the most important from the whole spectrum, or at least in context of our consensus algorithm is in the center of interest. Holds, that $\lambda_2 > 0 $ if and only if the graph is connected. The multiplicity of $0$ as eigenvalue is the number of connected components \cite[Mohar91thelaplacian]. We emphasize, $\lambda_2$ is directly proportional to the rate of connectivity, i.e. high $\lambda_2$ means dense graph.
+Eigenvalue $\lambda_2$ is also called {\em graph connectivity} \cite[Mohar91thelaplacian]. This eigenvalue is probably the most important from the whole spectrum, or at least in the context of our consensus algorithm is in the center of interest. Holds, that $\lambda_2 > 0 $ if and only if the graph is connected. The multiplicity of $0$ as eigenvalue is the number of connected components \cite[Mohar91thelaplacian]. We emphasize, $\lambda_2$ is directly proportional to the rate of connectivity, i.e. high $\lambda_2$ means dense graph.
 
-Diameter of a graph $G$, $diam(G)$, is the biggest number of edges we have to pass, to get from one vertex to another.
+A diameter of a graph $G$, $diam(G)$, is the biggest number of edges we have to pass, to get from one vertex to another.
 
 There exist some properties and bounds for $\lambda_2$. Very interesting and easily interpretable, in context of the connectivity term, is the following one. Let's consider graph $G$ with $N$ vertices and diameter $diam(G)$. Then holds \cite[Mohar91thelaplacian]:
 
@@ -238,7 +237,7 @@ $$ \lambda_2  \ge {4\over N \cdot diam(G) }. \eqmark $$
 
 \secc Operations with disjoint graphs
 
-Very detailed reading about this part of Laplacian topic may be found beside in \cite[Mohar91thelaplacian] also in \cite[Newman00thelaplacian]. Let's now briefly mention what happens with Laplacian of a graph, that is not connected.
+Very detailed reading about this part of Laplacian topic may be found besides in \cite[Mohar91thelaplacian] also in \cite[Newman00thelaplacian]. Let's now briefly mention what happens with Laplacian of a graph, that is not connected.
 
 Considering the definition of the Laplacian ${\bi L} (G) ={\bi D} (G) - {\bi A} (G) $, we are not surprised, that Laplacian of a graph consisting of $k$ mutually disjoint sets of vertices will have block diagonal form obtained from matrices ${\bi L} (G_1), {\bi L} (G_2), ..., {\bi L} (G_k) $  \cite[Mohar91thelaplacian].
 
@@ -284,7 +283,7 @@ $$\lambda_1^S = 0, \ \lambda_2^S \approx 0.21 , ..., \ \lambda_{10}^S \approx 5.
 The eigenvalues of the dense graph on the right are
 $$\lambda_1^D = 0, \ \lambda_2^D \approx 1.65 , ..., \ \lambda_{10}^D \approx 7.56.$$
 
-We notice, that $\lambda_2^S $ of the spare graph is almost eight times smaller than $\lambda_2^D $ of relatively dense graph. In next chapter we shall see, that the {\em Connectivity eigenvalue} directly limits the speed of convergence.
+We notice, that $\lambda_2^S $ of the spare graph is almost eight times smaller than $\lambda_2^D $ of the relatively dense graph. In next chapter, we shall see, that the {\em Connectivity eigenvalue} directly limits the speed of convergence.
 
 %\secc Laplacian matrix - notes
 
