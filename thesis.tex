@@ -40,7 +40,7 @@ is to provide an introduction to Linear
 average consensus algorithm on a graph. It is a distributed iterative algorithm,
 that works with values assigned to
 vertices of the graph and the goal is to
-asymptotically obtain  an average value of the initial values in all vertices, respecting the topology of the graph. In the text, we have used a
+asymptotically obtain  an average value of the initial values in all vertices, respecting the topology of the graph, i.e. it reaches global goal using only local operations. In the text, we have used a
 matrix representation of the graph. To
 design the parameters of the algorithm we
 used the Laplacian matrix. Using matrix
@@ -54,7 +54,7 @@ difficult formal proofs and derivations
 are not included, but we have provided references, where it is possible to find them in the literature. In the final part, we've implemented a few simple examples of the described algorithm, motivated by radio communication.
 }
 
-\abstractCZ { Cílem této bakalářské práce je seznámení se s lineárním konsenzuálním algoritmem nad grafy. Jde o distribuovaný iterativní algoritmus, který pracuje s hodnotami přiřazenými vrcholům grafu a jehož cílem je, aby asymptoticky byly tyto hodnoty ve všech vrcholech stejné a průměrem hodnot počátečních. Studovaný algoritmus toho docílí jen komunikací mezi dvojicemi vrcholů přes existující hrany grafu.  V práci využíváme maticovou reprezentaci grafu a pro nalezení vhodných parametrů algoritmu používáme Laplaceovu matici. Algoritmus je tak převeden na opakující se maticové násobení, jehož význam zachovává původní úlohu. Dále uvádíme  názorné ukázky toho, jak algoritmus pracuje v případě ideálních aktualizací a základní řešení v případě ovlivňování aktualizací šumem s nulovou střední hodnotou. Součástí práce je implementace algoritmu v Matlabu. V práci nejsou uvedeny složitější důkazy a odvození, ale odkazujeme se na příslušnou uvedenou literaturu. Na závěr uvádíme několik jednoduchých příkladů využívajících popsané iterativní schéma.
+\abstractCZ { Cílem této bakalářské práce je seznámení se s lineárním konsenzuálním algoritmem nad grafy. Jde o distribuovaný iterativní algoritmus, který pracuje s hodnotami přiřazenými vrcholům grafu a jehož cílem je, aby asymptoticky byly tyto hodnoty ve všech vrcholech stejné a průměrem hodnot počátečních. Globálního cíle je dosaženo pouze lokálními operacemi. Studovaný algoritmus toho docílí jen komunikací mezi dvojicemi vrcholů přes existující hrany grafu.  V práci využíváme maticovou reprezentaci grafu a pro nalezení vhodných parametrů algoritmu používáme Laplaceovu matici. Algoritmus je tak převeden na opakující se maticové násobení, jehož význam zachovává původní úlohu. Dále uvádíme  názorné ukázky toho, jak algoritmus pracuje v případě ideálních aktualizací a základní řešení v případě ovlivňování aktualizací šumem s nulovou střední hodnotou. Součástí práce je implementace algoritmu v Matlabu. V práci nejsou uvedeny složitější důkazy a odvození, ale odkazujeme se na příslušnou uvedenou literaturu. Na závěr uvádíme několik jednoduchých příkladů využívajících popsané iterativní schéma.
 }          
 
 \keywordsEN {       Graph, Laplacian, Linear average consensus algorithm, Noisy updates, Estimation
