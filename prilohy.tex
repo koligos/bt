@@ -207,9 +207,9 @@ grid;
 % Script to find number of N sensors based on their ID
 %% Initialization
 clear all;
-nodes = 99;
 iterations = 30;
-G = WattsStrogatz(nodes,4,0.5); %generates random graph
+nodes=60; %number of graph nodes
+G=graph(bucky); % using matlab default graph bucky
 L=full(laplacian(G));
 degreeMax= max(max(L));
 alpha=1/degreeMax;
@@ -319,9 +319,9 @@ This is script used to simulate synchronization of Time base, meant to e.g. sync
 % Time base synchronization script
 %% Initialization
 clear all;
-nodes = 30; %number of nodes of graph
 iterations = 150; %number of iterations of the algorithm
-G = WattsStrogatz(nodes,2,1); %generates random graph
+nodes=60; %number of graph nodes
+G=graph(bucky); % using matlab default graph bucky
 L=full(laplacian(G)); %Laplacian using Matlab function
 degreeMax= max(max(L)); %find the greatest degree of graph
 alpha=1/degreeMax; %choose parameter to Define Perron matrix
@@ -405,14 +405,13 @@ grid;
 
 |-- Distributed_signal_processing_in_radio_communication_networks.pdf
 |-- scripts
-    |-- ACA_large_random_graph.m
+    |-- average_consensus_algorithm_basic_example.m
     |-- consensus_algorithm_short_version.m
-    |-- moving_point.m
+    |-- dynamic_target_tracking.m
+    |-- initial_time_base_synchronization.m
+    |-- measurement_time_synchronization.m
     |-- nodes_number_estimation.m
     |-- noisy_update_decreasing_weights.m
-    |-- noisy_updates_diferential_converges_slowly.m
-    |-- rounding_experiment_diverges.m
-    |-- target_tracking.m
-    |-- time_base_syn.m
-    |-- without_librbraries_perfect_communication_example.m
+
+
 \endtt
