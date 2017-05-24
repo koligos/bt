@@ -3,110 +3,233 @@
 \Xpage{-1}
 \Xpage{-2}
 \Xpage{-3}
-\Xpage{-4}
 \Xpage{-5}
 \Xpage{-6}
+\Xpage{-7}
+\Xpage{-8}
 \Xpage{1}
 \Xtoc{0}{\bfshape }{1}{Introduction }{1}
-\Xtoc{1}{\rm }{1.1}{Outline }{1}
+\Xtoc{1}{\rm }{1.1}{Motivation }{1}
+\Xtoc{1}{\rm }{1.2}{Outline }{1}
 \Xpage{2}
 \Xtoc{0}{\bfshape }{2}{Graph theory }{2}
 \Xtoc{1}{\rm }{2.1}{Motivation }{2}
-\Xfig{Konigsberg}{2.1}{View on city Konigsberg.}
+\Xfig{Konigsberg}{2.1}{View on city Königsberg.}
 \Xlabel{Konigsberg}{2.1}
 \Xpage{3}
-\Xtoc{1}{\rm }{2.2}{Definitions }{3}
-\Xtoc{2}{\rm }{2.2.1}{Undirected graph }{3}
+\Xtoc{1}{\rm }{2.2}{Notation }{3}
+\Xtoc{1}{\rm }{2.3}{Definitions }{3}
+\Xtoc{2}{\rm }{2.3.1}{Undirected graph }{3}
 \Xfig{Graph}{2.2}{Example of a undirected graph.}
 \Xlabel{Graph}{2.2}
-\Xtoc{2}{\rm }{2.2.2}{Directed graph }{3}
+\Xtoc{2}{\rm }{2.3.2}{Directed graph }{3}
+\Xpage{4}
 \Xfig{Digraph}{2.3}{Example of a directed graph.}
 \Xlabel{Digraph}{2.3}
-\Xpage{4}
-\Xtoc{2}{\rm }{2.2.3}{Adjacency matrix }{4}
-\Xtoc{2}{\rm }{2.2.4}{Degree matrix }{4}
-\Xtoc{2}{\rm }{2.2.5}{Incidence matrix }{4}
+\Xtoc{2}{\rm }{2.3.3}{Adjacency matrix }{4}
+\Xtoc{2}{\rm }{2.3.4}{Degree matrix }{4}
 \Xpage{5}
-\Xtoc{1}{\rm }{2.3}{Laplacian matrix }{5}
-\Xtoc{2}{\rm }{2.3.1}{Definitions }{5}
-\Xtoc{2}{\rm }{2.3.2}{Basic properties }{5}
+\Xtoc{2}{\rm }{2.3.5}{Incidence matrix }{5}
+\Xtoc{1}{\rm }{2.4}{Laplacian matrix }{5}
+\Xtoc{2}{\rm }{2.4.1}{Definition }{5}
+\Xlabel{lapDef1}{(2.6)}
+\Xlabel{lapDef2}{(2.7)}
 \Xpage{6}
-\Xtoc{2}{\rm }{2.3.3}{Bounds for eigenvalues }{6}
+\Xtoc{2}{\rm }{2.4.2}{Basic properties }{6}
+\Xtoc{2}{\rm }{2.4.3}{Bounds for eigenvalues }{6}
+\Xpage{7}
 \Xfig{Test_graph}{2.4}{A bigger graph to present Gershgorin theorem.}
 \Xlabel{Test_graph}{2.4}
-\Xpage{7}
 \Xfig{Gershgorin_circles}{2.5}{Plot of Gershgorin circles.}
 \Xlabel{Gershgorin_circles}{2.5}
 \Xpage{8}
-\Xtoc{2}{\rm }{2.3.4}{Matrix tree theorem }{8}
-\Xtoc{2}{\rm }{2.3.5}{Eigen value $\lambda _2$ }{8}
-\Xtoc{2}{\rm }{2.3.6}{Operations with disjoint graphs }{8}
+\Xtoc{2}{\rm }{2.4.4}{Matrix tree theorem }{8}
+\Xtoc{2}{\rm }{2.4.5}{Eigenvalue $\lambda _2$ }{8}
 \Xpage{9}
-\Xfig{two_components}{2.6}{Graph with two componennts.}
+\Xtoc{2}{\rm }{2.4.6}{Operations with disjoint graphs }{9}
+\Xfig{two_components}{2.6}{Graph with two components.}
 \Xlabel{two_components}{2.6}
+\Xpage{10}
 \Xfig{spare_dense}{2.7}{Another demonstration of Connectivity eigenvalue meaning.}
 \Xlabel{spare_dense}{2.7}
-\Xpage{10}
-\Xtoc{2}{\rm }{2.3.7}{Laplacian matrix - notes }{10}
 \Xpage{11}
 \Xtoc{0}{\bfshape }{3}{Linear average consensus algorithm }{11}
 \Xtoc{1}{\rm }{3.1}{Distributed algorithms }{11}
 \Xtoc{1}{\rm }{3.2}{Introduction }{11}
+\Xlabel{ue}{(3.1)}
 \Xpage{12}
 \Xlabel{iteration_eq}{(3.2)}
-\Xtoc{1}{\rm }{3.3}{Basic convergence conditions }{12}
+\Xtoc{1}{\rm }{3.3}{General convergence conditions }{12}
 \Xlabel{perfrob}{(3.6)}
 \Xpage{13}
 \Xlabel{dessire}{(3.7)}
 \Xlabel{stocha}{(3.9)}
+\Xlabel{per_des_eq}{(3.11)}
+\Xtoc{1}{\rm }{3.4}{Heuristics based on the Laplacian matrix }{13}
+\Xlabel{const_perron}{(3.15)}
 \Xpage{14}
-\Xtoc{1}{\rm }{3.4}{Heuristics based on the Laplacian matrix }{14}
+\Xlabel{qerwef}{(3.19)}
+\Xlabel{is_prim}{(3.21)}
 \Xpage{15}
-\Xlabel{qerwef}{(3.29)}
+\Xlabel{cond_conv_alpha}{(3.26)}
+\Xlabel{ex3_5}{3.5}
+\Xlabel{ex3_6}{3.6}
+\Xlabel{ex3_7}{3.7}
 \Xpage{16}
-\Xfig{conv_simple}{3.1}{Example of averaging consensus algorithm.}
+\Xfig{conv_simple}{3.1}{Example of average consensus algorithm.}
 \Xlabel{conv_simple}{3.1}
-\Xpage{17}
-\Xfig{conv_fix_v3}{3.2}{Example of averaging consensus algorithm with one fixed vertex value.}
+\Xfig{conv_fix_v3}{3.2}{Example of ACA with one fixed vertex value.}
 \Xlabel{conv_fix_v3}{3.2}
-\Xfig{conv_noise}{3.3}{Example of averaging consensus algorithm with noisy updates.}
+\Xtoc{2}{\rm }{3.4.1}{The Metropolis-Hastings weighting method }{16}
+\Xpage{17}
+\Xfig{conv_noise}{3.3}{Example with noisy updates.}
 \Xlabel{conv_noise}{3.3}
+\Xtoc{1}{\rm }{3.5}{Average consensus algorithm with additive noise }{17}
+\Xlabel{noisy}{(3.30)}
 \Xpage{18}
-\Xtoc{1}{\rm }{3.5}{The Metropolis-Hastings weighting method }{18}
-\Xtoc{1}{\rm }{3.6}{Average consensus algorithm with additive noise }{18}
-\Xlabel{noisy}{(3.36)}
-\Xlabel{meaee}{(3.38)}
-\Xlabel{rozupdsf}{(3.39)}
+\Xlabel{meaee}{(3.32)}
+\Xlabel{rozupdsf}{(3.33)}
+\Xfig{div_noise}{3.4}{More samples to Figure 3.3. }
+\Xlabel{div_noise}{3.4}
+\Xtoc{1}{\rm }{3.6}{Mean-square convergence in case of noisy updates and observations }{18}
 \Xpage{19}
-\Xtoc{0}{\bfshape }{4}{Recommendation of related literature }{19}
+\Xtoc{2}{\rm }{3.6.1}{Model setup }{19}
+\Xtoc{2}{\rm }{3.6.2}{Time-varying weights }{19}
+\Xlabel{cond_1}{(3.37)}
+\Xlabel{cond_2}{(3.38)}
 \Xpage{20}
-\Xtoc{0}{\bfshape }{5}{Distributed Estimation in Wireless Sensor Networks }{20}
-\Xtoc{1}{\rm }{5.1}{{Introduction} }{20}
+\Xlabel{dec_step_sizesadfasdf}{3.6.3}
+\Xtoc{2}{\rm }{3.6.3}{Approach of descending step size }{20}
+\Xlabel{ex_conv_noise_gamma}{3.8}
+\Xfig{bucky}{3.5}{Used Matlab library graph bucky.}
+\Xlabel{bucky}{3.5}
 \Xpage{21}
-\Xtoc{1}{\rm }{5.2}{Overview of Distributed Consensus Estimation }{21}
-\Xtoc{1}{\rm }{5.3}{Consensus-Based Distributed Parameter Estimation with Asymmetric Communications }{21}
+\Xfig{conv_noise_values_gamma}{3.6}{Values of nodes from Example 3.8}
+\Xlabel{conv_noise_values_gamma}{3.6}
+\Xfig{conv_noise_MSE_ave_gamma}{3.7}{MSE of values in nodes in run of Example 3.8 }
+\Xlabel{conv_noise_MSE_ave_gamma}{3.7}
 \Xpage{22}
-\Xtoc{2}{\rm }{5.3.1}{Problem model }{22}
-\Xlabel{snr}{(5.3)}
-\Xtoc{2}{\rm }{5.3.2}{Graph representation }{22}
+\Xfig{conv_noise_MSE_act_gamma}{3.8}{MSE of values w.r.t an average value in iterations from Example 3.8 }
+\Xlabel{conv_noise_MSE_act_gamma}{3.8}
+\Xfig{conv_noise_var}{3.9}{ Decreasing variance of nodes values from Example 3.8. }
+\Xlabel{conv_noise_var}{3.9}
 \Xpage{23}
-\Xtoc{2}{\rm }{5.3.3}{Description of Algorithm DCUE }{23}
-\Xbib{hafRBdQjmyiRm2f2}{1}{, 2001-}
-\Xbib{Giusca2005}{2}{Giusca, 2005}
-\Xbib{Mohar91thelaplacian}{3}{Mohar, 1991}
-\Xbib{Dont}{4}{Dont, 2011}
-\Xbib{Marsden2013EigenvaluesOT}{5}{Marsden, 2013}
-\Xbib{Liaghat2015}{6}{Liaghat, 2015}
-\Xbib{pFDW46az7oYNnM8b}{7}{Bapat, 1996}
-\Xbib{Newman00thelaplacian}{8}{Newman, 2000}
-\Xbib{Garin2010}{9}{"Garin, "2010"}
-\Xbib{Xiao}{10}{Xiao, 2007}
-\Xbib{Raynal2013}{11}{Raynal, 2013}
-\Xbib{SaberMurray}{12}{Olfati-Saber, 2007}
-\Xbib{spectNorm}{13}{, }
-\Xbib{Xiao03fastlinear}{14}{Xiao, 2003}
-\Xbib{ding2009nonnegative}{15}{Ding, 2009}
-\Xbib{nexxxxt}{16}{Jafarizadeh, 2010}
-\Xbib{spring_book}{17}{Chen, 2014;2015;}
+\Xlabel{ex_conv_noise_ring}{3.9}
+\Xfig{conv_ring}{3.10}{ 60 nodes ring topology from Example 3.9.}
+\Xlabel{conv_ring}{3.10}
+\Xfig{conv_ring_val}{3.11}{Values convergence from Example 3.9.}
+\Xlabel{conv_ring_val}{3.11}
 \Xpage{24}
-\Xtoc{0}{\bfshape }{!1}{References}{24}
+\Xfig{conv_ring_var}{3.12}{Variance running from Example 3.9.}
+\Xlabel{conv_ring_var}{3.12}
+\Xtoc{2}{\rm }{3.6.4}{Recommendations of literature concerning noisy updates topic }{24}
+\Xpage{25}
+\Xtoc{0}{\bfshape }{4}{Distributed Estimation in Wireless Sensor Networks }{25}
+\Xtoc{1}{\rm }{4.1}{{Introduction} }{25}
+\Xpage{26}
+\Xtoc{1}{\rm }{4.2}{Overview of Distributed Consensus Estimation }{26}
+\Xtoc{2}{\rm }{4.2.1}{Consensus-Based Distributed Parameter Estimation }{26}
+\Xtoc{2}{\rm }{4.2.2}{Asymmetric communication }{26}
+\Xlabel{snr}{(4.3)}
+\Xpage{27}
+\Xtoc{2}{\rm }{4.2.3}{Multidimensional observation }{27}
+\Xlabel{observation}{(4.5)}
+\Xtoc{2}{\rm }{4.2.4}{Description of Algorithm DCUE }{27}
+\Xpage{28}
+\Xlabel{algorithm_SN}{(4.6)}
+\Xlabel{algorithm_RN}{(4.7)}
+\Xpage{29}
+\Xtoc{0}{\bfshape }{5}{Examples of Usage of Average consensus algorithm in wireless communication }{29}
+\Xtoc{1}{\rm }{5.1}{Distributed estimation of the number of deployed nodes }{29}
+\Xlabel{simmmmm}{(5.2)}
+\Xtoc{1}{\rm }{5.2}{Tracking of dynamic target }{29}
+\Xpage{30}
+\Xfig{nodes_number_estimation}{5.1}{ Graph used to demonstrate number of nodes estimation.}
+\Xlabel{nodes_number_estimation}{5.1}
+\Xfig{values_nodes_number_estimation}{5.2}{ Convergence process in node number estimation.}
+\Xlabel{values_nodes_number_estimation}{5.2}
+\Xpage{31}
+\Xlabel{track_pic_sim_1}{5.3}
+\Xlabel{track_pic_sim_2}{5.4}
+\Xlabel{distr_time_sync}{5.3}
+\Xtoc{1}{\rm }{5.3}{Distributed time synchronization of already communicating nodes }{31}
+\Xpage{32}
+\Xfig{time_sync_beg}{5.5}{Figure to Distributed time synchronization Example.}
+\Xlabel{time_sync_beg}{5.5}
+\Xtoc{1}{\rm }{5.4}{Initial Distributed time base synchronization of~nodes }{32}
+\Xpage{33}
+\Xfig{tdma_bad}{5.6}{Tx without TDMA.}
+\Xlabel{tdma_bad}{5.6}
+\Xfig{tdma_good}{5.7}{Tx with TDMA.}
+\Xlabel{tdma_good}{5.7}
+\Xpage{34}
+\Xlabel{plllfdaf}{(5.4)}
+\Xfig{PLL}{5.8}{Phase-locked loop.}
+\Xlabel{PLL}{5.8}
+\Xfig{time_diffffasdf}{5.9}{Inputs of the Time difference block.}
+\Xlabel{time_diffffasdf}{5.9}
+\Xpage{35}
+\Xfig{time_syn_2}{5.10}{Time base synchronization (PLL).}
+\Xlabel{time_syn_2}{5.10}
+\Xpage{36}
+\Xtoc{0}{\bfshape }{6}{Conclusion }{36}
+\Xbib{I9TmriFBrBC9Nqw7}{1}{, 2001-}
+\Xbib{Giusca2005}{2}{Giusca, 2005}
+\Xbib{spanningTree}{3}{Weisstein, }
+\Xbib{8QTNEpKBWSMYObR2}{4}{, }
+\Xbib{adjmatrixycv}{5}{Weisstein, }
+\Xbib{degrenadasd}{6}{Weisstein, }
+\Xbib{incidenceee}{7}{Weisstein, }
+\Xbib{Mohar91thelaplacian}{8}{Mohar, 1991}
+\Xbib{Dont}{9}{Dont, 2011}
+\Xbib{Marsden2013EigenvaluesOT}{10}{Marsden, 2013}
+\Xbib{Liaghat2015}{11}{Liaghat, 2015}
+\Xbib{cofactor}{12}{Weisstein, }
+\Xbib{pFDW46az7oYNnM8b}{13}{Bapat, 1996}
+\Xbib{Newman00thelaplacian}{14}{Newman, 2001}
+\Xbib{Umberto}{15}{U.Spagnolini, 2013}
+\Xbib{Garin2010}{16}{Garin, 2010}
+\Xbib{Xiao}{17}{Xiao, 2007}
+\Xbib{Raynal2013}{18}{Raynal, 2013}
+\Xpage{37}
+\Xtoc{0}{\bfshape }{!1}{References}{37}
+\Xbib{Consensus_and_Cooperation_in_Networked}{19}{Olfati-Saber, 2007}
+\Xbib{Xiao03fastlinear}{20}{Xiao, 2003}
+\Xbib{ding2009nonnegative}{21}{Ding, 2009}
+\Xbib{nexxxxt}{22}{Jafarizadeh, 2010}
+\Xbib{Mosquera}{23}{Mosquera, 2008}
+\Xbib{Mosquera52}{24}{Mosquera, 2010}
+\Xbib{5203882}{25}{Touri, 2009}
+\Xbib{4641610}{26}{Pescosolido, 2008}
+\Xbib{CswN7iEXXv5Aomaj}{27}{, 2016}
+\Xbib{4663899}{28}{Kar, 2009}
+\Xbib{DBLP:journals/corr/abs-0809-0009}{29}{Kar, 2008}
+\Xbib{7528041}{30}{Li, 2016}
+\Xbib{spring_book}{31}{Chen, 2015}
+\Xbib{kroneckerPrd}{32}{Weisstein, }
+\Xbib{gps_Time}{33}{NPS, }
+\Xbib{4607217}{34}{Simeone, 2008}
+\Xpage{38}
+\Xpage{39}
+\Xtoc{0}{\bfshape }{A}{Matlab scripts }{39}
+\Xlabel{perfect_script}{A.1}
+\Xtoc{1}{\rm }{A.1}{Matlab script: Average consensus algorithm with perfect communication }{39}
+\Xpage{40}
+\Xpage{41}
+\Xlabel{noise_script}{A.2}
+\Xtoc{1}{\rm }{A.2}{Matlab script: Average consensus algorithm with noisy observation and updates using decreasing step size }{41}
+\Xpage{42}
+\Xpage{43}
+\Xlabel{nodes_number_script}{A.3}
+\Xtoc{1}{\rm }{A.3}{Matlab script: Estimation of nodes number~in~given area }{43}
+\Xlabel{dynamic_tracking}{A.4}
+\Xtoc{1}{\rm }{A.4}{Matlab script: Tracking of dynamic target }{43}
+\Xpage{44}
+\Xpage{45}
+\Xlabel{time_sync_app}{A.5}
+\Xtoc{1}{\rm }{A.5}{Matlab script: (Measurement) Time base synchronization }{45}
+\Xpage{46}
+\Xlabel{time_syasdfnc_app}{A.6}
+\Xtoc{1}{\rm }{A.6}{Matlab script: Initial time base synchronization }{46}
+\Xpage{47}
+\Xtoc{0}{\bfshape }{B}{Content of CD }{47}

@@ -107,19 +107,17 @@ plot(G); %plot graph G
 \begtt
 % Run of average consensus algorithm with noisy 
 % updates using descending step size scheme gamma=a/(1+b)^c                     
+
 %% graph definition
 clear all; clc;
 variance_noise=0.1; %variance of the gaussian noise added to the updates
-iterations =5000; %number of iterations of the algorithm
+iterations =100; %number of iterations of the algorithm
 nodes=60; %number of graph nodes
 G=graph(bucky); % using matlab default graph bucky
 % i.e. 60 nodes with degree 3
 %% variables initialization
 equiv_noise_vector=zeros(1,nodes); 
 x_0=zeros(1,nodes);
-MSE_ave=zeros(zeros(1,iterations+1));
-VAR=zeros(zeros(1,iterations+1));
-MSE_act=zeros(zeros(1,iterations+1));
 diag_D=zeros(nodes,nodes);
 %plot the used graph
 figure;
@@ -132,6 +130,7 @@ end
 for i=1:nodes     %initialize measurement
     x_0(i)=(10+wgn(1,1,log10(10*variance_noise)));    
 end
+
 %% variables definition
 x_est_run(1,:) = x_0;
 MSE_act(1)= sum((x_0-mean(x_0)).^2);
@@ -144,6 +143,7 @@ L=laplacian(G); %laplacian matrix
 eig_L=eig(L);%eigenvalues of Laplacian
 gamma=2/(eig_L(2)+eig_L(nodes));%the best possible coefficient
 mean_0=mean(x_0);%value to converge to
+
 %% Iterations of the algorithm
 for i=1:iterations
    gamma=1/(i+42)^0.75; %selected descending step size
@@ -155,16 +155,18 @@ for i=1:iterations
    end
     equiv_noise_matrix= P*noise_matrix;
    for j=1:nodes
-     equiv_noise_vector(j)= equiv_noise_matrix(j,j);
+   equiv_noise_vector(j)= equiv_noise_matrix(j,j);
    end
    x_est_run(i+1,:)=  P*x_est_run(i,:)'+equiv_noise_vector';  
 end
+
 %calculation of the run statistics
 for i=1:iterations
   MSE_ave(i+1)= sum((x_est_run(i+1,:)-mean(x_0)).^2)/nodes;
   MSE_act(i+1)= sum((x_est_run(i+1,:)-mean(x_est_run(i+1,:))).^2)/nodes;   
   VAR(i+1)= var(x_est_run(i+1,:));
 end
+
 %%  Plot results
 figure;
 plot(0:iterations, x_est_run(:,:));
