@@ -8,50 +8,76 @@
 
 \tit Distributed signal processing \nl in radio communication
 
-\subtit\bf Jakub Kolář\nl kolarj39@fel.cvut.cz
+\subtit\bf Jakub Kolář
 
 \subtit\rm Bachelors's thesis presentation
 
 \pg; %------------------------------------------------------------------
 
-\sec Average consensus algorithm \nl on the graph
+
+\sec Average consensus algorithm \nl on the graph: motivation (1)
+
+* Graph is a set of edges and vertices
+* An existing edge represents a possibility to exchange information
+* Initialize $i-$th vertex with value $i$ (e.g. temperature)
+$$x_i(0)=i \eqmark$$
+* Distributed algorithm: communication only between the neighbors in the graph.  
+\medskip
+\centerline{\picw=9cm \inspic pictures/slides/test_graph.pdf } 
+\caption/f { An example of a graph to present the problem }
+%\pg+
+
+\pg;
+
+\sec Average consensus algorithm \nl on the graph: motivation (2)
 
 
 \medskip
-\centerline{\picw=15cm \inspic pictures/slides/asdf.pdf } 
-\caption/f { Run of Average consensus algorithm (left) on the graph (right)}
+\centerline{\picw=12cm \inspic pictures/slides/prubeh_algoritmu.pdf } 
+\caption/f { Run of the  Average consensus algorithm on the graph }
 \pg;
 
 \sec Graph theory
 
-* Define basic terms
-* Focus on matrix representation of graph
+* Define basic terms with focus on matrix representation of the graph
+\begitems
+*   Adjacency matrix ${\bi A}(G)$
+*   Degree matrix  ${\bi D}(G)$
+\enditems
+
 * Laplacian of the graph and its spectrum
-  $$ {\bi L}(G) = {\bi D}(G) - {\bi A}(G) \eqmark $$
-*  ${\bi L}(G)$ bears relevant information about the graph
+\begitems
+  * Laplacian definition  $${\bi L}(G) = {\bi D}(G) - {\bi A}(G) \eqmark $$
+  * The second smallest eigenvalue $\lambda_2$ -- Graph connectivity
+\enditems
+*  ${\bi L}(G)$ bears relevant information about the graph 
 $$ G \Leftrightarrow {\bi L}(G) \eqmark$$
+
 \pg;
 
 \sec Average consensus algorithm \nl on the graph
 
-* Update scheme \nl $$ x_i(t+1) = x_i(t)+\sum_{j=1; j\not= i}^N p_{i,j}(x_j(t)-x_i(t)) \eqmark $$
+* Update scheme \nl $$ x_i(t+1) = x_i(t)+\sum_{j=1; j\not= i}^N p_{ij}(x_j(t)-x_i(t)) \eqmark $$
 
 * Expressed as matrix multiplication \nl $$ {\bi x}(t+1) = {\bi P} {\bi x}(t) \eqmark $$
 
-%* Convergence condition \nl $$ lim_{t\rightarrow\infty} {\bi P}^t = {1\over N}{\bi 1 1}^T \eqmark $$
+* Average and Convergence condition \nl $$ lim_{t\rightarrow\infty} {\bi P}^t = {1\over N}{\bi 1 1}^T \Leftrightarrow  p_{ij} \rightarrow {1\over N} \eqmark $$
 
 * Suits $${\bi P} = {\bi I} - \alpha {\bi L}, \ \alpha = {{1}\over{\Delta}} \in \bbchar R \eqmark $$
+\begitems
+* $\Delta$ is the greatest degree of the node in the graph
+\enditems
 
 \pg;
 
 
 
-\sec Noisy updates
+\sec Noisy updates: problem
 
-%* Updates affected by zero-mean additive noise
+* Updates affected by noise $$ {\bi x}(t+1) = {\bi P} ({\bi x}(t)+{\bi w}(t)) \eqmark$$
 
 
-\centerline{\picw=13cm \inspic pictures/slides/divergence_noise_120ksamples.pdf } 
+\centerline{\picw=0.6\hsize \inspic pictures/slides/noisy_updates.pdf } 
 \caption/f Updates affected by zero-mean additive noise
 
 
@@ -59,59 +85,75 @@ $$ G \Leftrightarrow {\bi L}(G) \eqmark$$
 
 
 
-\sec Noisy updates - solution
+\sec Noisy updates: solution
 
 
 * Decreasing step size \nl $$\alpha \rightarrow \{ \gamma(t) | \gamma(t+1)<\gamma(t)  \}_{t=1}^\infty \eqmark$$
 
 
 \centerline{\picw=14cm \inspic pictures/slides/conv_noise_values_gamma.pdf } 
-\caption/f Run of algorithm with decreasing step size
+\caption/f Run of the algorithm with decreasing step size
 \pg;
 \sec Noisy updates - solution (2)
 
 
-* Converges in sense of decreasing variance
+* Converges in the sense of decreasing variance
 
 \centerline{\picw=14cm \inspic pictures/slides/conv_noise_var.pdf } 
-\caption/f Decreasing variance from previous example using decreasing step size
+\caption/f Decreasing variance from the previous example using decreasing step size
 \pg;
 
-\sec Examples of application: \nl dynamic target tracking
+%\sec Examples of application: \nl dynamic target tracking
 
-* Damaged version of algorithm (decreased $\alpha$)
-* Robustness
+%* Damaged version of the algorithm (decreased $\alpha$)
+%* Robustness
 
-\vskip 1cm
+%\vskip 1cm
 
-\picw=7.5cm
-\centerline {\inspic pictures/tracking/initialization.pdf \hfil \inspic pictures/tracking/10_iterations.pdf }\nobreak
-\caption/f Initialization and 10th iteration of Target tracking simulation.
+%\picw=7.5cm
+%\centerline {\inspic pictures/tracking/initialization.pdf \hfil \inspic pictures/tracking/10_iterations.pdf }\nobreak
+%\caption/f Initialization and the 10th iteration of the Target tracking simulation.
+%\pg;
+
+%\sec Examples of application: \nl dynamic target tracking (2)
+
+%* Target stops moving after 500 iterations 
+
+%\vskip 1cm
+
+%\picw=7.5cm
+%\centerline {\inspic pictures/tracking/100_iterations.pdf \hfil \inspic pictures/tracking/1000_iterations.pdf }\nobreak
+%\caption/f The 10th and 1000th iteration of  the Target tracking simulation
+%\pg;
+
+
+\sec Example of application: \nl  Distributed time base synchronization 
+
+* The time is represented by some big integer
+* In the simulation increases according to internal oscillator (non ideal) 
+
+\centerline{\picw=15cm \inspic pictures/slides/time_sync_beg.pdf } 
+\caption/f Run of the Time base synchronization example
+
+
+
 \pg;
 
-\sec Examples of application: \nl dynamic target tracking (2)
 
-* Target stops moving after 500 iterations 
 
-\vskip 1cm
 
-\picw=7.5cm
-\centerline {\inspic pictures/tracking/100_iterations.pdf \hfil \inspic pictures/tracking/1000_iterations.pdf }\nobreak
-\caption/f 10th and 1000th iteration of Target tracking simulation
+
+
+
+
+\sec Conclusion \& My Contribution
+
+I have 
+
+* studied the Linear average consensus algorithm on the graph 
+* implemented the  algorithm in  several examples motivated by the radio digital communication
+* observed, that the experimentally obtained outputs are consistent with the previous theoretical part
 \pg;
-
-
-\sec Examples of application: \nl time synchronization
-
-* Time in nodes represented as some big number
-* In simulation increases according to (non ideal) internal oscillator
-
-
-\centerline{\picw=16cm \inspic pictures/slides/time_sync_beg.pdf } 
-\caption/f Run of time base synchronization
-\pg;
-
-
 
 \null
 \vskip2cm
