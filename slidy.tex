@@ -17,11 +17,12 @@
 
 \sec Average consensus algorithm \nl on the graph: motivation (1)
 
-* Graph is a set of edges and vertices
+* Graph $G$ is a set of edges and vertices
 * An existing edge represents a possibility to exchange information
 * Initialize $i-$th vertex with value $i$ (e.g. temperature)
 $$x_i(0)=i \eqmark$$
-* Distributed algorithm: communication only between the neighbors in the graph.  
+* Distributed algorithm: communication is possible only between \nl the neighbors  in the graph
+* Goal: obtain unique value in all vertices 
 \medskip
 \centerline{\picw=9cm \inspic pictures/slides/test_graph.pdf } 
 \caption/f { An example of a graph to present the problem }
@@ -39,10 +40,11 @@ $$x_i(0)=i \eqmark$$
 
 \sec Graph theory
 
-* Define basic terms with focus on matrix representation of the graph
+* Define basic terms with focus on matrix representation of the graph $G$
 \begitems
-*   Adjacency matrix ${\bi A}(G)$
-*   Degree matrix  ${\bi D}(G)$
+*   Number of nodes $N$
+*   Adjacency matrix ${\bi A}(G) \in {\bbchar R}^{N \times {N}} $
+*   Degree matrix  ${\bi D}(G) \in {\bbchar R}^{N\times{N}} $
 \enditems
 
 * Laplacian of the graph and its spectrum
@@ -57,7 +59,7 @@ $$ G \Leftrightarrow {\bi L}(G) \eqmark$$
 
 \sec Average consensus algorithm \nl on the graph
 
-* Update scheme \nl $$ x_i(t+1) = x_i(t)+\sum_{j=1; j\not= i}^N p_{ij}(x_j(t)-x_i(t)) \eqmark $$
+* Linear update scheme \nl $$ x_i(t+1) = x_i(t)+\sum_{{j \ \in \  Neighbors}} p_{ij}(x_j(t)-x_i(t)) \eqmark $$
 
 * Expressed as matrix multiplication \nl $$ {\bi x}(t+1) = {\bi P} {\bi x}(t) \eqmark $$
 
@@ -70,11 +72,13 @@ $$ G \Leftrightarrow {\bi L}(G) \eqmark$$
 
 \pg;
 
-
+%to say: az do ted jsem mluvil o necem, co je v literature pomerne presne popsane.
+% dale jsem se zabyval problematikou s noisy updates, ktera je stale vyzkumne otevrenym problemem
 
 \sec Noisy updates: problem
 
-* Updates affected by noise $$ {\bi x}(t+1) = {\bi P} ({\bi x}(t)+{\bi w}(t)) \eqmark$$
+* Remains subject of research
+* Updates affected by noise  $$ {\bi x}(t+1) = {\bi P} ({\bi x}(t)+{\bi w}(t)) \eqmark$$
 
 
 \centerline{\picw=0.6\hsize \inspic pictures/slides/noisy_updates.pdf } 
@@ -100,7 +104,7 @@ $$ G \Leftrightarrow {\bi L}(G) \eqmark$$
 * Converges in the sense of decreasing variance
 
 \centerline{\picw=14cm \inspic pictures/slides/conv_noise_var.pdf } 
-\caption/f Decreasing variance from the previous example using decreasing step size
+\caption/f Decreasing variance of values in nodes from the previous example using decreasing step size
 \pg;
 
 %\sec Examples of application: \nl dynamic target tracking
@@ -127,19 +131,70 @@ $$ G \Leftrightarrow {\bi L}(G) \eqmark$$
 %\pg;
 
 
-\sec Example of application: \nl  Distributed time base synchronization 
+\sec Example of application: \nl  Distributed time base synchronization (1)
 
-* The time is represented by some big integer
-* In the simulation increases according to internal oscillator (non ideal) 
+%* The time is represented by some big integer
+%* In the simulation increases according to internal oscillator (non ideal) 
 
-\centerline{\picw=15cm \inspic pictures/slides/time_sync_beg.pdf } 
-\caption/f Run of the Time base synchronization example
+%\centerline{\picw=15cm \inspic pictures/slides/time_sync_beg.pdf } 
+%\caption/f Run of the Time base synchronization example
+
+* Motivation: we want to use TDMA
+* Nodes need to have mutually synchronized time base
+
+
+
+\centerline{\picw=11cm \inspic pictures/TDMA_bad.pdf } 
+\centerline{\picw=11cm \inspic pictures/TDMA_good.pdf } 
+\caption/f Pictures to explain Time Division Multiple Access
+
+\pg;
+
+
+
+
+
+
+\sec Example of application: \nl  Distributed time base synchronization  (2)
+
+* Each vertex transmits an impulse at defined moment (e.g. maximum of amplitude)
+* We can apply the Average consensus algorithm  on the offsets of impulses received from neighbors (see Figure bellow) 
+
+
+\centerline{\picw=\hsize \inspic pictures/time_differences.pdf } 
+\caption/f Figure to explain detection of time offsets
+
+\pg;
+
+
+
+
+
+\sec Example of application: \nl  Distributed time base synchronization (3)
+
+* Modified update equation
+$$ t_i(n+1) = t_i(n)+T_i+ \sum_{j \ \in  \ Neighbors} p_{ij}(t_j(n) - t_i(n)), \eqmark$$
+
+\centerline{\picw=0.7\hsize \inspic pictures/time_sym.pdf }
+
+\caption/f A run of the Time base synchronization example
+
 
 
 
 \pg;
 
+\sec Example of application: \nl  Distributed time base synchronization (4)
 
+* Solution may be viewed as a Phase-Locked Loop implementation
+
+\centerline{\picw=\hsize \inspic pictures/PLL.pdf } 
+\caption/f A sketch of an idea of Phase-Locked Loop implementation for two nodes
+
+\pg;
+
+
+%to do priklad jak detekuji typrichazejici impulsy
 
 
 
@@ -151,16 +206,46 @@ $$ G \Leftrightarrow {\bi L}(G) \eqmark$$
 I have 
 
 * studied the Linear average consensus algorithm on the graph 
-* implemented the  algorithm in  several examples motivated by the radio digital communication
+* implemented the  algorithm in  several examples
 * observed, that the experimentally obtained outputs are consistent with the previous theoretical part
 \pg;
 
 \null
 \vskip2cm
-\centerline{\typosize[35/40]\bf Thank you for your attention.}\pg+
+\centerline{\typosize[35/40]\bf Thank you for your attention.}\pg;
 
-\vskip2cm
-\centerline{\Blue\typosize[60/70]\bf Questions?}
+%\vskip2cm
+%\centerline{\Blue\typosize[60/70]\bf Questions?}
+
+
+\sec  Otázka
+
+*Je možné využít analytického aparátu pro zpracování signálu, viz [1],  \nl   nad grafem při
+analýze chování distribuovaných algoritmů?
+
+* Ano, ale zatím spíše jen velmi omezeně [1]: 
+\begitems
+* Operace pro zpracování signálu nad grafy (harmonická analýza) mohou být zobecněny zavedením příslušných operátorů
+* Problém s nepravidelnostmi grafů
+\begitems
+* Jak graf sestavit v souladu s příslušnou transformací
+* Jak využít současné znalosti zpracování signálu
+* Výpočetně efektivní řešení 
+\enditems
+* Nejednoznačný a heuristický přístup (normalizace Laplaciánu)
+* Analýza (často) vyžaduje určení vlastních vektorů Laplaciánu
+\enditems
+* Jedná se o výzkumně otevřený problém [1]
+
+\pg;
+
+\sec References
+
+ [1] David I. Shuman, Sunil K. Narang, Pascal Frossard, Antonio Ortega, and Pierre
+Vandergheynst. Signal Processing on Graphs: Extending High-Dimensional
+Data Analysis to Networks and Other Irregular Data Domains. CoRR. 2012,
+abs/1211.0053 
+
 
 \pg. %------------------------------KONEC-------------------------------
 
